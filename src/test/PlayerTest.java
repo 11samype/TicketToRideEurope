@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.Assert.*;
+import objects.Player;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +15,8 @@ public class PlayerTest {
 
 	@Test
 	public void testPlayer() {
-		fail("Not yet implemented");
+		Player p = new Player("Conductor");
+
 	}
 
 }
