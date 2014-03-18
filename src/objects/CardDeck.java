@@ -15,10 +15,6 @@ public abstract class CardDeck {
 		Collections.shuffle(cards);
 	}
 	
-	public Card drawCard() {
-		return cards.remove(0);
-	}
-	
 	public void populateDeck(List<Card> cardList) {
 		this.cards.addAll(cardList);
 		shuffle();
@@ -26,6 +22,10 @@ public abstract class CardDeck {
 	
 	public Card draw() {
 		return this.cards.remove(0);
+	}
+	
+	public List<Card> listOfCardsInOrder() {
+		return this.cards;
 	}
 
 }

@@ -4,6 +4,15 @@ import java.awt.Color;
 public class TrainCarDeck extends CardDeck {
 
 	public TrainCarDeck() {
+		addCardsToDeckBeforeShuffle();
+		
+		shuffle();
+		
+	}
+	
+	private void addCardsToDeckBeforeShuffle() {
+		
+		this.cards.clear();
 		
 		for (int i = 0; i < 12; i++) {
 			this.cards.add(new TrainCarCard(Color.BLUE));
@@ -32,8 +41,5 @@ public class TrainCarDeck extends CardDeck {
 		for (int i = 96; i < 110; i++) {
 			this.cards.add(new TrainCarCard(Color.CYAN)); //actually rainbow
 		}
-		
-		shuffle();
-		
 	}
 }
