@@ -23,4 +23,8 @@ public class DiscardPile {
 		
 		return cardsToReturn;
 	}
+	
+	public int sizeOfDiscardPile() {
+		return this.cards.size();
+	}
 }

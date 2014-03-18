@@ -34,8 +34,23 @@ public class CardDeckTest {
 	}
 	
 	@Test
-	public void testDiscard() {
-		DiscardPile discard = new DiscardPile();
+	public void testDrawAndDiscard() {
+		TrainCarDeck deck = new TrainCarDeck();
+		DiscardPile discardPile = new DiscardPile();
+		
+		discardPile.discard(deck.draw());
+		discardPile.discard(deck.draw());
+		
+		assertEquals(108, deck.size());
+		assertEquals(2, discardPile.sizeOfDiscardPile());
+	}
+	
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void testDrawIndexOutOfBoundsException() {
+		TrainCarDeck deck = new TrainCarDeck();
+		while(true) {
+			deck.draw();
+		}
 	}
 	
 }
