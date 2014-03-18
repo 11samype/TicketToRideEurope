@@ -15,7 +15,7 @@ public class DiscardPile {
 		this.cards.add(card);
 	}
 	
-	public List<Card> emptyDiscardPile() {
+	public List<Card> empty() {
 		
 		List<Card> cardsToReturn = new ArrayList<Card>();
 		cardsToReturn.addAll(this.cards);
@@ -24,7 +24,7 @@ public class DiscardPile {
 		return cardsToReturn;
 	}
 	
-	public int sizeOfDiscardPile() {
+	public int size() {
 		return this.cards.size();
 	}
 }

@@ -17,6 +17,7 @@ public abstract class CardDeck {
 	}
 
 	public void populateDeck(List<Card> cardList) {
+		this.cards.clear();
 		this.cards.addAll(cardList);
 		shuffle();
 	}
@@ -27,7 +28,7 @@ public abstract class CardDeck {
 		return this.cards.remove(0);
 	}
 	
-	public List<Card> listOfCardsInOrder() {
+	public List<Card> getCards() {
 		return this.cards;
 	}
 

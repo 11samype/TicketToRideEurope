@@ -6,7 +6,6 @@ import java.awt.Color;
 
 import org.junit.Test;
 
-import objects.DiscardPile;
 import objects.TrainCarCard;
 import objects.TrainCarDeck;
 
@@ -34,15 +33,13 @@ public class CardDeckTest {
 	}
 	
 	@Test
-	public void testDrawAndDiscard() {
+	public void testDraw() {
 		TrainCarDeck deck = new TrainCarDeck();
-		DiscardPile discardPile = new DiscardPile();
 		
-		discardPile.discard(deck.draw());
-		discardPile.discard(deck.draw());
+		deck.draw();
+		deck.draw();
 		
 		assertEquals(108, deck.size());
-		assertEquals(2, discardPile.sizeOfDiscardPile());
 	}
 	
 	@Test(expected=IndexOutOfBoundsException.class)
@@ -53,4 +50,14 @@ public class CardDeckTest {
 		}
 	}
 	
+	@Test
+	public void testPopulateDeck() {
+		TrainCarDeck deck1 = new TrainCarDeck();
+		deck1.draw();
+		TrainCarDeck deck2 = new TrainCarDeck();
+		
+		deck2.populateDeck(deck1.getCards());
+		
+		assertEquals(deck1.size(), deck2.size());
+	}
 }
