@@ -7,6 +7,17 @@ import java.util.List;
 public class TrainCarDeck extends CardDeck {
 
 	public TrainCarDeck() {
+
+		addCardsToDeckBeforeShuffle();
+		
+		shuffle();
+		
+	}
+	
+	private void addCardsToDeckBeforeShuffle() {
+		
+		this.cards.clear();
+		
 		List<Color> colors = Arrays.asList(Color.BLUE, Color.RED, Color.GREEN,
 				Color.YELLOW, Color.PINK, Color.WHITE, Color.ORANGE,
 				Color.BLACK, Color.CYAN);
@@ -19,6 +30,5 @@ public class TrainCarDeck extends CardDeck {
 		this.cards.add(new TrainCarCard(Color.CYAN)); // actually rainbow)
 		this.cards.add(new TrainCarCard(Color.CYAN));
 
-		shuffle();
 	}
 }

@@ -15,12 +15,16 @@ public class DiscardPile {
 		this.cards.add(card);
 	}
 	
-	public List<Card> emptyDiscardPile() {
+	public List<Card> empty() {
 		
 		List<Card> cardsToReturn = new ArrayList<Card>();
 		cardsToReturn.addAll(this.cards);
 		this.cards.clear();
 		
 		return cardsToReturn;
+	}
+	
+	public int size() {
+		return this.cards.size();
 	}
 }

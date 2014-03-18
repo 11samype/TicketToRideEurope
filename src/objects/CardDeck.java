@@ -17,6 +17,7 @@ public abstract class CardDeck {
 	}
 
 	public void populateDeck(List<Card> cardList) {
+		this.cards.clear();
 		this.cards.addAll(cardList);
 		shuffle();
 	}
@@ -25,6 +26,10 @@ public abstract class CardDeck {
 		if (size() <= 0)
 			throw new IndexOutOfBoundsException("The deck is empty!");
 		return this.cards.remove(0);
+	}
+	
+	public List<Card> getCards() {
+		return this.cards;
 	}
 
 	public int size() {
