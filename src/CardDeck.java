@@ -1,14 +1,27 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 
 public abstract class CardDeck {
 
-	private Card[] cards;
+	protected List<Card> cards = new ArrayList<Card>();
 	
 	public CardDeck() {
 		
 	}
 	
 	public void shuffle() {
-		
+		Collections.shuffle(cards);
+	}
+	
+	public Card drawCard() {
+		return cards.remove(0);
+	}
+	
+	public void populateDeck(List<Card> cardList) {
+		this.cards.addAll(cardList);
+		shuffle();
 	}
 	
 }
