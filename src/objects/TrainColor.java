@@ -8,16 +8,27 @@ public enum TrainColor {
 
 	BLUE(Color.BLUE), RED(Color.RED), GREEN(Color.GREEN), YELLOW(Color.YELLOW), PINK(
 			Color.PINK), WHITE(Color.WHITE), ORANGE(Color.ORANGE), BLACK(
-			Color.BLACK), RAINBOW(Color.CYAN);
+			Color.BLACK), RAINBOW(Color.GRAY, "GRAY");
 
 	private final Color awtColor;
+	private String awtName;
 
 	private TrainColor(Color awtColor) {
+		this(awtColor, null);
+	}
+
+	private TrainColor(Color awtColor, String name) {
 		this.awtColor = awtColor;
+		this.awtName = name;
 	}
 
 	public Color getAwtColor() {
 		return awtColor;
+	}
+
+	@Override
+	public String toString() {
+		return this.awtName != null ? this.awtName : super.toString();
 	}
 
 	public static List<TrainColor> getAllColors() {

@@ -35,11 +35,12 @@ public class CardDeckTest {
 	@Test
 	public void testDraw() {
 		TrainCarDeck deck = new TrainCarDeck();
+		int size = deck.size();
 
 		deck.draw();
 		deck.draw();
 
-		assertEquals(108, deck.size());
+		assertEquals(size - 2, deck.size());
 	}
 
 	@Test(expected=IndexOutOfBoundsException.class)
