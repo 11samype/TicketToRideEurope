@@ -3,28 +3,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DiscardPile {
+public class DiscardPile extends AbstractDeck {
 
-	protected List<Card> cards = new ArrayList<Card>();
-	
-	public DiscardPile() {
-		
-	}
-	
-	public void discard(Card card) {
+	public void add(ICard card) {
 		this.cards.add(card);
 	}
-	
-	public List<Card> empty() {
-		
-		List<Card> cardsToReturn = new ArrayList<Card>();
+
+	public List<ICard> pickup() {
+		List<ICard> cardsToReturn = new ArrayList<ICard>();
 		cardsToReturn.addAll(this.cards);
 		this.cards.clear();
-		
 		return cardsToReturn;
-	}
-	
-	public int size() {
-		return this.cards.size();
 	}
 }

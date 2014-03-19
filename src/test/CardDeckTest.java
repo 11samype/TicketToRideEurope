@@ -56,7 +56,7 @@ public class CardDeckTest {
 		deck1.draw();
 		TrainCarDeck deck2 = new TrainCarDeck();
 		
-		deck2.populateDeck(deck1.getCards());
+		deck2.populate(deck1.getCards());
 		
 		assertEquals(deck1.size(), deck2.size());
 	}

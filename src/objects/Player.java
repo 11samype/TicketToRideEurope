@@ -8,7 +8,7 @@ public class Player {
 	protected String name;
 	protected List<TrainCar> trains = new ArrayList<TrainCar>();
 	protected List<TrainCarCard> hand = new ArrayList<TrainCarCard>();
-	protected List<DestinationTicketCard> destinations = new ArrayList<DestinationTicketCard>();
+	protected List<DestinationCard> destinations = new ArrayList<DestinationCard>();
 	protected int score;
 
 	public Player(String name) {
@@ -19,11 +19,11 @@ public class Player {
 		this("");
 	}
 
-	public void drawCard(CardDeck deck) {
+	public void drawCard(IDeck deck) {
 		if (deck instanceof TrainCarDeck) {
 			hand.add((TrainCarCard) deck.draw());
-		} else if (deck instanceof DestinationCardDeck) {
-			destinations.add((DestinationTicketCard) deck.draw());
+		} else if (deck instanceof DestinationDeck) {
+			destinations.add((DestinationCard) deck.draw());
 		}
 	}
 
@@ -39,7 +39,7 @@ public class Player {
 		return hand;
 	}
 
-	public List<DestinationTicketCard> getDestinations() {
+	public List<DestinationCard> getDestinations() {
 		return destinations;
 	}
 

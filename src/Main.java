@@ -1,4 +1,4 @@
-import gui.MainPanel;
+import gui.MainComponent;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -13,7 +13,11 @@ public class Main {
 			public void run() {
 				window = new JFrame("TicketToRide Window");
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				window.getContentPane().add(new MainPanel());
+
+				MainComponent panel = new MainComponent();
+				panel.setMapName("Europe");
+
+				window.getContentPane().add(panel);
 				window.pack();
 				window.setVisible(true);
 			}
@@ -23,7 +27,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		new Main();
-
+		new DestinationReader().run();
 	}
 
 }

@@ -1,14 +1,14 @@
 package objects;
+
 import java.awt.Color;
 
-
-public class TrainCarCard extends Card {
+public class TrainCarCard extends AbstractCard {
 
 	// locomotives?
 	// maybe extend trainitem?
-	
+
 	private Color color;
-	
+
 	public TrainCarCard(Color color) {
 		this.setColor(color);
 	}
@@ -20,5 +20,5 @@ public class TrainCarCard extends Card {
 	public void setColor(Color color) {
 		this.color = color;
 	}
-	
+
 }
