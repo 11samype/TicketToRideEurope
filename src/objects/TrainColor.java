@@ -4,20 +4,33 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 
-public class TrainColor {
+public enum TrainColor {
 
-	public static Color BLUE = Color.BLUE;
-	public static Color RED = Color.RED;
-	public static Color GREEN = Color.GREEN;
-	public static Color YELLOW = Color.YELLOW;
-	public static Color PINK = Color.PINK;
-	public static Color WHITE = Color.WHITE;
-	public static Color ORANGE = Color.ORANGE;
-	public static Color BLACK = Color.BLACK;
-	public static Color RAINBOW = Color.CYAN;
+	BLUE(Color.BLUE), RED(Color.RED), GREEN(Color.GREEN), YELLOW(Color.YELLOW), PINK(
+			Color.PINK), WHITE(Color.WHITE), ORANGE(Color.ORANGE), BLACK(
+			Color.BLACK), RAINBOW(Color.CYAN);
 
-	public static List<Color> getAllColors() {
-		return Arrays.asList(BLUE, RED, GREEN, YELLOW, PINK, WHITE, ORANGE, BLACK, RAINBOW);
+	private final Color awtColor;
+
+	private TrainColor(Color awtColor) {
+		this.awtColor = awtColor;
+	}
+
+	public Color getAwtColor() {
+		return awtColor;
+	}
+
+	public static List<TrainColor> getAllColors() {
+		return Arrays.asList(BLUE, RED, GREEN, YELLOW, PINK, WHITE, ORANGE,
+				BLACK, RAINBOW);
+	}
+
+	public static Color fromString(String colorString) {
+		for (TrainColor color : getAllColors()) {
+			if (colorString.equalsIgnoreCase(color.toString()))
+				return color.getAwtColor();
+		}
+		return null;
 	}
 
 }

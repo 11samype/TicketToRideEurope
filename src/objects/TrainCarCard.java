@@ -7,18 +7,22 @@ public class TrainCarCard extends AbstractCard {
 	// locomotives?
 	// maybe extend trainitem?
 
-	private Color color;
+	private TrainColor color;
 
-	public TrainCarCard(Color color) {
+	public TrainCarCard(TrainColor color) {
 		this.setColor(color);
 	}
 
-	public Color getColor() {
+	public TrainColor getColor() {
 		return color;
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
+	public Color getAwtColor() {
+		return color.getAwtColor();
+	}
+
+	public void setColor(TrainColor color2) {
+		this.color = color2;
 	}
 
 }

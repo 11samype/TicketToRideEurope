@@ -6,6 +6,7 @@ import java.awt.Color;
 
 import objects.DiscardPile;
 import objects.TrainCarCard;
+import objects.TrainColor;
 
 import org.junit.Test;
 
@@ -15,8 +16,8 @@ public class DiscardPileTest {
 	public void testDiscard() {
 		DiscardPile discardPile = new DiscardPile();
 
-		discardPile.add(new TrainCarCard(Color.BLUE));
-		discardPile.add(new TrainCarCard(Color.BLUE));
+		discardPile.add(new TrainCarCard(TrainColor.BLUE));
+		discardPile.add(new TrainCarCard(TrainColor.BLUE));
 
 		assertEquals(2, discardPile.size());
 	}
@@ -25,10 +26,10 @@ public class DiscardPileTest {
 	public void testEmptyDiscard() {
 		DiscardPile discardPile = new DiscardPile();
 
-		discardPile.add(new TrainCarCard(Color.BLUE));
-		discardPile.add(new TrainCarCard(Color.BLUE));
-		discardPile.add(new TrainCarCard(Color.BLUE));
-		discardPile.add(new TrainCarCard(Color.BLUE));
+		discardPile.add(new TrainCarCard(TrainColor.BLUE));
+		discardPile.add(new TrainCarCard(TrainColor.BLUE));
+		discardPile.add(new TrainCarCard(TrainColor.BLUE));
+		discardPile.add(new TrainCarCard(TrainColor.BLUE));
 
 		assertEquals(4, discardPile.size());
 

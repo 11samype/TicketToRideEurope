@@ -1,9 +1,5 @@
 package objects;
 
-import java.awt.Color;
-import java.util.Arrays;
-import java.util.List;
-
 public class TrainCarDeck extends AbstractDeck {
 
 	public TrainCarDeck() {
@@ -18,7 +14,7 @@ public class TrainCarDeck extends AbstractDeck {
 
 		this.cards.clear();
 
-		for (Color color : TrainColor.getAllColors()) {
+		for (TrainColor color : TrainColor.getAllColors()) {
 			for (int j = 0; j < 12; j++) {
 				this.cards.add(new TrainCarCard(color));
 			}
