@@ -1,0 +1,24 @@
+Lisboa-Cadiz (2) train blue
+Lisboa-Madrid (3) train pink
+Cadiz-Madrid (3) train orange
+Madrid-Barcelona (2) train yellow
+Madrid-Pamplona (3) tunnel white
+Madrid-Pamplona (3) tunnel black
+Barcelona-Pamplona (2) tunnel gray
+Barcelona-Marseille (4) train gray
+Pamplona-Marseille (4) train red
+Pamplona-Paris (4) train blue
+Pamplona-Paris (4) train green
+Pamplona-Brest (4) train pink
+Brest-Paris (3) train black
+Brest-Dieppe (2) train orange
+Dieppe-Paris (1) train pink
+Dieppe-London (2) ferry
+Dieppe-London (2) ferry
+Dieppe-Buxelles (2) train green
+Bruxelles-Paris (2) train yellow
+Bruxelles-Paris (2) train red
+Bruxelles-Amsterdam (1) train black
+Amsterdam-London (2) ferry
+London-Edinburgh (4) train black
+London-Edinburgh (4) train orange
