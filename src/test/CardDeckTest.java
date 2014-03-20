@@ -61,4 +61,10 @@ public class CardDeckTest {
 
 		assertEquals(deck1.size(), deck2.size());
 	}
+	
+	@Test
+	public void testDeckSize() {
+		TrainCarDeck deck = new TrainCarDeck();
+		assertEquals(deck.size(), 110);
+	}
 }
