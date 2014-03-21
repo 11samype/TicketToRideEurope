@@ -1,5 +1,7 @@
 package objects;
 
+import objects.abstracts.AbstractRoute;
+
 public class FerryRoute extends AbstractRoute {
 
 	public FerryRoute(Destination start, Destination end) {

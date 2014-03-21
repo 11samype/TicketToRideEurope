@@ -1,17 +1,15 @@
 package objects;
 
-public class TrainRoute extends AbstractRoute {
+import objects.abstracts.AbstractColorableRoute;
 
-	protected final TrainColor color;
+public class TrainRoute extends AbstractColorableRoute {
 
 	public TrainRoute(Destination start, Destination end) {
 		super(start, end);
-		this.color = TrainColor.RAINBOW;
 	}
 
 	public TrainRoute(Destination start, Destination end, TrainColor color) {
-		super(start, end);
-		this.color = color;
+		super(start, end, color);
 	}
 
 }

@@ -1,18 +1,29 @@
 package objects;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import objects.abstracts.AbstractDeck;
 
-public class DiscardPile extends AbstractDeck {
+public class DiscardPile extends AbstractDeck<TrainCarCard> {
 
-	public void add(ICard card) {
+	public DiscardPile() {
+		addCardsToDeck(); // starts empty
+	}
+
+	public void add(TrainCarCard card) {
 		this.cards.add(card);
 	}
 
-	public List<ICard> pickup() {
-		List<ICard> cardsToReturn = new ArrayList<ICard>();
+	public List<TrainCarCard> pickup() {
+		List<TrainCarCard> cardsToReturn = new ArrayList<TrainCarCard>();
 		cardsToReturn.addAll(this.cards);
 		this.cards.clear();
 		return cardsToReturn;
+	}
+
+	@Override
+	protected void addCardsToDeck() {
+		populate(new ArrayList<TrainCarCard>());
 	}
 }

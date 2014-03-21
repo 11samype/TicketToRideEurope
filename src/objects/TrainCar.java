@@ -1,10 +1,10 @@
 package objects;
 
-import java.awt.Color;
+import objects.abstracts.AbstractTrainItem;
 
-public class TrainCar extends TrainItem {
+public class TrainCar extends AbstractTrainItem {
 
-	public TrainCar(Color color) {
+	public TrainCar(TrainColor color) {
 		super(color);
 	}
 

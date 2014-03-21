@@ -2,27 +2,27 @@ package objects;
 
 import java.awt.Color;
 
-public class TrainCarCard extends AbstractCard {
+import objects.abstracts.AbstractCard;
+import objects.interfaces.ITrainItem;
+
+public class TrainCarCard extends AbstractCard<TrainColor> implements
+		ITrainItem {
 
 	// locomotives?
 	// maybe extend trainitem?
 
-	private TrainColor color;
-
 	public TrainCarCard(TrainColor color) {
-		this.setColor(color);
+		this.value = color;
 	}
 
+	@Override
 	public TrainColor getColor() {
-		return color;
+		return getValue();
 	}
 
+	@Override
 	public Color getAwtColor() {
-		return color.getAwtColor();
-	}
-
-	public void setColor(TrainColor color2) {
-		this.color = color2;
+		return getValue().getAwtColor();
 	}
 
 }

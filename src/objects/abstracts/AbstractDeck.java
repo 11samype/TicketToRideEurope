@@ -1,12 +1,15 @@
-package objects;
+package objects.abstracts;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class AbstractDeck implements IDeck {
+import objects.interfaces.ICard;
+import objects.interfaces.IDeck;
 
-	protected List<ICard> cards = new ArrayList<ICard>();
+public abstract class AbstractDeck<K extends ICard> implements IDeck<K> {
+
+	protected List<K> cards = new ArrayList<K>();
 
 	@Override
 	public void shuffle() {
@@ -14,32 +17,37 @@ public abstract class AbstractDeck implements IDeck {
 	}
 
 	@Override
-	public void populate(List<ICard> cardList) {
+	public void populate(List<K> cardList) {
 		this.cards.clear();
 		this.cards.addAll(cardList);
 		shuffle();
 	}
 
 	@Override
-	public ICard draw() {
+	public K draw() {
 		if (size() <= 0)
 			throw new IndexOutOfBoundsException("The deck is empty!");
 		return this.cards.remove(0);
 	}
 
 	@Override
-	public List<ICard> getCards() {
+	public List<K> getCards() {
 		return this.cards;
 	}
 
 	@Override
 	public int size() {
-		return this.cards.size();
+		return getCards().size();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return this.cards.isEmpty();
+		return getCards().isEmpty();
 	}
+
+	/**
+	 * Initialize the deck with cards
+	 */
+	protected abstract void addCardsToDeck();
 
 }

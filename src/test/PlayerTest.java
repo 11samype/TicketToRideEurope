@@ -31,8 +31,9 @@ public class PlayerTest {
 		int numberOfCards = d.size();
 
 		Player p = new Player();
-		p.drawCard(d);
+		p.drawCardFromDeck(d);
 
+		assertNotEquals(0, p.getHand().size());
 		assertEquals(numberOfCards - 1, d.size());
 		assertEquals(1, p.getHand().size());
 	}
@@ -44,15 +45,12 @@ public class PlayerTest {
 
 		Player p = new Player();
 		for (int i = 0; i < 2; i++) {
-			p.drawCard(d);
+			p.drawCardFromDeck(d);
 		}
 
+		assertNotEquals(0, p.getHand().size());
 		assertEquals(numberOfCards - 2, d.size());
 		assertEquals(2, p.getHand().size());
 	}
-
-
-
-
 
 }

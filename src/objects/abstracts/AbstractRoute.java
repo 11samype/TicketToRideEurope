@@ -1,4 +1,7 @@
-package objects;
+package objects.abstracts;
+
+import objects.Destination;
+import objects.interfaces.IRoute;
 
 public abstract class AbstractRoute implements IRoute {
 	protected final Destination start;

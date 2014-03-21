@@ -8,12 +8,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import objects.Destination;
-import objects.AbstractRoute;
 import objects.DestinationRoute;
 
 public class DestinationReader {
 
-	HashMap<Destination, List<AbstractRoute>> graph = new HashMap<Destination, List<AbstractRoute>>();
+	private HashMap<Destination, List<DestinationRoute>> graph = new HashMap<Destination, List<DestinationRoute>>();
+
+	public HashMap<Destination, List<DestinationRoute>> getGraph() {
+		return graph;
+	}
 
 	public void run() {
 		String filePath = "destinations.txt";
@@ -26,7 +29,7 @@ public class DestinationReader {
 			while ((line = br.readLine()) != null) {
 				// pre-define some variables
 				String startDestName = null, endDestName = null;
-				int weight = 1;
+				int score = 1;
 				Destination start = null, end = null;
 
 				Matcher matcher = pattern.matcher(line);
@@ -42,31 +45,16 @@ public class DestinationReader {
 				}
 
 				if (matcher.find()) {
-					weight = Integer.parseInt(matcher.group());
+					score = Integer.parseInt(matcher.group());
 				}
 
-				AbstractRoute startToEnd = new DestinationRoute(start, end,
-						weight);
-				AbstractRoute endToStart = new DestinationRoute(end, start,
-						weight);
+				DestinationRoute startToEnd = new DestinationRoute(start, end,
+						score);
+				DestinationRoute endToStart = new DestinationRoute(end, start,
+						score);
 
-				// Add start->end
-				if (graph.containsKey(start)) {
-					graph.get(start).add(startToEnd);
-				} else {
-					ArrayList<AbstractRoute> routes = new ArrayList<AbstractRoute>();
-					routes.add(startToEnd);
-					graph.put(start, routes);
-				}
-
-				// Add end->start
-				if (graph.containsKey(end)) {
-					graph.get(end).add(endToStart);
-				} else {
-					ArrayList<AbstractRoute> routes = new ArrayList<AbstractRoute>();
-					routes.add(endToStart);
-					graph.put(end, routes);
-				}
+				addRouteToGraph(start, startToEnd);
+				addRouteToGraph(end, endToStart);
 
 			}
 		} catch (IOException e) {
@@ -79,5 +67,16 @@ public class DestinationReader {
 				ex.printStackTrace();
 			}
 		}
+	}
+
+	private void addRouteToGraph(Destination destination, DestinationRoute route) {
+		if (graph.containsKey(destination)) {
+			graph.get(destination).add(route);
+		} else {
+			ArrayList<DestinationRoute> routes = new ArrayList<DestinationRoute>();
+			routes.add(route);
+			graph.put(destination, routes);
+		}
+
 	}
 }

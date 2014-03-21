@@ -1,6 +1,8 @@
 package objects;
 
-public class TunnelRoute extends TrainRoute {
+import objects.abstracts.AbstractColorableRoute;
+
+public class TunnelRoute extends AbstractColorableRoute {
 
 	public TunnelRoute(Destination start, Destination end) {
 		super(start, end);

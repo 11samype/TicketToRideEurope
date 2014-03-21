@@ -1,4 +1,6 @@
-package objects;
+package objects.interfaces;
+
+import objects.Destination;
 
 public interface IRoute {
 	public Destination getStart();

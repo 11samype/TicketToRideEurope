@@ -1,24 +1,26 @@
 package objects;
 
+import objects.abstracts.AbstractRoute;
+
 public class DestinationRoute extends AbstractRoute {
-	private int weight;
+	private int score;
 
 	public DestinationRoute(Destination start, Destination end) {
 		super(start, end);
-		this.weight = 1;
+		this.score = 1;
 	}
 
 	public DestinationRoute(Destination start, Destination end, int weight) {
 		super(start, end);
-		this.weight = weight;
+		this.score = weight;
 	}
 
-	public int getWeight() {
-		return weight;
+	public int getScore() {
+		return score;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s (%d)", super.toString(), this.weight);
+		return String.format("%s (%d)", super.toString(), this.score);
 	}
 }

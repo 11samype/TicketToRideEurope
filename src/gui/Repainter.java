@@ -1,6 +1,6 @@
 package gui;
 
-public class Repainter implements Runnable {
+public class Repainter extends Thread {
 	private int fps;
 	private final MainComponent comp;
 
@@ -20,6 +20,7 @@ public class Repainter implements Runnable {
 			}
 		} catch (InterruptedException e) {
 			// nothing to catch
+			e.printStackTrace();
 		}
 	}
 
