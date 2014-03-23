@@ -36,10 +36,10 @@ public enum TrainColor {
 				BLACK, RAINBOW);
 	}
 
-	public static Color fromString(String colorString) {
+	public static TrainColor fromString(String colorString) {
 		for (TrainColor color : getAllColors()) {
 			if (colorString.equalsIgnoreCase(color.toString()))
-				return color.getAwtColor();
+				return color;
 		}
 		return null;
 	}

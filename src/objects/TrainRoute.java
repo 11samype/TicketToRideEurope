@@ -4,6 +4,7 @@ import objects.abstracts.AbstractColorableRoute;
 
 public class TrainRoute extends AbstractColorableRoute {
 
+
 	public TrainRoute(Destination start, Destination end) {
 		super(start, end);
 	}

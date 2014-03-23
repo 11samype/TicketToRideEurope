@@ -44,12 +44,12 @@ public class TrainColorTest {
 
 		// Capitalized
 		for (int i = 0; i < correct.size(); i++) {
-			assertEquals(correct.get(i), TrainColor.fromString(testStrings.get(i)));
+			assertEquals(correct.get(i), TrainColor.fromString(testStrings.get(i)).getAwtColor());
 		}
 
 		// Lower-case
 		for (int i = 0; i < correct.size(); i++) {
-			assertEquals(correct.get(i), TrainColor.fromString(testStrings.get(i).toLowerCase()));
+			assertEquals(correct.get(i), TrainColor.fromString(testStrings.get(i).toLowerCase()).getAwtColor());
 		}
 	}
 
