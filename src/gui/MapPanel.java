@@ -11,8 +11,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
-public class MainComponent extends JComponent {
+public class MapPanel extends JPanel {
 
 	private static final long serialVersionUID = -8438576029794021570L;
 	private static Dimension SIZE = new Dimension(1200, 800);
@@ -24,7 +25,7 @@ public class MainComponent extends JComponent {
 	private boolean isPaused = false;
 	private static int FPS = 60;
 
-	public MainComponent() {
+	public MapPanel() {
 		this.setPreferredSize(SIZE);
 		repaintAtFPS(FPS);
 	}
