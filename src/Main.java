@@ -1,9 +1,11 @@
+import java.awt.Dimension;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import gui.MainComponent;
+import gui.MainPanel;
+import gui.MapPanel;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -21,12 +23,17 @@ public class Main {
 			@Override
 			public void run() {
 				window = new JFrame("TicketToRide Europe");
+				window.setPreferredSize(new Dimension(1200, 800));
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-				MainComponent gamePanel = new MainComponent();
+				MainPanel panel = new MainPanel();
+
+				MapPanel gamePanel = new MapPanel();
 				gamePanel.setMapName("Europe");
 
-				window.getContentPane().add(gamePanel);
+				panel.setMapPanel(gamePanel);
+
+				window.getContentPane().add(panel);
 				window.pack();
 				window.setVisible(true);
 			}

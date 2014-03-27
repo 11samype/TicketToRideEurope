@@ -2,9 +2,9 @@ package gui;
 
 public class Repainter extends Thread {
 	private int fps;
-	private final MainComponent comp;
+	private final MapPanel comp;
 
-	public Repainter(MainComponent comp, int fps) {
+	public Repainter(MapPanel comp, int fps) {
 		this.comp = comp;
 		this.fps = fps;
 	}
