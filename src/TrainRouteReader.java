@@ -1,4 +1,6 @@
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,27 +10,39 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import objects.Destination;
-import objects.DestinationRoute;
+import objects.RouteBuilder;
 import objects.TrainColor;
-import objects.TrainRoute;
-import objects.abstracts.AbstractRoute;
 import objects.interfaces.IRoute;
 
 public class TrainRouteReader {
 
-	private HashMap<Destination, List<AbstractRoute>> graph = new HashMap<Destination, List<AbstractRoute>>();
+	private HashMap<Destination, List<IRoute>> graph = new HashMap<Destination, List<IRoute>>();
+	private File f;
+	private String fileFmt = "TrainRoutes-%s.txt";
 
-	public HashMap<Destination, List<AbstractRoute>> getGraph() {
+	public TrainRouteReader() throws FileNotFoundException {
+		this("orig");
+	}
+
+	public TrainRouteReader(String lang) throws FileNotFoundException {
+		this.f = new File(String.format(fileFmt, lang));
+		if (!f.exists()) {
+			throw new FileNotFoundException("Could not find the " + lang
+					+ "language file for the TrainRoutes.");
+		}
+	}
+
+	public HashMap<Destination, List<IRoute>> getGraph() {
 		return graph;
 	}
 
 	public void run() {
-		String filePath = "TrainRoutes.txt";
+//		String filePath = String.format(fileFmt, lang);
 		BufferedReader br = null;
-		Pattern pattern = Pattern.compile("\\w+|\\d+");
+		Pattern pattern = Pattern.compile("(\\w+)");
 		try {
 			String line;
-			br = new BufferedReader(new FileReader(filePath));
+			br = new BufferedReader(new FileReader(this.f));
 
 			while ((line = br.readLine()) != null) {
 				// pre-define some variables
@@ -38,6 +52,8 @@ public class TrainRouteReader {
 				String type = "train";
 				TrainColor color = null;
 				int ferryLocomotiveCount = 0;
+
+				RouteBuilder builder = null;
 
 				// start-end (length) type [color] [ferryLocomtiveCount]
 				// Note: ferry does not have a color, and only it has a count
@@ -60,6 +76,8 @@ public class TrainRouteReader {
 					length = Integer.parseInt(matcher.group());
 				}
 
+				builder = new RouteBuilder(start, end, length);
+
 				// type
 				if (matcher.find()) {
 					type = matcher.group();
@@ -68,16 +86,19 @@ public class TrainRouteReader {
 				if (matcher.find()) {
 					if (!type.equalsIgnoreCase("ferry")) {
 						color = TrainColor.fromString(matcher.group());
+						builder.withColor(color);
 					} else {
 						ferryLocomotiveCount = Integer
 								.parseInt(matcher.group());
+						builder.withLocomotiveCount(ferryLocomotiveCount);
 					}
 				}
 
+				IRoute startToEnd = builder.build(type);
+				IRoute endToStart = builder.reverseDirection().build(type);
 
-
-//				addRouteToGraph(start, startToEnd);
-//				addRouteToGraph(end, endToStart);
+				addRouteToGraph(start, startToEnd);
+				addRouteToGraph(end, endToStart);
 
 			}
 		} catch (IOException e) {
@@ -92,11 +113,11 @@ public class TrainRouteReader {
 		}
 	}
 
-	private void addRouteToGraph(Destination destination, AbstractRoute route) {
+	private void addRouteToGraph(Destination destination, IRoute route) {
 		if (graph.containsKey(destination)) {
 			graph.get(destination).add(route);
 		} else {
-			ArrayList<AbstractRoute> routes = new ArrayList<AbstractRoute>();
+			ArrayList<IRoute> routes = new ArrayList<IRoute>();
 			routes.add(route);
 			graph.put(destination, routes);
 		}

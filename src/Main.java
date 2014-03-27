@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -9,6 +10,7 @@ import javax.swing.SwingUtilities;
 
 import objects.Destination;
 import objects.DestinationRoute;
+import objects.interfaces.IRoute;
 
 public class Main {
 	private JFrame window;
@@ -34,14 +36,26 @@ public class Main {
 
 	public static void main(String[] args) {
 		new Main();
+
 		DestinationReader destReader = new DestinationReader();
 		destReader.run();
-		HashMap<Destination, List<DestinationRoute>> graph = destReader
+		HashMap<Destination, List<DestinationRoute>> destinationGraph = destReader
 				.getGraph();
-		for (Iterator<Destination> i = graph.keySet().iterator(); i.hasNext();) {
-			Destination d = i.next();
-			System.out.printf("%15s : %s\n", d, graph.get(d));
-		}
-	}
 
+		TrainRouteReader routeReader;
+		try {
+			routeReader = new TrainRouteReader("en");
+			routeReader.run();
+			HashMap<Destination, List<IRoute>> routeGraph = routeReader
+					.getGraph();
+			for (Iterator<Destination> i = routeGraph.keySet().iterator(); i
+					.hasNext();) {
+				Destination d = i.next();
+				System.out.printf("%15s : %s\n", d, routeGraph.get(d));
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+	}
 }

@@ -41,7 +41,7 @@ Kyiv-Smolenska				(3)	train	red
 Kyiv-Wilno					(2)	train	gray
 Kyiv-Warszawa				(4)	train	gray
 Kyiv-Budapest				(6)	tunnel	gray
-Wilno-Smolenska				(3)	train	yellow
+WIlno-Smolenska				(3)	train	yellow
 Wilno-Warszawa				(3)	train	red
 Wilno-Riga					(4)	train	green
 Wilno-Petrograd				(4)	train	blue

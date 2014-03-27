@@ -21,7 +21,7 @@ public class DestinationReader {
 	public void run() {
 		String filePath = "destinations.txt";
 		BufferedReader br = null;
-		Pattern pattern = Pattern.compile("\\w+|\\d+");
+		Pattern pattern = Pattern.compile("(\\w+)");
 		try {
 			String line;
 			br = new BufferedReader(new FileReader(filePath));
