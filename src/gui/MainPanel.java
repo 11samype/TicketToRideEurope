@@ -9,12 +9,14 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 
 import javax.swing.JLabel;
+
 import objects.Player;
 import objects.TrainColor;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+
 import javax.swing.BoxLayout;
 
 import java.awt.Font;
@@ -96,14 +98,10 @@ public class MainPanel extends JPanel {
 
 		mapPanel = createMapPanel("Europe");
 		rootMapPanel.add(mapPanel);
-		// rootMapPanel.add(mapPanel);
 
-		// mapPanel = createMapPanel("Europe");
-		// layeredPane.add(mapPanel, 0);
 
-		// mxGraphComponent graphPanel = createGraphPanel();
-		// layeredPane.add(graphPanel, 0);
-		// layeredPane.add(createGraphPanel());
+		 mxGraphComponent graphPanel = createGraphPanel();
+		 rootMapPanel.add(graphPanel);
 
 		JPanel dealPanel = new JPanel();
 		add(dealPanel, "cell 1 1,grow");
@@ -114,34 +112,25 @@ public class MainPanel extends JPanel {
 		dealPanel.add(cardPanel, "cell 0 0,grow");
 		cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
 
-		JPanel trainCar1Panel = new JPanel();
-		cardPanel.add(trainCar1Panel);
-
-		JPanel trainCar2Panel = new JPanel();
-		cardPanel.add(trainCar2Panel);
-
-		JPanel trainCar3Panel = new JPanel();
-		cardPanel.add(trainCar3Panel);
-
-		JPanel trainCar4Panel = new JPanel();
-		cardPanel.add(trainCar4Panel);
-
-		JPanel trainCar5Panel = new JPanel();
-		cardPanel.add(trainCar5Panel);
-
-		JPanel cardPanel1 = new DeelCardPanel();
+		DrawableTrainCarCard rainbow = new DrawableTrainCarCard(TrainColor.RAINBOW);
+		DealtCardPanel cardPanel1 = new DealtCardPanel();
+		cardPanel1.setCard(rainbow);
 		cardPanel.add(cardPanel1);
 
-		JPanel cardPanel2 = new DeelCardPanel();
+		DealtCardPanel cardPanel2 = new DealtCardPanel();
+		cardPanel2.setCard(rainbow);
 		cardPanel.add(cardPanel2);
 
-		JPanel cardPanel3 = new DeelCardPanel();
+		DealtCardPanel cardPanel3 = new DealtCardPanel();
+		cardPanel3.setCard(rainbow);
 		cardPanel.add(cardPanel3);
 
-		JPanel cardPanel4 = new DeelCardPanel();
+		DealtCardPanel cardPanel4 = new DealtCardPanel();
+		cardPanel4.setCard(rainbow);
 		cardPanel.add(cardPanel4);
 
-		JPanel cardPanel5 = new DeelCardPanel();
+		DealtCardPanel cardPanel5 = new DealtCardPanel();
+		cardPanel5.setCard(rainbow);
 		cardPanel.add(cardPanel5);
 
 		JPanel trainCardDeckPanel = new JPanel();
@@ -214,7 +203,7 @@ public class MainPanel extends JPanel {
 	private MapPanel createMapPanel(String mapName) {
 		MapPanel mapPanel = new MapPanel();
 		mapPanel.setMapName(mapName);
-		mapPanel.setLayout(new BoxLayout(mapPanel, BoxLayout.X_AXIS));
+//		mapPanel.setLayout(new BoxLayout(mapPanel, BoxLayout.X_AXIS));
 		return mapPanel;
 	}
 
