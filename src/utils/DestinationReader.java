@@ -1,21 +1,26 @@
+package utils;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import objects.Destination;
 import objects.DestinationRoute;
+import objects.RouteBuilder;
 
 public class DestinationReader {
 
-	private HashMap<Destination, List<DestinationRoute>> graph = new HashMap<Destination, List<DestinationRoute>>();
+	private Set<DestinationRoute> routes = new HashSet<DestinationRoute>();
 
-	public HashMap<Destination, List<DestinationRoute>> getGraph() {
-		return this.graph;
+	public Set<DestinationRoute> getRoutes() {
+		return this.routes;
 	}
 
 	public void run() {
@@ -53,8 +58,7 @@ public class DestinationReader {
 				DestinationRoute endToStart = new DestinationRoute(end, start,
 						score);
 
-				addRouteToGraph(start, startToEnd);
-				addRouteToGraph(end, endToStart);
+				addRoute(startToEnd);
 
 			}
 		} catch (IOException e) {
@@ -69,14 +73,9 @@ public class DestinationReader {
 		}
 	}
 
-	private void addRouteToGraph(Destination destination, DestinationRoute route) {
-		if (this.graph.containsKey(destination)) {
-			this.graph.get(destination).add(route);
-		} else {
-			ArrayList<DestinationRoute> routes = new ArrayList<DestinationRoute>();
-			routes.add(route);
-			this.graph.put(destination, routes);
+	private void addRoute(DestinationRoute route) {
+		if (!this.routes.contains(route)) {
+			this.routes.add(route);
 		}
-
 	}
 }

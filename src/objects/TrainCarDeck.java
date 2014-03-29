@@ -8,7 +8,7 @@ import objects.abstracts.AbstractDeck;
 public class TrainCarDeck extends AbstractDeck<TrainCarCard> {
 
 	public TrainCarDeck() {
-		addCardsToDeck();
+		super();
 	}
 
 	@Override

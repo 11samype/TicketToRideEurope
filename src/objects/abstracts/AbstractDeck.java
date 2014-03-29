@@ -11,6 +11,10 @@ public abstract class AbstractDeck<K extends ICard> implements IDeck<K> {
 
 	protected List<K> cards = new ArrayList<K>();
 
+	public AbstractDeck() {
+		addCardsToDeck();
+	}
+
 	@Override
 	public void shuffle() {
 		Collections.shuffle(this.cards);

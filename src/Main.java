@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 import objects.Destination;
 import objects.DestinationRoute;
 import objects.interfaces.IRoute;
+import utils.TrainRouteReader;
 
 public class Main {
 	private JFrame window;
@@ -43,11 +44,6 @@ public class Main {
 
 	public static void main(String[] args) {
 		new Main();
-
-		DestinationReader destReader = new DestinationReader();
-		destReader.run();
-		HashMap<Destination, List<DestinationRoute>> destinationGraph = destReader
-				.getGraph();
 
 		TrainRouteReader routeReader;
 		try {

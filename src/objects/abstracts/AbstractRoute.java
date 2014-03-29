@@ -56,4 +56,43 @@ public abstract class AbstractRoute implements IRoute {
 		return this.length;
 
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((end == null) ? 0 : end.hashCode());
+		result = prime * result + length;
+		result = prime * result + ((start == null) ? 0 : start.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof AbstractRoute))
+			return false;
+		AbstractRoute other = (AbstractRoute) obj;
+		if (end == null) {
+			if (other.end != null)
+				return false;
+		} else if (!(end.equals(other.end) || end.equals(other.start)))
+			return false;
+		if (length != other.length)
+			return false;
+		if (start == null) {
+			if (other.start != null)
+				return false;
+		} else if (!(start.equals(other.start) || start.equals(other.end)))
+			return false;
+		// boolean same = this.start.equals(other.start) &&
+		// this.end.equals(other.end);
+		// boolean reversed = this.start.equals(other.end) &&
+		// this.end.equals(other.start);
+		return true;
+
+	}
 }

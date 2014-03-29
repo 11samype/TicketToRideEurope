@@ -20,4 +20,5 @@ public class DestinationRoute extends AbstractRoute {
 	public String toString() {
 		return String.format("%s (%d)", super.toString(), getScore());
 	}
+
 }
