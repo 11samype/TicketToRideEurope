@@ -40,17 +40,17 @@ public class PlayerPanel extends JPanel {
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(layout);
 
-		lblName = createJLabel("Player#");
-		add(lblName);
+		this.lblName = createJLabel("Player#");
+		add(this.lblName);
 
-		lblStations = createJLabel("Stations: ");
-		add(lblStations);
+		this.lblStations = createJLabel("Stations: ");
+		add(this.lblStations);
 
-		lblTrainCars = createJLabel("Train Cars: ");
-		add(lblTrainCars);
+		this.lblTrainCars = createJLabel("Train Cars: ");
+		add(this.lblTrainCars);
 
-		lblPoints = createJLabel("Points: ");
-		add(lblPoints);
+		this.lblPoints = createJLabel("Points: ");
+		add(this.lblPoints);
 
 	}
 
@@ -69,7 +69,7 @@ public class PlayerPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		setBackground(bgColor);
+		setBackground(this.bgColor);
 	}
 
 	private JLabel createJLabel(String arg0) {

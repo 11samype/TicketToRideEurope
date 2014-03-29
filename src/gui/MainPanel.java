@@ -90,6 +90,22 @@ public class MainPanel extends JPanel {
 
 		JPanel cardPanel = new JPanel();
 		dealPanel.add(cardPanel, "cell 0 0,grow");
+		cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
+		
+		JPanel cardPanel1 = new DeelCardPanel();
+		cardPanel.add(cardPanel1);
+		
+		JPanel cardPanel2 = new DeelCardPanel();
+		cardPanel.add(cardPanel2);
+		
+		JPanel cardPanel3 = new DeelCardPanel();
+		cardPanel.add(cardPanel3);
+		
+		JPanel cardPanel4 = new DeelCardPanel();
+		cardPanel.add(cardPanel4);
+		
+		JPanel cardPanel5 = new DeelCardPanel();
+		cardPanel.add(cardPanel5);
 
 		JPanel trainCardDeckPanel = new JPanel();
 		trainCardDeckPanel.setBackground(new Color(30, 144, 255));
@@ -120,6 +136,31 @@ public class MainPanel extends JPanel {
 
 		JPanel panel_1 = new JPanel();
 		handPanel.add(panel_1, "cell 1 0,grow");
+		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
+		
+		JPanel blackPanel = new HandCardPanel();
+		panel_1.add(blackPanel);
+		
+		JPanel whitePanel = new HandCardPanel();
+		panel_1.add(whitePanel);
+		
+		JPanel redPanel = new HandCardPanel();
+		panel_1.add(redPanel);
+		
+		JPanel greenPanel = new HandCardPanel();
+		panel_1.add(greenPanel);
+		
+		JPanel bluePanel = new HandCardPanel();
+		panel_1.add(bluePanel);
+		
+		JPanel yellowPanel = new HandCardPanel();
+		panel_1.add(yellowPanel);
+		
+		JPanel purplePanel = new HandCardPanel();
+		panel_1.add(purplePanel);
+		
+		JPanel orangePanel = new HandCardPanel();
+		panel_1.add(orangePanel);
 
 		PlayerPanel currentPlayerPanel = new PlayerPanel();
 		add(currentPlayerPanel, "cell 1 2,grow");
@@ -129,6 +170,7 @@ public class MainPanel extends JPanel {
 	private MapPanel createMapPanel(String mapName) {
 		MapPanel mapPanel = new MapPanel();
 		mapPanel.setMapName(mapName);
+		mapPanel.setLayout(new BoxLayout(mapPanel, BoxLayout.X_AXIS));
 		return mapPanel;
 	}
 

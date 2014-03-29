@@ -38,10 +38,10 @@ public abstract class AbstractRoute implements IRoute {
 	}
 
 	public int getScore() {
-		switch (length) {
+		switch (this.length) {
 		case 1:
 		case 2:
-			return length;
+			return this.length;
 		case 3:
 			return 4;
 		case 4:
@@ -53,7 +53,7 @@ public abstract class AbstractRoute implements IRoute {
 		default:
 			break;
 		}
-		return length;
+		return this.length;
 
 	}
 }

@@ -15,7 +15,7 @@ public class DestinationReader {
 	private HashMap<Destination, List<DestinationRoute>> graph = new HashMap<Destination, List<DestinationRoute>>();
 
 	public HashMap<Destination, List<DestinationRoute>> getGraph() {
-		return graph;
+		return this.graph;
 	}
 
 	public void run() {
@@ -70,12 +70,12 @@ public class DestinationReader {
 	}
 
 	private void addRouteToGraph(Destination destination, DestinationRoute route) {
-		if (graph.containsKey(destination)) {
-			graph.get(destination).add(route);
+		if (this.graph.containsKey(destination)) {
+			this.graph.get(destination).add(route);
 		} else {
 			ArrayList<DestinationRoute> routes = new ArrayList<DestinationRoute>();
 			routes.add(route);
-			graph.put(destination, routes);
+			this.graph.put(destination, routes);
 		}
 
 	}

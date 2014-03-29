@@ -6,7 +6,7 @@ public abstract class AbstractCard<V> implements ICard {
 	protected V value;
 
 	public V getValue() {
-		return value;
+		return this.value;
 	}
 
 	@Override
@@ -14,7 +14,7 @@ public abstract class AbstractCard<V> implements ICard {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((value == null) ? 0 : value.hashCode());
+				+ ((this.value == null) ? 0 : this.value.hashCode());
 		return result;
 	}
 
@@ -28,10 +28,10 @@ public abstract class AbstractCard<V> implements ICard {
 		if (!(obj instanceof AbstractCard))
 			return false;
 		AbstractCard<V> other = (AbstractCard<V>) obj;
-		if (value == null) {
+		if (this.value == null) {
 			if (other.value != null)
 				return false;
-		} else if (!value.equals(other.value))
+		} else if (!this.value.equals(other.value))
 			return false;
 		return true;
 	}

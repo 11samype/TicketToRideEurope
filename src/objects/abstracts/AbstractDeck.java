@@ -13,7 +13,7 @@ public abstract class AbstractDeck<K extends ICard> implements IDeck<K> {
 
 	@Override
 	public void shuffle() {
-		Collections.shuffle(cards);
+		Collections.shuffle(this.cards);
 	}
 
 	@Override
@@ -25,8 +25,9 @@ public abstract class AbstractDeck<K extends ICard> implements IDeck<K> {
 
 	@Override
 	public K draw() {
-		if (size() <= 0)
+		if (size() <= 0) {
 			throw new IndexOutOfBoundsException("The deck is empty!");
+		}
 		return this.cards.remove(0);
 	}
 

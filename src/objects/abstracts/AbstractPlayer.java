@@ -28,37 +28,37 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public void drawCardFromDeck(TrainCarDeck deck) {
-		hand.add(deck.draw());
+		this.hand.add(deck.draw());
 	}
 
 	@Override
 	public void drawCardFromDeck(DestinationDeck deck) {
-		destinations.add(deck.draw());
+		this.destinations.add(deck.draw());
 	}
 
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@Override
 	public int getScore() {
-		return score;
+		return this.score;
 	}
 
 	@Override
 	public List<TrainCarCard> getHand() {
-		return hand;
+		return this.hand;
 	}
 
 	@Override
 	public List<DestinationCard> getDestinations() {
-		return destinations;
+		return this.destinations;
 	}
 
 	@Override
 	public List<TrainCar> getTrains() {
-		return trains;
+		return this.trains;
 	}
 
 }

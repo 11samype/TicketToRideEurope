@@ -13,7 +13,7 @@ public abstract class AbstractTrainItem {
 	}
 
 	public TrainColor getColor() {
-		return color;
+		return this.color;
 	}
 
 	public Color getAwtColor() {

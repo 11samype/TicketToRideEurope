@@ -37,14 +37,14 @@ public class RouteBuilder {
 	}
 
 	public IRoute build(String type) {
-		if (color == null)
-			color = TrainColor.RAINBOW;
+		if (this.color == null)
+			this.color = TrainColor.RAINBOW;
 		if (type.equalsIgnoreCase(TRAIN)) {
-			return new TrainRoute(start, end, color, length);
+			return new TrainRoute(this.start, this.end, this.color, this.length);
 		} else if (type.equalsIgnoreCase(FERRY)) {
-			return new FerryRoute(start, end, length, locomotiveCount);
+			return new FerryRoute(this.start, this.end, this.length, this.locomotiveCount);
 		} else if (type.equalsIgnoreCase(TUNNEL)) {
-			return new TunnelRoute(start, end, color, length);
+			return new TunnelRoute(this.start, this.end, this.color, this.length);
 		} else {
 			throw new IllegalArgumentException("Incorrect type name");
 		}
