@@ -8,19 +8,11 @@ import org.junit.Test;
 
 public class DestinationTest {
 
-	@Before
-	public void setUp() throws Exception {
-	}
-
 	@Test
-	public void testNonNullDestination() {
+	public void testInitDestination() {
 		Destination d = new Destination("NonNull");
 		assertNotNull(d);
-	}
-
-	@Test
-	public void testNullDestination() {
-		Destination d = new Destination(null);
+		d = new Destination(null);
 		assertNotNull(d);
 		assertNull(d.getName());
 	}

@@ -16,8 +16,8 @@ public class DiscardPile extends AbstractDeck<TrainCarCard> {
 	}
 
 	public List<TrainCarCard> pickup() {
-		List<TrainCarCard> cardsToReturn = new ArrayList<TrainCarCard>();
-		cardsToReturn.addAll(this.cards);
+		List<TrainCarCard> cardsToReturn = new ArrayList<TrainCarCard>(
+				this.cards);
 		this.cards.clear();
 		return cardsToReturn;
 	}

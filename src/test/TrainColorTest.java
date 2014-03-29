@@ -10,12 +10,9 @@ import objects.TrainColor;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Categories.ExcludeCategory;
 
 public class TrainColorTest {
-
-	@Before
-	public void setUp() throws Exception {
-	}
 
 	@Test
 	public void testGetAwtColor() {
@@ -31,6 +28,7 @@ public class TrainColorTest {
 		List<TrainColor> colors = TrainColor.getAllColors();
 		assertNotNull(colors);
 		int size = colors.size();
+		assertFalse(size == 0);
 		assertTrue(size > 0);
 		assertEquals(9, size);
 	}
@@ -51,6 +49,9 @@ public class TrainColorTest {
 		for (int i = 0; i < correct.size(); i++) {
 			assertEquals(correct.get(i), TrainColor.fromString(testStrings.get(i).toLowerCase()).getAwtColor());
 		}
+
+		assertNull(TrainColor.fromString("Magenta"));
+
 	}
 
 }

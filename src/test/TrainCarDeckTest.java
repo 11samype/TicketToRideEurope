@@ -3,13 +3,14 @@ package test;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.util.HashSet;
 
 import org.junit.Test;
 
 import objects.TrainCarCard;
 import objects.TrainCarDeck;
 
-public class CardDeckTest {
+public class TrainCarDeckTest {
 
 	@Test
 	public void testInitDeck() {
@@ -22,14 +23,32 @@ public class CardDeckTest {
 	public void testShuffle() {
 		TrainCarDeck deck = new TrainCarDeck();
 		boolean shuffled = false;
-		for(int i = 0; i < 12; i++) {
+		for (int i = 0; i < 12; i++) {
 			TrainCarCard cardDrawn = (TrainCarCard) deck.draw();
-			if(cardDrawn.getAwtColor() != Color.blue) {
+			if (cardDrawn.getAwtColor() != Color.blue) {
 				shuffled = true;
 			}
 		}
 
 		assertTrue(shuffled);
+	}
+
+	@Test
+	public void testUniqueCardsInDeck() {
+		TrainCarDeck deck = new TrainCarDeck();
+		boolean unique = true;
+		HashSet<TrainCarCard> seen = new HashSet<TrainCarCard>();
+
+		while (!deck.isEmpty()) {
+			TrainCarCard cardDrawn = deck.draw();
+			if (seen.contains(cardDrawn)) {
+				unique = false;
+			} else {
+				seen.add(cardDrawn);
+			}
+		}
+
+		assertTrue(unique);
 	}
 
 	@Test
@@ -43,10 +62,10 @@ public class CardDeckTest {
 		assertEquals(size - 2, deck.size());
 	}
 
-	@Test(expected=IndexOutOfBoundsException.class)
-	public void testDrawIndexOutOfBoundsException() {
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testOverDrawException() {
 		TrainCarDeck deck = new TrainCarDeck();
-		while(true) {
+		while (true) {
 			deck.draw();
 		}
 	}
@@ -61,9 +80,9 @@ public class CardDeckTest {
 
 		assertEquals(deck1.size(), deck2.size());
 	}
-	
+
 	@Test
-	public void testDeckSize() {
+	public void testInitDeckSize() {
 		TrainCarDeck deck = new TrainCarDeck();
 		assertEquals(deck.size(), 110);
 	}
