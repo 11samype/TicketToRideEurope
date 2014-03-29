@@ -24,10 +24,10 @@ public class HandCardPanel extends JPanel {
 
 private BufferedImage cardImage;
 	
-	private TrainCarCard card = new TrainCarCard(TrainColor.BLACK);
+	private TrainCarCard card;
 	
-	public HandCardPanel() {
-		//this.setPreferredSize(SIZE);
+	public HandCardPanel(TrainColor trainColor) {
+		this.card = new TrainCarCard(trainColor);
 	}
 	
 	public BufferedImage getCardImage() {

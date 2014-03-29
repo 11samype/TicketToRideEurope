@@ -13,6 +13,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.SpringLayout;
 
 import objects.Player;
+import objects.TrainColor;
 
 import java.awt.CardLayout;
 import java.awt.event.MouseAdapter;
@@ -138,28 +139,28 @@ public class MainPanel extends JPanel {
 		handPanel.add(panel_1, "cell 1 0,grow");
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
 		
-		JPanel blackPanel = new HandCardPanel();
+		JPanel blackPanel = new HandCardPanel(TrainColor.BLACK);
 		panel_1.add(blackPanel);
 		
-		JPanel whitePanel = new HandCardPanel();
+		JPanel whitePanel = new HandCardPanel(TrainColor.WHITE);
 		panel_1.add(whitePanel);
 		
-		JPanel redPanel = new HandCardPanel();
+		JPanel redPanel = new HandCardPanel(TrainColor.RED);
 		panel_1.add(redPanel);
 		
-		JPanel greenPanel = new HandCardPanel();
+		JPanel greenPanel = new HandCardPanel(TrainColor.GREEN);
 		panel_1.add(greenPanel);
 		
-		JPanel bluePanel = new HandCardPanel();
+		JPanel bluePanel = new HandCardPanel(TrainColor.BLUE);
 		panel_1.add(bluePanel);
 		
-		JPanel yellowPanel = new HandCardPanel();
+		JPanel yellowPanel = new HandCardPanel(TrainColor.YELLOW);
 		panel_1.add(yellowPanel);
 		
-		JPanel purplePanel = new HandCardPanel();
+		JPanel purplePanel = new HandCardPanel(TrainColor.PINK);
 		panel_1.add(purplePanel);
 		
-		JPanel orangePanel = new HandCardPanel();
+		JPanel orangePanel = new HandCardPanel(TrainColor.ORANGE);
 		panel_1.add(orangePanel);
 
 		PlayerPanel currentPlayerPanel = new PlayerPanel();
