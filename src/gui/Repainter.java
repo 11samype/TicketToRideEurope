@@ -13,9 +13,9 @@ public class Repainter extends Thread {
 	public void run() {
 		try {
 			while (true) {
-				if (!comp.isPaused()) {
+				if (!this.comp.isPaused()) {
 					Thread.sleep(1000 / this.fps);
-					comp.repaint();
+					this.comp.repaint();
 				}
 			}
 		} catch (InterruptedException e) {

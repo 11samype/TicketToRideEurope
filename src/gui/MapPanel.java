@@ -40,7 +40,7 @@ public class MapPanel extends JPanel {
 	}
 
 	public boolean isPaused() {
-		return isPaused;
+		return this.isPaused;
 	}
 
 	@Override
@@ -68,12 +68,12 @@ public class MapPanel extends JPanel {
 	private synchronized BufferedImage getBackgroundImage() {
 		if (this.bgImg == null) {
 			try {
-				bgImg = ImageIO.read(new File("img//" + mapName + ".png"));
+				this.bgImg = ImageIO.read(new File("img//" + this.mapName + ".png"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		return bgImg;
+		return this.bgImg;
 	}
 
 	private synchronized void drawBackground(Graphics g) {

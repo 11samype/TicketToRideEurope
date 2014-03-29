@@ -22,9 +22,9 @@ public class Main {
 
 			@Override
 			public void run() {
-				window = new JFrame("TicketToRide Europe");
-				window.setPreferredSize(new Dimension(1200, 800));
-				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				Main.this.window = new JFrame("TicketToRide Europe");
+				Main.this.window.setPreferredSize(new Dimension(1200, 800));
+				Main.this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 				MainPanel panel = new MainPanel();
 
@@ -33,9 +33,9 @@ public class Main {
 
 				panel.setMapPanel(gamePanel);
 
-				window.getContentPane().add(panel);
-				window.pack();
-				window.setVisible(true);
+				Main.this.window.getContentPane().add(panel);
+				Main.this.window.pack();
+				Main.this.window.setVisible(true);
 			}
 		});
 

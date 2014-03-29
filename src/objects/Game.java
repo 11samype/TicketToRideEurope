@@ -17,9 +17,9 @@ public class Game {
 
 	public void init() {
 		// TODO Clear the board, get number of players, deal the cards
-		destinationDeck = new DestinationDeck();
-		trainCarDeck = new TrainCarDeck();
-		discardPile = new DiscardPile();
+		this.destinationDeck = new DestinationDeck();
+		this.trainCarDeck = new TrainCarDeck();
+		this.discardPile = new DiscardPile();
 	}
 
 	public void takeTurn(IPlayer player) {
@@ -27,15 +27,15 @@ public class Game {
 	}
 
 	public DestinationDeck getDestinationDeck() {
-		return destinationDeck;
+		return this.destinationDeck;
 	}
 
 	public TrainCarDeck getTrainCarDeck() {
-		return trainCarDeck;
+		return this.trainCarDeck;
 	}
 
 	public DiscardPile getDiscardPile() {
-		return discardPile;
+		return this.discardPile;
 	}
 
 }

@@ -23,7 +23,7 @@ public enum TrainColor {
 	}
 
 	public Color getAwtColor() {
-		return awtColor;
+		return this.awtColor;
 	}
 
 	@Override

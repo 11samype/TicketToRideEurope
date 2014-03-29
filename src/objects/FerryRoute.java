@@ -13,7 +13,7 @@ public class FerryRoute extends AbstractRoute {
 	}
 
 	public int getLocomotiveCount() {
-		return locomotiveCount;
+		return this.locomotiveCount;
 	}
 
 }

@@ -7,12 +7,14 @@ import net.miginfocom.swing.MigLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.LayoutManager;
 
 import javax.swing.JLabel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.SpringLayout;
 
 import objects.Player;
+import objects.TrainColor;
 
 import java.awt.CardLayout;
 import java.awt.event.MouseAdapter;
@@ -89,19 +91,25 @@ public class MainPanel extends JPanel {
 		lblDestinationCardCount.setBounds(10, 11, 27, 20);
 		destCardDeckPanel.add(lblDestinationCardCount);
 
-		JPanel rootMapPanel = new JPanel();
-		OverlayLayout overlay = new OverlayLayout(rootMapPanel);
+		JPanel rootMapPanel = new JPanel() {
+			public boolean isOptimizedDrawingEnabled() {
+				return false;
+			}
+		};
+		LayoutManager overlay = new OverlayLayout(rootMapPanel);
+		rootMapPanel.setLayout(overlay);
 		add(rootMapPanel, "cell 0 1,grow");
 
 		mapPanel = createMapPanel("Europe");
 		rootMapPanel.add(mapPanel);
+		// rootMapPanel.add(mapPanel);
 
-//		mapPanel = createMapPanel("Europe");
-//		layeredPane.add(mapPanel, 0);
+		// mapPanel = createMapPanel("Europe");
+		// layeredPane.add(mapPanel, 0);
 
-//		mxGraphComponent graphPanel = createGraphPanel();
-//		layeredPane.add(graphPanel, 0);
-//		layeredPane.add(createGraphPanel());
+		// mxGraphComponent graphPanel = createGraphPanel();
+		// layeredPane.add(graphPanel, 0);
+		// layeredPane.add(createGraphPanel());
 
 		JPanel dealPanel = new JPanel();
 		add(dealPanel, "cell 1 1,grow");
@@ -126,6 +134,21 @@ public class MainPanel extends JPanel {
 
 		JPanel trainCar5Panel = new JPanel();
 		cardPanel.add(trainCar5Panel);
+
+		JPanel cardPanel1 = new DeelCardPanel();
+		cardPanel.add(cardPanel1);
+
+		JPanel cardPanel2 = new DeelCardPanel();
+		cardPanel.add(cardPanel2);
+
+		JPanel cardPanel3 = new DeelCardPanel();
+		cardPanel.add(cardPanel3);
+
+		JPanel cardPanel4 = new DeelCardPanel();
+		cardPanel.add(cardPanel4);
+
+		JPanel cardPanel5 = new DeelCardPanel();
+		cardPanel.add(cardPanel5);
 
 		JPanel trainCardDeckPanel = new JPanel();
 		trainCardDeckPanel.setBackground(new Color(30, 144, 255));
@@ -153,14 +176,41 @@ public class MainPanel extends JPanel {
 
 		JTextArea destinationTextArea = new JTextArea(4, 2);
 		destinationTextArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
-		destinationTextArea.setText("Start-End\tPoints\r\nStart2-End2\tPoints\r\n\r\n\r\n");
+		destinationTextArea
+				.setText("Start-End\tPoints\r\nStart2-End2\tPoints\r\n\r\n\r\n");
 		destinationTextArea.setEditable(false);
 		JScrollPane destCardPanel = new JScrollPane(destinationTextArea);
-		destCardPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		destCardPanel
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		handPanel.add(destCardPanel, "cell 0 0,grow");
 
 		JPanel panel_1 = new JPanel();
 		handPanel.add(panel_1, "cell 1 0,grow");
+		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
+
+		JPanel blackPanel = new HandCardPanel(TrainColor.BLACK);
+		panel_1.add(blackPanel);
+
+		JPanel whitePanel = new HandCardPanel(TrainColor.WHITE);
+		panel_1.add(whitePanel);
+
+		JPanel redPanel = new HandCardPanel(TrainColor.RED);
+		panel_1.add(redPanel);
+
+		JPanel greenPanel = new HandCardPanel(TrainColor.GREEN);
+		panel_1.add(greenPanel);
+
+		JPanel bluePanel = new HandCardPanel(TrainColor.BLUE);
+		panel_1.add(bluePanel);
+
+		JPanel yellowPanel = new HandCardPanel(TrainColor.YELLOW);
+		panel_1.add(yellowPanel);
+
+		JPanel purplePanel = new HandCardPanel(TrainColor.PINK);
+		panel_1.add(purplePanel);
+
+		JPanel orangePanel = new HandCardPanel(TrainColor.ORANGE);
+		panel_1.add(orangePanel);
 
 		PlayerPanel currentPlayerPanel = new PlayerPanel();
 		add(currentPlayerPanel, "cell 1 2,grow");
@@ -170,6 +220,7 @@ public class MainPanel extends JPanel {
 	private MapPanel createMapPanel(String mapName) {
 		MapPanel mapPanel = new MapPanel();
 		mapPanel.setMapName(mapName);
+		mapPanel.setLayout(new BoxLayout(mapPanel, BoxLayout.X_AXIS));
 		return mapPanel;
 	}
 
@@ -189,18 +240,18 @@ public class MainPanel extends JPanel {
 
 	public mxGraphComponent createGraphPanel() {
 		mxGraph graph = new mxGraph();
-        Object parent = graph.getDefaultParent();
-        graph.getModel().beginUpdate();
-        try {
-            Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,
-                    30);
-            Object v2 = graph.insertVertex(parent, null, "World!", 240, 150,
-                    80, 30);
-            graph.insertEdge(parent, null, "Edge", v1, v2);
-        } finally {
-            graph.getModel().endUpdate();
-        }
-        mxGraphComponent graphComponent = new mxGraphComponent(graph);
-       return graphComponent;
+		Object parent = graph.getDefaultParent();
+		graph.getModel().beginUpdate();
+		try {
+			Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,
+					30);
+			Object v2 = graph.insertVertex(parent, null, "World!", 240, 150,
+					80, 30);
+			graph.insertEdge(parent, null, "Edge", v1, v2);
+		} finally {
+			graph.getModel().endUpdate();
+		}
+		mxGraphComponent graphComponent = new mxGraphComponent(graph);
+		return graphComponent;
 	}
 }

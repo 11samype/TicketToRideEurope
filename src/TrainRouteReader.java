@@ -26,14 +26,14 @@ public class TrainRouteReader {
 
 	public TrainRouteReader(String lang) throws FileNotFoundException {
 		this.f = new File(String.format(fileFmt, lang));
-		if (!f.exists()) {
+		if (!this.f.exists()) {
 			throw new FileNotFoundException("Could not find the " + lang
 					+ "language file for the TrainRoutes.");
 		}
 	}
 
 	public HashMap<Destination, List<IRoute>> getGraph() {
-		return graph;
+		return this.graph;
 	}
 
 	public void run() {
@@ -114,12 +114,12 @@ public class TrainRouteReader {
 	}
 
 	private void addRouteToGraph(Destination destination, IRoute route) {
-		if (graph.containsKey(destination)) {
-			graph.get(destination).add(route);
+		if (this.graph.containsKey(destination)) {
+			this.graph.get(destination).add(route);
 		} else {
 			ArrayList<IRoute> routes = new ArrayList<IRoute>();
 			routes.add(route);
-			graph.put(destination, routes);
+			this.graph.put(destination, routes);
 		}
 
 	}
