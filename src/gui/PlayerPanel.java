@@ -2,8 +2,6 @@ package gui;
 
 import javax.swing.JPanel;
 
-import java.awt.FlowLayout;
-
 import javax.swing.JLabel;
 
 import java.awt.Font;
@@ -12,18 +10,8 @@ import javax.swing.BoxLayout;
 
 import objects.Player;
 
-import java.awt.Component;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.GridLayout;
 
 public class PlayerPanel extends JPanel {
 	private JLabel lblName;

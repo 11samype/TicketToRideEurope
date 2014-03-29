@@ -12,6 +12,7 @@ public class DestinationRoute extends AbstractRoute {
 		super(start, end, score);
 	}
 
+	@Override
 	public int getScore() {
 		return this.length;
 	}

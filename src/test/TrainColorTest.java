@@ -8,9 +8,7 @@ import java.util.List;
 
 import objects.TrainColor;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.experimental.categories.Categories.ExcludeCategory;
 
 public class TrainColorTest {
 
@@ -38,16 +36,20 @@ public class TrainColorTest {
 		List<Color> correct = Arrays.asList(Color.RED, Color.GREEN,
 				Color.BLACK, Color.BLUE, Color.GRAY, Color.YELLOW,
 				Color.ORANGE, Color.PINK, Color.WHITE);
-		List<String> testStrings = Arrays.asList("Red", "Green", "Black", "Blue", "Gray", "Yellow", "Orange", "Pink", "White");
+		List<String> testStrings = Arrays.asList("Red", "Green", "Black",
+				"Blue", "Gray", "Yellow", "Orange", "Pink", "White");
 
 		// Capitalized
 		for (int i = 0; i < correct.size(); i++) {
-			assertEquals(correct.get(i), TrainColor.fromString(testStrings.get(i)).getAwtColor());
+			assertEquals(correct.get(i),
+					TrainColor.fromString(testStrings.get(i)).getAwtColor());
 		}
 
 		// Lower-case
 		for (int i = 0; i < correct.size(); i++) {
-			assertEquals(correct.get(i), TrainColor.fromString(testStrings.get(i).toLowerCase()).getAwtColor());
+			assertEquals(correct.get(i),
+					TrainColor.fromString(testStrings.get(i).toLowerCase())
+							.getAwtColor());
 		}
 
 		assertNull(TrainColor.fromString("Magenta"));

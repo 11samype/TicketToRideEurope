@@ -60,7 +60,7 @@ public class RouteBuilderTest {
 
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void TestBuildException() {
 		RouteBuilder builder = new RouteBuilder(start, end, 2);
 		builder.build("airplane");
@@ -83,7 +83,8 @@ public class RouteBuilderTest {
 		TrainRoute trainR = (TrainRoute) builder.build(RouteBuilder.TRAIN);
 
 		builder.reverseDirection();
-		TrainRoute trainR_reverse = (TrainRoute) builder.build(RouteBuilder.TRAIN);
+		TrainRoute trainR_reverse = (TrainRoute) builder
+				.build(RouteBuilder.TRAIN);
 
 		assertSame(trainR.getStart(), trainR_reverse.getEnd());
 		assertSame(trainR.getEnd(), trainR_reverse.getStart());

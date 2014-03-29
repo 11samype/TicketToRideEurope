@@ -42,9 +42,11 @@ public class RouteBuilder {
 		if (type.equalsIgnoreCase(TRAIN)) {
 			return new TrainRoute(this.start, this.end, this.color, this.length);
 		} else if (type.equalsIgnoreCase(FERRY)) {
-			return new FerryRoute(this.start, this.end, this.length, this.locomotiveCount);
+			return new FerryRoute(this.start, this.end, this.length,
+					this.locomotiveCount);
 		} else if (type.equalsIgnoreCase(TUNNEL)) {
-			return new TunnelRoute(this.start, this.end, this.color, this.length);
+			return new TunnelRoute(this.start, this.end, this.color,
+					this.length);
 		} else {
 			throw new IllegalArgumentException("Incorrect type name");
 		}

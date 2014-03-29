@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import objects.Destination;
-import objects.DestinationRoute;
 import objects.interfaces.IRoute;
 import utils.TrainRouteReader;
 

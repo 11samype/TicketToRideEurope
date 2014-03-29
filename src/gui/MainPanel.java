@@ -5,23 +5,16 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 
 import javax.swing.JLabel;
-import javax.swing.border.EtchedBorder;
-import javax.swing.SpringLayout;
-
 import objects.Player;
 import objects.TrainColor;
 
-import java.awt.CardLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import javax.swing.BoxLayout;
 
 import java.awt.Font;
@@ -92,6 +85,7 @@ public class MainPanel extends JPanel {
 		destCardDeckPanel.add(lblDestinationCardCount);
 
 		JPanel rootMapPanel = new JPanel() {
+			@Override
 			public boolean isOptimizedDrawingEnabled() {
 				return false;
 			}

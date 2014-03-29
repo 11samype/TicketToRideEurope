@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 public class MapPanel extends JPanel {
@@ -62,13 +61,14 @@ public class MapPanel extends JPanel {
 
 	/**
 	 * Gets a singleton background image
-	 *
+	 * 
 	 * @return the loaded background image
 	 */
 	private synchronized BufferedImage getBackgroundImage() {
 		if (this.bgImg == null) {
 			try {
-				this.bgImg = ImageIO.read(new File("img//" + this.mapName + ".png"));
+				this.bgImg = ImageIO.read(new File("img//" + this.mapName
+						+ ".png"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

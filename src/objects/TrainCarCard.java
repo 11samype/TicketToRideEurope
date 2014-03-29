@@ -12,14 +12,15 @@ import objects.interfaces.ITrainItem;
 
 public class TrainCarCard extends AbstractCard<TrainColor> implements
 		ITrainItem {
-	
+
 	private BufferedImage carImage;
-	
+
 	private BufferedImage getCarImage() {
 		if (this.carImage == null) {
 			try {
-				this.carImage = ImageIO.read(new File("img//" + getValue().toString().toLowerCase() + "card.png"));
-				
+				this.carImage = ImageIO.read(new File("img//"
+						+ getValue().toString().toLowerCase() + "card.png"));
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -29,7 +30,7 @@ public class TrainCarCard extends AbstractCard<TrainColor> implements
 
 	public TrainCarCard(TrainColor color) {
 		this.value = color;
-//		getCarImage();
+		// getCarImage();
 	}
 
 	@Override

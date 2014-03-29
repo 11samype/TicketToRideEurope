@@ -24,7 +24,7 @@ public class TrainCarDeckTest {
 		TrainCarDeck deck = new TrainCarDeck();
 		boolean shuffled = false;
 		for (int i = 0; i < 12; i++) {
-			TrainCarCard cardDrawn = (TrainCarCard) deck.draw();
+			TrainCarCard cardDrawn = deck.draw();
 			if (cardDrawn.getAwtColor() != Color.blue) {
 				shuffled = true;
 			}

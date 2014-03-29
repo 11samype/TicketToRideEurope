@@ -6,7 +6,8 @@ import objects.Destination;
 import objects.TrainColor;
 import objects.interfaces.ITrainItem;
 
-public abstract class AbstractColorableRoute extends AbstractRoute implements ITrainItem {
+public abstract class AbstractColorableRoute extends AbstractRoute implements
+		ITrainItem {
 
 	protected final TrainColor color;
 
@@ -20,7 +21,6 @@ public abstract class AbstractColorableRoute extends AbstractRoute implements IT
 		super(start, end, length);
 		this.color = color;
 	}
-
 
 	@Override
 	public TrainColor getColor() {

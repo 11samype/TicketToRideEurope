@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import objects.TrainCarCard;
-import objects.TrainCarDeel;
 import objects.TrainColor;
 
 public class DeelCardPanel extends JPanel {
@@ -20,21 +19,25 @@ public class DeelCardPanel extends JPanel {
 	private TrainCarCard card = new TrainCarCard(TrainColor.BLACK);
 
 	public DeelCardPanel() {
-		//this.setPreferredSize(SIZE);
+		// this.setPreferredSize(SIZE);
 	}
 
 	public BufferedImage getCardImage() {
 		try {
-			this.cardImage = ImageIO.read(new File("img//" + this.card.getColor().toString().toLowerCase() + "card.png"));
+			this.cardImage = ImageIO.read(new File("img//"
+					+ this.card.getColor().toString().toLowerCase()
+					+ "card.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return this.cardImage;
 	}
 
+	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		System.out.printf("%d %d\n", getWidth(), getHeight());
-		g.drawImage(getCardImage(), 0, 0, getWidth(), getHeight(), Color.BLACK, null);
+		g.drawImage(getCardImage(), 0, 0, getWidth(), getHeight(), Color.BLACK,
+				null);
 	}
 }
