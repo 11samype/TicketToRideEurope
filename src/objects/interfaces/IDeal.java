@@ -1,6 +1,6 @@
 package objects.interfaces;
 
-public interface IDeel<K> {
+public interface IDeal<K> {
 	
 	public void removeCard(K card);
 

@@ -11,23 +11,17 @@ import objects.TrainColor;
 import org.junit.Test;
 
 public class DiscardPileTest {
-	
-	
-	
-	@Test
-	public void testAddCardsToDeck() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	public void testInitDiscardPile() {
 		DiscardPile discardPile = new DiscardPile();
-		
+		assertNotNull(discardPile);
 	}
 
 	@Test
-	public void testIsEmpty() {
-		fail("Not yet implemented");
+	public void testInitIsEmpty() {
+		DiscardPile discardPile = new DiscardPile();
+		assertTrue(discardPile.isEmpty());
 	}
 
 	@Test
@@ -45,9 +39,9 @@ public class DiscardPileTest {
 		DiscardPile discardPile = new DiscardPile();
 
 		discardPile.add(new TrainCarCard(TrainColor.BLUE));
-		discardPile.add(new TrainCarCard(TrainColor.BLUE));
-		discardPile.add(new TrainCarCard(TrainColor.BLUE));
-		discardPile.add(new TrainCarCard(TrainColor.BLUE));
+		discardPile.add(new TrainCarCard(TrainColor.GREEN));
+		discardPile.add(new TrainCarCard(TrainColor.YELLOW));
+		discardPile.add(new TrainCarCard(TrainColor.RAINBOW));
 
 		assertEquals(4, discardPile.size());
 

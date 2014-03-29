@@ -34,8 +34,15 @@ public class DestinationTest {
 		Destination paris = new Destination("Paris");
 		Destination budapset = new Destination("Budapest");
 		Destination paris_copy = new Destination("Paris");
-		assertFalse(budapset.equals(paris));
-		assertTrue(paris.equals(paris_copy));
+		assertNotEquals(budapset, paris);
+		assertEquals(paris, paris_copy);
+
+		assertNotEquals(paris, null);
+		assertNotEquals(budapset, new Integer(2));
+
+		Destination nullName = new Destination(null);
+		assertNotEquals(paris, nullName);
+		assertNotEquals(nullName, paris);
 	}
 
 }

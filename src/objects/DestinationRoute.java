@@ -8,8 +8,8 @@ public class DestinationRoute extends AbstractRoute {
 		super(start, end, 1);
 	}
 
-	public DestinationRoute(Destination start, Destination end, int weight) {
-		super(start, end, weight);
+	public DestinationRoute(Destination start, Destination end, int score) {
+		super(start, end, score);
 	}
 
 	public int getScore() {
