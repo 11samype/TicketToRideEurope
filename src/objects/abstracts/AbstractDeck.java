@@ -49,6 +49,23 @@ public abstract class AbstractDeck<K extends ICard> implements IDeck<K> {
 	public boolean isEmpty() {
 		return getCards().isEmpty();
 	}
+	
+	@Override
+	public int numInDeck(K card) {
+		
+		// May not work
+		
+		int count = 0;
+		
+		for (int i = 0; i < this.cards.size(); i++) {
+			if (this.cards.get(i).equals(card)) {
+				count++;
+			}
+		}
+		
+		return count;
+		
+	}
 
 	/**
 	 * Initialize the deck with cards

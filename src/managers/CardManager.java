@@ -33,10 +33,10 @@ public class CardManager {
 			this.deel.addCard(this.deck.draw());
 		}
 	}
-	
-	public TrainCarCard drawFromDeck() {
-		return this.deck.draw();
-	}
+//	
+//	public TrainCarCard drawFromDeck() {
+//		return this.deck.draw();
+//	}
 	
 	public TrainCarCard drawFromDeel(int index) {
 		TrainCarCard cardToReturn = this.deel.removeCard(index);
@@ -58,5 +58,10 @@ public class CardManager {
 	
 	public TrainCarDeck getDeck() {
 		return this.deck;
+	}
+
+	public void drawFromDeck(Player currentPlayer) {
+		currentPlayer.drawCardFromDeck(this.deck);
+		
 	}
 }

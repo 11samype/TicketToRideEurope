@@ -8,13 +8,15 @@ import objects.DestinationDeck;
 import objects.TrainCar;
 import objects.TrainCarCard;
 import objects.TrainCarDeck;
+import objects.TrainCarHand;
+import objects.interfaces.IHand;
 import objects.interfaces.IPlayer;
 
 public class AbstractPlayer implements IPlayer {
 
 	protected final String name;
 	protected List<TrainCar> trains = new ArrayList<TrainCar>();
-	protected List<TrainCarCard> hand = new ArrayList<TrainCarCard>();
+	protected TrainCarHand hand = new TrainCarHand();
 	protected List<DestinationCard> destinations = new ArrayList<DestinationCard>();
 	protected int score;
 
@@ -28,7 +30,7 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public void drawCardFromDeck(TrainCarDeck deck) {
-		this.hand.add(deck.draw());
+		this.hand.addCard(deck.draw());
 	}
 
 	@Override
@@ -47,7 +49,7 @@ public class AbstractPlayer implements IPlayer {
 	}
 
 	@Override
-	public List<TrainCarCard> getHand() {
+	public TrainCarHand getHand() {
 		return this.hand;
 	}
 

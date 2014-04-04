@@ -7,6 +7,7 @@ import objects.DestinationDeck;
 import objects.TrainCar;
 import objects.TrainCarCard;
 import objects.TrainCarDeck;
+import objects.TrainCarHand;
 
 public interface IPlayer {
 	public void drawCardFromDeck(TrainCarDeck deck);
@@ -17,7 +18,7 @@ public interface IPlayer {
 
 	public int getScore();
 
-	public List<TrainCarCard> getHand();
+	public IHand getHand();
 
 	public List<DestinationCard> getDestinations();
 

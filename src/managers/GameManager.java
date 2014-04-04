@@ -1,6 +1,7 @@
 package managers;
 
 import objects.TrainCarCard;
+import objects.TrainCarDeck;
 
 
 /**
@@ -27,8 +28,20 @@ public class GameManager {
 		return this.cardManager.getSizeOfDeck();
 	}
 	
-	public TrainCarCard drawFromDeck() {
-		return this.cardManager.drawFromDeck();
+//	public TrainCarCard drawFromDeck() {
+//		return this.cardManager.drawFromDeck();
+//	}
+
+	public TrainCarDeck getDeck() {
+		return this.cardManager.getDeck();
+	}
+	
+	public CardManager getCardManager() {
+		return this.cardManager;
+	}
+	
+	public TurnManager getTurnManager() {
+		return this.turnManager;
 	}
 	
 }

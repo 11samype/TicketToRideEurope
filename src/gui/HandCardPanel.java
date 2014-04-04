@@ -25,6 +25,12 @@ public class HandCardPanel extends JPanel {
 	private BufferedImage cardImage;
 
 	private TrainCarCard card;
+	
+	private int numCards = 0;
+	
+	public void setNumCards(int num) {
+		this.numCards = num;
+	}
 
 	public HandCardPanel(TrainColor trainColor) {
 		this.card = new TrainCarCard(trainColor);
@@ -68,6 +74,9 @@ public class HandCardPanel extends JPanel {
 		g.setColor(Color.WHITE);
 		g.fillArc(0, -25, 45, 45, 0, -90);
 //		drawCircle(g, -20, -20, 45, false, Color.black);
+		
+		g.setColor(Color.BLACK);
+		g.drawString(Integer.toString(this.numCards), 28, 13);
 	}
 
 	private void drawCircle(Graphics g, int x, int y, int radius, boolean filled, Color color) {
@@ -79,4 +88,5 @@ public class HandCardPanel extends JPanel {
 			g.fillOval(x, y, radius, radius);
 		g.setColor(save);
 	}
+	
 }

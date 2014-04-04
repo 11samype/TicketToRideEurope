@@ -1,5 +1,8 @@
 package objects.interfaces;
 
+import objects.TrainCarCard;
+import objects.TrainColor;
+
 /**
  * TODO Put here a description of what this class does.
  * 
@@ -16,5 +19,9 @@ public interface IHand<K> {
 	public void playCard(K card);
 
 	public void playCard(int index);
+
+	int numInHand(K card);
+
+	int numInHand(TrainColor color);
 
 }
