@@ -51,8 +51,8 @@ public class DestinationReader {
 
 				DestinationRoute startToEnd = new DestinationRoute(start, end,
 						score);
-				DestinationRoute endToStart = new DestinationRoute(end, start,
-						score);
+//				DestinationRoute endToStart = new DestinationRoute(end, start,
+//						score);
 
 				addRoute(startToEnd);
 

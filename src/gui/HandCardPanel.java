@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
@@ -16,7 +17,7 @@ import objects.TrainColor;
 
 /**
  * TODO Put here a description of what this class does.
- * 
+ *
  * @author samynpd. Created Mar 28, 2014.
  */
 public class HandCardPanel extends JPanel {
@@ -27,6 +28,7 @@ public class HandCardPanel extends JPanel {
 
 	public HandCardPanel(TrainColor trainColor) {
 		this.card = new TrainCarCard(trainColor);
+		this.setLayout(new CardLayout(5, 0));
 	}
 
 	public synchronized BufferedImage getCardImage() {
@@ -60,9 +62,21 @@ public class HandCardPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		System.out.printf("%d %d\n", getWidth(), getHeight());
 		g.drawImage(getRotatedCardImage(), 0, 0, getWidth(), getHeight(),
 				Color.BLACK, null);
+//		drawCircle(g, -20, -20, 45, true, Color.WHITE);
+		g.setColor(Color.WHITE);
+		g.fillArc(0, -25, 45, 45, 0, -90);
+//		drawCircle(g, -20, -20, 45, false, Color.black);
 	}
 
+	private void drawCircle(Graphics g, int x, int y, int radius, boolean filled, Color color) {
+		Color save = g.getColor();
+		g.setColor(color);
+		if (!filled)
+			g.drawOval(x, y, radius, radius);
+		else
+			g.fillOval(x, y, radius, radius);
+		g.setColor(save);
+	}
 }

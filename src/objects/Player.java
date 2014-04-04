@@ -1,6 +1,7 @@
 package objects;
 
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -11,13 +12,15 @@ public class Player extends AbstractPlayer {
 	private TrainColor color;
 
 	public Player() {
-		super();
+		this("New Player");
 	}
 
 	public Player(String name) {
 		super(name);
 		Random rGen = new Random();
-		List<TrainColor> arr = TrainColor.getAllColors();
+
+		List<TrainColor> arr = Arrays.asList(TrainColor.BLUE, TrainColor.RED, TrainColor.GREEN, TrainColor.WHITE, TrainColor.YELLOW);
+
 		this.color = arr.get(rGen.nextInt(arr.size()));
 	}
 
