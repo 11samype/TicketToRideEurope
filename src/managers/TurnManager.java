@@ -13,15 +13,15 @@ import objects.interfaces.IPlayer;
  */
 public class TurnManager {
 
-	private ArrayList<IPlayer> players = new ArrayList<IPlayer>();
+	private ArrayList<Player> players = new ArrayList<Player>();
 	private int currentPlayerIndex;
 	
-	public TurnManager(final ArrayList<IPlayer> players) {
+	public TurnManager(final ArrayList<Player> players) {
 		this.players = players;
 		this.currentPlayerIndex = 0;
 	}
 	
-	public IPlayer nextPlayer() {
+	public Player nextPlayer() {
 		this.currentPlayerIndex = (this.currentPlayerIndex + 1) % numPlayers();
 		return this.players.get(this.currentPlayerIndex);
 		
@@ -31,11 +31,15 @@ public class TurnManager {
 		return this.players.size();
 	}
 	
-	public IPlayer getCurrentPlayer() {
+	public Player getCurrentPlayer() {
 		return this.players.get(this.currentPlayerIndex);
 	}
 	
 	public int getCurrentPlayerIndex() {
 		return this.currentPlayerIndex;
+	}
+	
+	public Player getPLayer(int index) {
+		return this.players.get(index);
 	}
 }

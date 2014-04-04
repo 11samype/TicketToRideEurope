@@ -55,4 +55,8 @@ public class CardManager {
 	public int getSizeOfDeck() {
 		return this.deck.size();
 	}
+	
+	public TrainCarDeck getDeck() {
+		return this.deck;
+	}
 }

@@ -34,7 +34,7 @@ public class PlayerPanel extends JPanel {
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(layout);
 
-		this.lblName = createJLabel("Player#");
+		this.lblName = createJLabel(this.player.getName());
 		add(this.lblName);
 
 		this.lblStations = createJLabel("Stations: ");

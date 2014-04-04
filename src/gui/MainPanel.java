@@ -35,16 +35,19 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
 public class MainPanel extends JPanel {
+	private PlayerPanel currentPlayerPanel;
 	private GameManager gameManager;
+	private TurnManager turnManager;
 	private MapPanel mapPanel;
 	private JLayeredPane layeredPane;
-	private ArrayList<IPlayer> players = new ArrayList<IPlayer>();
+	private ArrayList<Player> players = new ArrayList<Player>();
 
 	public MainPanel() {
+		this.players = getPlayers();
 		
 		CardManager cardManager = new CardManager();
-		TurnManager turnManager = new TurnManager(this.players);
-		this.gameManager = new GameManager(cardManager, turnManager);
+		this.turnManager = new TurnManager(this.players);
+		this.gameManager = new GameManager(cardManager, this.turnManager);
 		
 		setLayout(new MigLayout("", "[900px:1200px:1600px,grow,fill][10%:n,right]", "[90.00:114.00:100.00,grow,fill][350:550.00,grow,fill][70:85.00:100,grow,bottom]"));
 
@@ -54,9 +57,9 @@ public class MainPanel extends JPanel {
 		playerPanelLayout.setHgap(10);
 		playerPanel.setLayout(playerPanelLayout);
 
-		ArrayList<Player> players = getPlayers();
-		for (int i = 0; i < 4; i++) {
-			playerPanel.add(new PlayerPanel(players.get(i)));
+		
+		for (int i = 0; i < this.turnManager.numPlayers(); i++) {
+			playerPanel.add(new PlayerPanel(this.turnManager.getPLayer(i)));
 		}
 
 		playerPanel.add(new JPanel()); // right padding
@@ -71,6 +74,15 @@ public class MainPanel extends JPanel {
 		destCardDeckPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				// FOR DEMO PURPOSES
+				// SWITCH PLAYER WHENEVER DEST CARD CHOSEN
+				
+				remove(MainPanel.this.currentPlayerPanel);
+				MainPanel.this.turnManager.nextPlayer();
+				MainPanel.this.currentPlayerPanel = new PlayerPanel(MainPanel.this.turnManager.getCurrentPlayer());
+				
+				add(MainPanel.this.currentPlayerPanel, "cell 1 2,grow");
+				
 				int cardsLeft = Integer.parseInt(lblDestinationCardCount
 						.getText());
 				if (cardsLeft > 0) {
@@ -92,8 +104,8 @@ public class MainPanel extends JPanel {
 		rootMapPanel.setLayout(overlay);
 		add(rootMapPanel, "cell 0 1,grow");
 
-		mapPanel = createMapPanel("Europe");
-		rootMapPanel.add(mapPanel);
+		this.mapPanel = createMapPanel("Europe");
+		rootMapPanel.add(this.mapPanel);
 
 
 		 mxGraphComponent graphPanel = createGraphPanel();
@@ -176,37 +188,14 @@ public class MainPanel extends JPanel {
 		handPanel.add(panel_1, "cell 1 0,grow");
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
 
-//		JPanel blackPanel = new HandCardPanel(TrainColor.BLACK);
-//		panel_1.add(blackPanel);
-//
-//		JPanel whitePanel = new HandCardPanel(TrainColor.WHITE);
-//		panel_1.add(whitePanel);
-//
-//		JPanel redPanel = new HandCardPanel(TrainColor.RED);
-//		panel_1.add(redPanel);
-//
-//		JPanel greenPanel = new HandCardPanel(TrainColor.GREEN);
-//		panel_1.add(greenPanel);
-//
-//		JPanel bluePanel = new HandCardPanel(TrainColor.BLUE);
-//		panel_1.add(bluePanel);
-//
-//		JPanel yellowPanel = new HandCardPanel(TrainColor.YELLOW);
-//		panel_1.add(yellowPanel);
-//
-//		JPanel purplePanel = new HandCardPanel(TrainColor.PINK);
-//		panel_1.add(purplePanel);
-//
-//		JPanel orangePanel = new HandCardPanel(TrainColor.ORANGE);
-//		panel_1.add(orangePanel);
-
 		for (TrainColor color : TrainColor.getAllColors()) {
 			panel_1.add(new HandCardPanel(color));
 
 		}
 
-		PlayerPanel currentPlayerPanel = new PlayerPanel(new Player());
-		add(currentPlayerPanel, "cell 1 2,grow");
+		
+		this.currentPlayerPanel = new PlayerPanel(this.turnManager.getCurrentPlayer());
+		add(this.currentPlayerPanel, "cell 1 2,grow");
 
 	}
 
@@ -223,17 +212,18 @@ public class MainPanel extends JPanel {
 		players.add(new Player("Bob"));
 		players.add(new Player("Charlie"));
 		players.add(new Player("Dan"));
+		players.add(new Player("Jeff"));
 		return players;
 	}
 
-	public IPlayer getNextPlayer() {
-		ArrayList<IPlayer> rotated = new ArrayList<IPlayer>();
-		rotated.addAll(players.subList(1, players.size()));
-		rotated.add(players.get(0));
-
-		return players.get(0);
-
-	}
+//	public IPlayer getNextPlayer() {
+//		ArrayList<IPlayer> rotated = new ArrayList<IPlayer>();
+//		rotated.addAll(this.players.subList(1, this.players.size()));
+//		rotated.add(this.players.get(0));
+//
+//		return this.players.get(0);
+//
+//	}
 
 	public void setMapPanel(MapPanel panel) {
 		this.mapPanel = panel;
