@@ -61,7 +61,7 @@ public class MapPanel extends JPanel {
 
 	/**
 	 * Gets a singleton background image
-	 * 
+	 *
 	 * @return the loaded background image
 	 */
 	private synchronized BufferedImage getBackgroundImage() {
@@ -77,8 +77,8 @@ public class MapPanel extends JPanel {
 	}
 
 	private synchronized void drawBackground(Graphics g) {
-		g.drawImage(getBackgroundImage(), 0, 0, getWidth(), getHeight(),
-				Color.BLACK, null);
+//		g.drawImage(getBackgroundImage(), 0, 0, getWidth(), getHeight(),
+//				Color.BLACK, null);
 
 	}
 }

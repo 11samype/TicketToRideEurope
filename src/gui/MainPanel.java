@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 
 import objects.Player;
 import objects.TrainColor;
+import objects.interfaces.IPlayer;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -33,12 +34,10 @@ import com.mxgraph.view.mxGraph;
 public class MainPanel extends JPanel {
 	private MapPanel mapPanel;
 	private JLayeredPane layeredPane;
+	private ArrayList<IPlayer> players = new ArrayList<IPlayer>();
 
 	public MainPanel() {
-		setLayout(new MigLayout(
-				"",
-				"[70.00%:900.00,grow,fill][10%:n,right]",
-				"[90.00:114.00:100.00,grow,fill][350:550.00,grow,fill][70:85.00:100,grow,bottom]"));
+		setLayout(new MigLayout("", "[900px:1200px:1600px,grow,fill][10%:n,right]", "[90.00:114.00:100.00,grow,fill][350:550.00,grow,fill][70:85.00:100,grow,bottom]"));
 
 		JPanel playerPanel = new JPanel();
 		add(playerPanel, "cell 0 0,alignx left,growy");
@@ -51,26 +50,14 @@ public class MainPanel extends JPanel {
 			playerPanel.add(new PlayerPanel(players.get(i)));
 		}
 
-		playerPanel.add(new JPanel());
-
-		// PlayerPanel playerPanel_1 = new PlayerPanel();
-		// playerPanel.add(playerPanel_1);
-		//
-		// PlayerPanel playerPanel_2 = new PlayerPanel();
-		// playerPanel.add(playerPanel_2);
-		//
-		// PlayerPanel playerPanel_3 = new PlayerPanel();
-		// playerPanel.add(playerPanel_3);
-		//
-		// PlayerPanel playerPanel_4 = new PlayerPanel();
-		// playerPanel.add(playerPanel_4);
+		playerPanel.add(new JPanel()); // right padding
 
 		JPanel destCardDeckPanel = new JPanel();
 		destCardDeckPanel.setBackground(new Color(255, 140, 0));
 		add(destCardDeckPanel, "cell 1 0,grow");
 		destCardDeckPanel.setLayout(null);
 
-		final JLabel lblDestinationCardCount = new JLabel("120");
+		final JLabel lblDestinationCardCount = new JLabel("46");
 		lblDestinationCardCount.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		destCardDeckPanel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -105,8 +92,7 @@ public class MainPanel extends JPanel {
 
 		JPanel dealPanel = new JPanel();
 		add(dealPanel, "cell 1 1,grow");
-		dealPanel.setLayout(new MigLayout("", "[100px:n,fill]",
-				"[80%:80%,fill][278px]"));
+		dealPanel.setLayout(new MigLayout("", "[130px:n,growprio 20,grow 50,fill]", "[80%:80%,fill][278px]"));
 
 		JPanel cardPanel = new JPanel();
 		dealPanel.add(cardPanel, "cell 0 0,grow");
@@ -138,7 +124,7 @@ public class MainPanel extends JPanel {
 		dealPanel.add(trainCardDeckPanel, "cell 0 1,grow");
 		trainCardDeckPanel.setLayout(null);
 
-		final JLabel lblTrainCardCount = new JLabel("120");
+		final JLabel lblTrainCardCount = new JLabel("140");
 		lblTrainCardCount.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblTrainCardCount.setBounds(10, 11, 27, 20);
 		trainCardDeckPanel.addMouseListener(new MouseAdapter() {
@@ -171,31 +157,36 @@ public class MainPanel extends JPanel {
 		handPanel.add(panel_1, "cell 1 0,grow");
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
 
-		JPanel blackPanel = new HandCardPanel(TrainColor.BLACK);
-		panel_1.add(blackPanel);
+//		JPanel blackPanel = new HandCardPanel(TrainColor.BLACK);
+//		panel_1.add(blackPanel);
+//
+//		JPanel whitePanel = new HandCardPanel(TrainColor.WHITE);
+//		panel_1.add(whitePanel);
+//
+//		JPanel redPanel = new HandCardPanel(TrainColor.RED);
+//		panel_1.add(redPanel);
+//
+//		JPanel greenPanel = new HandCardPanel(TrainColor.GREEN);
+//		panel_1.add(greenPanel);
+//
+//		JPanel bluePanel = new HandCardPanel(TrainColor.BLUE);
+//		panel_1.add(bluePanel);
+//
+//		JPanel yellowPanel = new HandCardPanel(TrainColor.YELLOW);
+//		panel_1.add(yellowPanel);
+//
+//		JPanel purplePanel = new HandCardPanel(TrainColor.PINK);
+//		panel_1.add(purplePanel);
+//
+//		JPanel orangePanel = new HandCardPanel(TrainColor.ORANGE);
+//		panel_1.add(orangePanel);
 
-		JPanel whitePanel = new HandCardPanel(TrainColor.WHITE);
-		panel_1.add(whitePanel);
+		for (TrainColor color : TrainColor.getAllColors()) {
+			panel_1.add(new HandCardPanel(color));
 
-		JPanel redPanel = new HandCardPanel(TrainColor.RED);
-		panel_1.add(redPanel);
+		}
 
-		JPanel greenPanel = new HandCardPanel(TrainColor.GREEN);
-		panel_1.add(greenPanel);
-
-		JPanel bluePanel = new HandCardPanel(TrainColor.BLUE);
-		panel_1.add(bluePanel);
-
-		JPanel yellowPanel = new HandCardPanel(TrainColor.YELLOW);
-		panel_1.add(yellowPanel);
-
-		JPanel purplePanel = new HandCardPanel(TrainColor.PINK);
-		panel_1.add(purplePanel);
-
-		JPanel orangePanel = new HandCardPanel(TrainColor.ORANGE);
-		panel_1.add(orangePanel);
-
-		PlayerPanel currentPlayerPanel = new PlayerPanel();
+		PlayerPanel currentPlayerPanel = new PlayerPanel(new Player());
 		add(currentPlayerPanel, "cell 1 2,grow");
 
 	}
@@ -214,6 +205,15 @@ public class MainPanel extends JPanel {
 		players.add(new Player("Charlie"));
 		players.add(new Player("Dan"));
 		return players;
+	}
+
+	public IPlayer getNextPlayer() {
+		ArrayList<IPlayer> rotated = new ArrayList<IPlayer>();
+		rotated.addAll(players.subList(1, players.size()));
+		rotated.add(players.get(0));
+
+		return players.get(0);
+
 	}
 
 	public void setMapPanel(MapPanel panel) {

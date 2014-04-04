@@ -9,7 +9,10 @@ public class DealtCardPanel extends JPanel {
 	private DrawableTrainCarCard card;
 
 	public DealtCardPanel() {
-		// this.setPreferredSize(SIZE);
+	}
+
+	public DealtCardPanel(DrawableTrainCarCard card) {
+		this.setCard(card);
 	}
 
 	public void setCard(DrawableTrainCarCard card) {
@@ -21,7 +24,6 @@ public class DealtCardPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		System.out.printf("%d %d\n", getWidth(), getHeight());
 		if (this.card == null) {
 			g.setColor(Color.BLACK);
 			g.fillRect(0, 0, getWidth(), getHeight());

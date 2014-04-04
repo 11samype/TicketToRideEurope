@@ -23,7 +23,6 @@ public class Main {
 			@Override
 			public void run() {
 				Main.this.window = new JFrame("TicketToRide Europe");
-				Main.this.window.setPreferredSize(new Dimension(1200, 800));
 				Main.this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 				MainPanel panel = new MainPanel();
