@@ -14,5 +14,7 @@ public interface IDeck<K> {
 	public int size();
 
 	public boolean isEmpty();
+	
+	public int numInDeck(K card);
 
 }

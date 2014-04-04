@@ -1,12 +1,9 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,18 +20,16 @@ import utils.DestinationLocationReader;
 
 public class MapPanel extends JPanel {
 
-	private static final long serialVersionUID = -8438576029794021570L;
-	private static Dimension SIZE = new Dimension(1200, 800);
+	private static int FPS = 60;
+
 	private Repainter repainterThread;
 	private BufferedImage bgImg;
 
 	private List<IDrawable> drawables = new ArrayList<>();
 	private String mapName;
 	private boolean isPaused = false;
-	private static int FPS = 60;
 
 	public MapPanel() {
-		this.setPreferredSize(SIZE);
 		repaintAtFPS(FPS);
 		getDrawableDestinations();
 		this.addMouseListener(new DestinationClickListener());
@@ -144,7 +139,8 @@ public class MapPanel extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			DrawableDestination clickedDest = null;
 			for (IDrawable drawable : drawables) {
-				if (drawable.contains(e.getPoint()) && (drawable instanceof DrawableDestination)) {
+				if (drawable.contains(e.getPoint())
+						&& (drawable instanceof DrawableDestination)) {
 					clickedDest = (DrawableDestination) drawable;
 					if (SwingUtilities.isLeftMouseButton(e)) {
 						if (selectedPoints.contains(clickedDest)) {
@@ -153,7 +149,9 @@ public class MapPanel extends JPanel {
 						} else {
 							selectedPoints.add(clickedDest);
 							if (selectedPoints.isFull()) {
-								drawablesToAdd.add(new DrawableRoute(selectedPoints.get(0), selectedPoints.get(1)));
+								drawablesToAdd.add(new DrawableRoute(
+										selectedPoints.get(0), selectedPoints
+												.get(1)));
 								selectedPoints.clear();
 							}
 							System.out.println(clickedDest.getName());

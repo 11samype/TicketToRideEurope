@@ -27,5 +27,9 @@ public class Player extends AbstractPlayer {
 	public Color getColor() {
 		return this.color.getAwtColor();
 	}
+	
+	public TrainCarHand getHand() {
+		return this.hand;
+	}
 
 }

@@ -1,11 +1,9 @@
 import java.awt.Dimension;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import gui.DrawableDestination;
 import gui.MainPanel;
 import gui.MapPanel;
 
@@ -14,7 +12,6 @@ import javax.swing.SwingUtilities;
 
 import objects.Destination;
 import objects.interfaces.IRoute;
-import utils.DestinationLocationReader;
 import utils.TrainRouteReader;
 
 public class Main {
@@ -25,8 +22,8 @@ public class Main {
 
 			@Override
 			public void run() {
-				Main.this.window = new JFrame("TicketToRide Europe");
-				Main.this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window = new JFrame("TicketToRide Europe");
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 				MainPanel panel = new MainPanel();
 
@@ -35,9 +32,9 @@ public class Main {
 
 				panel.setMapPanel(gamePanel);
 
-				Main.this.window.getContentPane().add(panel);
-				Main.this.window.pack();
-				Main.this.window.setVisible(true);
+				window.getContentPane().add(panel);
+				window.pack();
+				window.setVisible(true);
 			}
 		});
 
@@ -47,7 +44,6 @@ public class Main {
 		new Main();
 
 		TrainRouteReader routeReader;
-		DestinationLocationReader destReader;
 		try {
 			routeReader = new TrainRouteReader("en");
 			routeReader.run();
@@ -60,7 +56,7 @@ public class Main {
 				System.out.printf("%15s : %s\n", d, routeGraph.get(d));
 			}
 
-			
+
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

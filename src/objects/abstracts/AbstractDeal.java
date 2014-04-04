@@ -7,7 +7,7 @@ import objects.interfaces.IDeal;
 
 /**
  * TODO Put here a description of what this class does.
- * 
+ *
  * @author samynpd. Created Mar 28, 2014.
  */
 public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
@@ -27,8 +27,18 @@ public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 	}
 
 	@Override
-	public void removeCard(K card) {
+	public K removeCard(K card) {
 		this.deal.remove(card);
+		return card;
+	}
+
+	@Override
+	public K removeCard(int index) {
+		return this.deal.remove(index);
+	}
+
+	public K getCard(int index) {
+		return this.deal.get(index);
 	}
 
 }

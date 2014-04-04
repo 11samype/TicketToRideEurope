@@ -2,12 +2,14 @@ package objects.abstracts;
 
 import java.util.ArrayList;
 
+import objects.TrainCarCard;
+import objects.TrainColor;
 import objects.interfaces.ICard;
 import objects.interfaces.IHand;
 
 /**
  * TODO Put here a description of what this class does.
- * 
+ *
  * @author samynpd. Created Mar 28, 2014.
  * @param <K>
  */
@@ -30,13 +32,13 @@ public abstract class AbstractHand<K extends ICard> implements IHand<K> {
 		this.hand.add(card);
 	}
 
-	@Override
-	public void playCard(K card) {
-		// TODO: Implement
-	}
 
 	@Override
-	public void playCard(int index) {
-		// TODO: Implement
+	public abstract int numInHand(K card);
+
+	@Override
+	public int size() {
+		return this.hand.size();
 	}
+
 }
