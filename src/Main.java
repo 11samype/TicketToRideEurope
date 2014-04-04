@@ -1,9 +1,11 @@
 import java.awt.Dimension;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import gui.DrawableDestination;
 import gui.MainPanel;
 import gui.MapPanel;
 
@@ -12,6 +14,7 @@ import javax.swing.SwingUtilities;
 
 import objects.Destination;
 import objects.interfaces.IRoute;
+import utils.DestinationLocationReader;
 import utils.TrainRouteReader;
 
 public class Main {
@@ -44,9 +47,11 @@ public class Main {
 		new Main();
 
 		TrainRouteReader routeReader;
+		DestinationLocationReader destReader;
 		try {
 			routeReader = new TrainRouteReader("en");
 			routeReader.run();
+
 			HashMap<Destination, List<IRoute>> routeGraph = routeReader
 					.getGraph();
 			for (Iterator<Destination> i = routeGraph.keySet().iterator(); i
@@ -54,6 +59,9 @@ public class Main {
 				Destination d = i.next();
 				System.out.printf("%15s : %s\n", d, routeGraph.get(d));
 			}
+
+			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

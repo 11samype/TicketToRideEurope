@@ -24,6 +24,7 @@ import java.awt.Font;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.OverlayLayout;
 import javax.swing.ScrollPaneConstants;
@@ -37,7 +38,7 @@ public class MainPanel extends JPanel {
 	private ArrayList<IPlayer> players = new ArrayList<IPlayer>();
 
 	public MainPanel() {
-		setLayout(new MigLayout("", "[900px:1200px:1600px,grow,fill][10%:n,right]", "[90.00:114.00:100.00,grow,fill][350:550.00,grow,fill][70:85.00:100,grow,bottom]"));
+		setLayout(new MigLayout("", "[900px:1200px:1600px,grow,fill][10%:n,right]", "[90.00:114.00:100.00,grow,fill][773px:773px:773px,fill][70:85.00:100,grow,bottom]"));
 
 		JPanel playerPanel = new JPanel();
 		add(playerPanel, "cell 0 0,alignx left,growy");
@@ -86,19 +87,17 @@ public class MainPanel extends JPanel {
 		mapPanel = createMapPanel("Europe");
 		rootMapPanel.add(mapPanel);
 
-
-		 mxGraphComponent graphPanel = createGraphPanel();
-		 rootMapPanel.add(graphPanel);
-
 		JPanel dealPanel = new JPanel();
 		add(dealPanel, "cell 1 1,grow");
-		dealPanel.setLayout(new MigLayout("", "[130px:n,growprio 20,grow 50,fill]", "[80%:80%,fill][278px]"));
+		dealPanel.setLayout(new MigLayout("",
+				"[130px:n,growprio 20,grow 50,fill]", "[80%:80%,fill][278px]"));
 
 		JPanel cardPanel = new JPanel();
 		dealPanel.add(cardPanel, "cell 0 0,grow");
 		cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
 
-		DrawableTrainCarCard rainbow = new DrawableTrainCarCard(TrainColor.RAINBOW);
+		DrawableTrainCarCard rainbow = new DrawableTrainCarCard(
+				TrainColor.RAINBOW);
 		DealtCardPanel cardPanel1 = new DealtCardPanel();
 		cardPanel1.setCard(rainbow);
 		cardPanel.add(cardPanel1);
@@ -122,7 +121,6 @@ public class MainPanel extends JPanel {
 		JPanel trainCardDeckPanel = new JPanel();
 		trainCardDeckPanel.setBackground(new Color(30, 144, 255));
 		dealPanel.add(trainCardDeckPanel, "cell 0 1,grow");
-		trainCardDeckPanel.setLayout(null);
 
 		final JLabel lblTrainCardCount = new JLabel("140");
 		lblTrainCardCount.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -141,45 +139,51 @@ public class MainPanel extends JPanel {
 		JPanel handPanel = new JPanel();
 		handPanel.setBackground(Color.LIGHT_GRAY);
 		add(handPanel, "cell 0 2,grow");
-		handPanel.setLayout(new MigLayout("", "[30%:n,fill][grow]", "[grow]"));
+		handPanel.setLayout(new MigLayout("", "[30%:n,fill][grow]", "[100px:n:100px]"));
 
-		JTextArea destinationTextArea = new JTextArea(4, 2);
-		destinationTextArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
-		destinationTextArea
-				.setText("Start-End\tPoints\r\nStart2-End2\tPoints\r\n\r\n\r\n");
-		destinationTextArea.setEditable(false);
-		JScrollPane destCardPanel = new JScrollPane(destinationTextArea);
-		destCardPanel
+		Object rowData[][] = {
+				{ "Start", "End", "Value" } };
+		Object columnNames[] = { "Destination Start", "Destination End", "Points" };
+		JTable destinationTable = new JTable(rowData, columnNames) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
+		JScrollPane destScrollPane = new JScrollPane(destinationTable);
+		destScrollPane
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		handPanel.add(destCardPanel, "cell 0 0,grow");
+		destinationTable.setFillsViewportHeight(true);
+		handPanel.add(destScrollPane, "cell 0 0,grow");
 
 		JPanel panel_1 = new JPanel();
 		handPanel.add(panel_1, "cell 1 0,grow");
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
 
-//		JPanel blackPanel = new HandCardPanel(TrainColor.BLACK);
-//		panel_1.add(blackPanel);
-//
-//		JPanel whitePanel = new HandCardPanel(TrainColor.WHITE);
-//		panel_1.add(whitePanel);
-//
-//		JPanel redPanel = new HandCardPanel(TrainColor.RED);
-//		panel_1.add(redPanel);
-//
-//		JPanel greenPanel = new HandCardPanel(TrainColor.GREEN);
-//		panel_1.add(greenPanel);
-//
-//		JPanel bluePanel = new HandCardPanel(TrainColor.BLUE);
-//		panel_1.add(bluePanel);
-//
-//		JPanel yellowPanel = new HandCardPanel(TrainColor.YELLOW);
-//		panel_1.add(yellowPanel);
-//
-//		JPanel purplePanel = new HandCardPanel(TrainColor.PINK);
-//		panel_1.add(purplePanel);
-//
-//		JPanel orangePanel = new HandCardPanel(TrainColor.ORANGE);
-//		panel_1.add(orangePanel);
+		// JPanel blackPanel = new HandCardPanel(TrainColor.BLACK);
+		// panel_1.add(blackPanel);
+		//
+		// JPanel whitePanel = new HandCardPanel(TrainColor.WHITE);
+		// panel_1.add(whitePanel);
+		//
+		// JPanel redPanel = new HandCardPanel(TrainColor.RED);
+		// panel_1.add(redPanel);
+		//
+		// JPanel greenPanel = new HandCardPanel(TrainColor.GREEN);
+		// panel_1.add(greenPanel);
+		//
+		// JPanel bluePanel = new HandCardPanel(TrainColor.BLUE);
+		// panel_1.add(bluePanel);
+		//
+		// JPanel yellowPanel = new HandCardPanel(TrainColor.YELLOW);
+		// panel_1.add(yellowPanel);
+		//
+		// JPanel purplePanel = new HandCardPanel(TrainColor.PINK);
+		// panel_1.add(purplePanel);
+		//
+		// JPanel orangePanel = new HandCardPanel(TrainColor.ORANGE);
+		// panel_1.add(orangePanel);
 
 		for (TrainColor color : TrainColor.getAllColors()) {
 			panel_1.add(new HandCardPanel(color));
@@ -194,7 +198,7 @@ public class MainPanel extends JPanel {
 	private MapPanel createMapPanel(String mapName) {
 		MapPanel mapPanel = new MapPanel();
 		mapPanel.setMapName(mapName);
-//		mapPanel.setLayout(new BoxLayout(mapPanel, BoxLayout.X_AXIS));
+		// mapPanel.setLayout(new BoxLayout(mapPanel, BoxLayout.X_AXIS));
 		return mapPanel;
 	}
 
@@ -219,22 +223,5 @@ public class MainPanel extends JPanel {
 	public void setMapPanel(MapPanel panel) {
 		this.mapPanel = panel;
 		this.repaint();
-	}
-
-	public mxGraphComponent createGraphPanel() {
-		mxGraph graph = new mxGraph();
-		Object parent = graph.getDefaultParent();
-		graph.getModel().beginUpdate();
-		try {
-			Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,
-					30);
-			Object v2 = graph.insertVertex(parent, null, "World!", 240, 150,
-					80, 30);
-			graph.insertEdge(parent, null, "Edge", v1, v2);
-		} finally {
-			graph.getModel().endUpdate();
-		}
-		mxGraphComponent graphComponent = new mxGraphComponent(graph);
-		return graphComponent;
 	}
 }

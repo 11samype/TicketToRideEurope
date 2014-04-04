@@ -88,10 +88,6 @@ public abstract class AbstractRoute implements IRoute {
 				return false;
 		} else if (!(start.equals(other.start) || start.equals(other.end)))
 			return false;
-		// boolean same = this.start.equals(other.start) &&
-		// this.end.equals(other.end);
-		// boolean reversed = this.start.equals(other.end) &&
-		// this.end.equals(other.start);
 		return true;
 
 	}
