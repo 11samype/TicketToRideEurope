@@ -25,10 +25,25 @@ public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 		this.deal.add(card);
 
 	}
+	
+	@Override
+	public boolean full() {
+		return (this.deal.size() == 5);
+	}
 
 	@Override
-	public void removeCard(K card) {
+	public K removeCard(K card) {
 		this.deal.remove(card);
+		return card;
+	}
+	
+	@Override
+	public K removeCard(int index) {
+		return this.deal.remove(index);
+	}
+	
+	public K getCard(int index) {
+		return this.deal.get(index);
 	}
 
 }

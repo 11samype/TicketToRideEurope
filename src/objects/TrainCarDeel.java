@@ -12,13 +12,6 @@ public class TrainCarDeel extends AbstractDeal<TrainCarCard> {
 	public TrainCarDeel() {
 		super();
 
-		// filler code
-
-		for (int i = 0; i < 5; i++) {
-			addCard(new TrainCarCard(TrainColor.BLACK));
-
-		}
-
 	}
 
 }

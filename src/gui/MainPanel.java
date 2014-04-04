@@ -2,6 +2,9 @@ package gui;
 
 import javax.swing.JPanel;
 
+import managers.CardManager;
+import managers.GameManager;
+import managers.TurnManager;
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.Color;
@@ -32,11 +35,17 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
 public class MainPanel extends JPanel {
+	private GameManager gameManager;
 	private MapPanel mapPanel;
 	private JLayeredPane layeredPane;
 	private ArrayList<IPlayer> players = new ArrayList<IPlayer>();
 
 	public MainPanel() {
+		
+		CardManager cardManager = new CardManager();
+		TurnManager turnManager = new TurnManager(this.players);
+		this.gameManager = new GameManager(cardManager, turnManager);
+		
 		setLayout(new MigLayout("", "[900px:1200px:1600px,grow,fill][10%:n,right]", "[90.00:114.00:100.00,grow,fill][350:550.00,grow,fill][70:85.00:100,grow,bottom]"));
 
 		JPanel playerPanel = new JPanel();
@@ -98,25 +107,29 @@ public class MainPanel extends JPanel {
 		dealPanel.add(cardPanel, "cell 0 0,grow");
 		cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
 
-		DrawableTrainCarCard rainbow = new DrawableTrainCarCard(TrainColor.RAINBOW);
+		DrawableTrainCarCard card1 = new DrawableTrainCarCard(this.gameManager.getDeelCard(0).getColor());
 		DealtCardPanel cardPanel1 = new DealtCardPanel();
-		cardPanel1.setCard(rainbow);
+		cardPanel1.setCard(card1);
 		cardPanel.add(cardPanel1);
 
+		DrawableTrainCarCard card2 = new DrawableTrainCarCard(this.gameManager.getDeelCard(1).getColor());
 		DealtCardPanel cardPanel2 = new DealtCardPanel();
-		cardPanel2.setCard(rainbow);
+		cardPanel2.setCard(card2);
 		cardPanel.add(cardPanel2);
 
+		DrawableTrainCarCard card3 = new DrawableTrainCarCard(this.gameManager.getDeelCard(2).getColor());
 		DealtCardPanel cardPanel3 = new DealtCardPanel();
-		cardPanel3.setCard(rainbow);
+		cardPanel3.setCard(card3);
 		cardPanel.add(cardPanel3);
 
+		DrawableTrainCarCard card4 = new DrawableTrainCarCard(this.gameManager.getDeelCard(3).getColor());
 		DealtCardPanel cardPanel4 = new DealtCardPanel();
-		cardPanel4.setCard(rainbow);
+		cardPanel4.setCard(card4);
 		cardPanel.add(cardPanel4);
 
+		DrawableTrainCarCard card5 = new DrawableTrainCarCard(this.gameManager.getDeelCard(4).getColor());
 		DealtCardPanel cardPanel5 = new DealtCardPanel();
-		cardPanel5.setCard(rainbow);
+		cardPanel5.setCard(card5);
 		cardPanel.add(cardPanel5);
 
 		JPanel trainCardDeckPanel = new JPanel();
@@ -124,16 +137,22 @@ public class MainPanel extends JPanel {
 		dealPanel.add(trainCardDeckPanel, "cell 0 1,grow");
 		trainCardDeckPanel.setLayout(null);
 
-		final JLabel lblTrainCardCount = new JLabel("140");
+		final JLabel lblTrainCardCount = new JLabel(Integer.toString(this.gameManager.getSizeOfDeck()));
 		lblTrainCardCount.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblTrainCardCount.setBounds(10, 11, 27, 20);
 		trainCardDeckPanel.addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				int cardsLeft = Integer.parseInt(lblTrainCardCount.getText());
-				if (cardsLeft > 0) {
-					lblTrainCardCount.setText(Integer.toString(cardsLeft - 1));
-				}
+//				int cardsLeft = Integer.parseInt(lblTrainCardCount.getText());
+//				if (cardsLeft > 0) {
+//					lblTrainCardCount.setText(Integer.toString(cardsLeft - 1));
+//				}
+				System.out.println(MainPanel.this.gameManager.drawFromDeck().getColor().toString());
+				lblTrainCardCount.setText(Integer.toString(MainPanel.this.gameManager.getSizeOfDeck()));
+				
+				// TODO: Implement
+				
 			}
 		});
 		trainCardDeckPanel.add(lblTrainCardCount);
