@@ -1,5 +1,4 @@
 
-
 import objects.TrainCarCard;
 import objects.TrainCarDeal;
 import objects.TrainColor;
@@ -8,7 +7,7 @@ import org.junit.Test;
 
 /**
  * TODO Put here a description of what this class does.
- *
+ * 
  * @author samynpd. Created Mar 28, 2014.
  */
 public class TrainCarDeelTest {

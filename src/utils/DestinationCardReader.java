@@ -1,6 +1,8 @@
 package utils;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
@@ -11,21 +13,47 @@ import java.util.regex.Pattern;
 import objects.Destination;
 import objects.DestinationRoute;
 
-public class DestinationReader {
+public class DestinationCardReader {
+
+	private String fileName = "destinations.txt";
+	private File f;
 
 	private Set<DestinationRoute> routes = new HashSet<DestinationRoute>();
 
+	private static DestinationCardReader sInstance;
+
+	public static DestinationCardReader getInstance() {
+		if (sInstance == null) {
+			try {
+				sInstance = new DestinationCardReader();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		return sInstance;
+	}
+
+	private DestinationCardReader() throws FileNotFoundException {
+		this.f = new File(fileName);
+		if (!this.f.exists()) {
+			throw new FileNotFoundException(
+					"Could not find the file for the destination cards");
+		}
+	}
+
 	public Set<DestinationRoute> getRoutes() {
+		if (this.routes.isEmpty())
+			run();
 		return this.routes;
 	}
 
-	public void run() {
-		String filePath = "destinations.txt";
+	private void run() {
+
 		BufferedReader br = null;
 		Pattern pattern = Pattern.compile("(\\w+)");
 		try {
 			String line;
-			br = new BufferedReader(new FileReader(filePath));
+			br = new BufferedReader(new FileReader(this.f));
 
 			while ((line = br.readLine()) != null) {
 				// pre-define some variables
@@ -51,8 +79,9 @@ public class DestinationReader {
 
 				DestinationRoute startToEnd = new DestinationRoute(start, end,
 						score);
-//				DestinationRoute endToStart = new DestinationRoute(end, start,
-//						score);
+				// DestinationRoute endToStart = new DestinationRoute(end,
+				// start,
+				// score);
 
 				addRoute(startToEnd);
 

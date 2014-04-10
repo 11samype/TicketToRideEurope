@@ -33,7 +33,7 @@ Riga			780		48
 Petrograd		976		41
 Wilno			869		205
 Kyiv			913		293
-Bucurest		850		487
+Bucuresti		850		487
 Sofia			777		560
 Smyrna			852		718
 Constantinople	907		628

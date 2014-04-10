@@ -6,7 +6,6 @@ import net.miginfocom.swing.MigLayout;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 
@@ -39,7 +38,7 @@ public class MainPanel extends JPanel {
 	private final GameState gameState;
 
 	private PlayerPanel currentPlayerPanel;
-	private MapPanel mapPanel;
+	private JPanel mapPanel;
 
 	private HandCardPanel blackPanel;
 	private HandCardPanel whitePanel;
@@ -128,18 +127,18 @@ public class MainPanel extends JPanel {
 	}
 
 	private void addMapPanel() {
-		JPanel rootMapPanel = new JPanel() {
+		this.mapPanel = new JPanel() {
 			@Override
 			public boolean isOptimizedDrawingEnabled() {
 				return false;
 			}
 		};
-		LayoutManager overlay = new OverlayLayout(rootMapPanel);
-		rootMapPanel.setLayout(overlay);
-		add(rootMapPanel, "cell 0 1,grow");
+		LayoutManager overlay = new OverlayLayout(this.mapPanel);
+		this.mapPanel.setLayout(overlay);
+		add(this.mapPanel, "cell 0 1,grow");
 
-		this.mapPanel = getMapPanel("Europe");
-		rootMapPanel.add(this.mapPanel);
+
+		this.mapPanel.add(getMapPanel("Europe"));
 
 	}
 
@@ -150,7 +149,8 @@ public class MainPanel extends JPanel {
 		add(dealPanel, "cell 1 1,grow");
 
 		this.dealtCardsPanel = new JPanel();
-		dealtCardsPanel.setLayout(new BoxLayout(dealtCardsPanel, BoxLayout.Y_AXIS));
+		dealtCardsPanel.setLayout(new BoxLayout(dealtCardsPanel,
+				BoxLayout.Y_AXIS));
 		dealPanel.add(dealtCardsPanel, "cell 0 0,grow");
 
 		addTrainCarDeckPanel();
@@ -298,6 +298,14 @@ public class MainPanel extends JPanel {
 			this.deck = trainCarDeck;
 		}
 
+		private void simulateDrawCard() {
+			if (deck.size() > 0) {
+				Player current = (Player) gameState.getCurrentPlayer();
+				current.drawCardFromDeck(deck);
+				lblDestinationCardCount.setText(Integer.toString(deck.size()));
+			}
+		}
+
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
 			// int cardsLeft =
@@ -316,11 +324,10 @@ public class MainPanel extends JPanel {
 			playerHandPanel.remove(MainPanel.this.orangePanel);
 			playerHandPanel.remove(MainPanel.this.rainbowPanel);
 
+			simulateDrawCard();
+
 			Player currentPlayer = (Player) gameState.getCurrentPlayer();
 			TrainCarHand hand = currentPlayer.getHand();
-
-			currentPlayer.drawCardFromDeck(gameState.getCardManager()
-					.getTrainCarDeck());
 
 			MainPanel.this.blackPanel = new HandCardPanel(TrainColor.BLACK);
 			MainPanel.this.blackPanel.setNumCards(hand

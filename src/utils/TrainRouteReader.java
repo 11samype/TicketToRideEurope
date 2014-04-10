@@ -22,11 +22,33 @@ public class TrainRouteReader {
 	private File f;
 	private String fileFmt = "TrainRoutes-%s.txt";
 
-	public TrainRouteReader() throws FileNotFoundException {
+	private static TrainRouteReader sInstance;
+
+	public static TrainRouteReader getInstance() {
+		if (sInstance == null) {
+			try {
+				sInstance = new TrainRouteReader();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		return sInstance;
+	}
+
+	public static TrainRouteReader getLanguageInstance(String lang) {
+		try {
+			sInstance = new TrainRouteReader(lang);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return sInstance;
+	}
+
+	private TrainRouteReader() throws FileNotFoundException {
 		this("orig");
 	}
 
-	public TrainRouteReader(String lang) throws FileNotFoundException {
+	private TrainRouteReader(String lang) throws FileNotFoundException {
 		this.f = new File(String.format(fileFmt, lang));
 		if (!this.f.exists()) {
 			throw new FileNotFoundException("Could not find the " + lang
@@ -35,10 +57,12 @@ public class TrainRouteReader {
 	}
 
 	public HashMap<Destination, List<IRoute>> getGraph() {
+		if (this.graph.isEmpty())
+			run();
 		return this.graph;
 	}
 
-	public void run() {
+	private void run() {
 		// String filePath = String.format(fileFmt, lang);
 		BufferedReader br = null;
 		Pattern pattern = Pattern.compile("(\\w+)");

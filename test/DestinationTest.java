@@ -1,5 +1,4 @@
 
-
 import static org.junit.Assert.*;
 import objects.Destination;
 
@@ -11,8 +10,8 @@ public class DestinationTest {
 	public void testInitDestination() {
 		Destination d = new Destination("NonNull");
 		assertNotNull(d);
+
 		d = new Destination(null);
-		assertNotNull(d);
 		assertNull(d.getName());
 	}
 
@@ -42,6 +41,23 @@ public class DestinationTest {
 		Destination nullName = new Destination(null);
 		assertNotEquals(paris, nullName);
 		assertNotEquals(nullName, paris);
+	}
+
+	@Test
+	public void testBuildStation() {
+		Destination d = new Destination("place");
+		assertFalse(d.hasStation());
+		d.buildStation();
+		assertTrue(d.hasStation());
+	}
+
+	@Test
+	public void testBuildStationOnDestinationWithStation() {
+		Destination d = new Destination("place");
+		boolean tryBuild = d.buildStation();
+		assertTrue(tryBuild);
+		tryBuild = d.buildStation();
+		assertFalse(tryBuild);
 	}
 
 }

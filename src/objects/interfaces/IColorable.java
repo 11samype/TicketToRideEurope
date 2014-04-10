@@ -4,9 +4,7 @@ import java.awt.Color;
 
 import objects.TrainColor;
 
-public interface ITrainItem {
-
+public interface IColorable {
 	public TrainColor getColor();
-
 	public Color getAwtColor();
 }

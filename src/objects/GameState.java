@@ -1,9 +1,7 @@
 package objects;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import managers.TurnManager;
 import objects.interfaces.IPlayer;
 
 public class GameState {
@@ -119,7 +117,8 @@ public class GameState {
 		}
 
 		public void rotatePlayers() {
-			this.currentPlayerIndex = (this.currentPlayerIndex + 1) % getPlayers().size();
+			this.currentPlayerIndex = (this.currentPlayerIndex + 1)
+					% getPlayers().size();
 		}
 
 		private List<IPlayer> getPlayers() {

@@ -10,7 +10,6 @@ import javax.swing.BoxLayout;
 import objects.Player;
 import objects.interfaces.IPlayer;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 public class PlayerPanel extends JPanel {
@@ -26,7 +25,7 @@ public class PlayerPanel extends JPanel {
 
 	/**
 	 * Create the panel.
-	 *
+	 * 
 	 * @param player
 	 */
 	public PlayerPanel(Player player) {
@@ -52,8 +51,10 @@ public class PlayerPanel extends JPanel {
 	public void setPlayer(IPlayer player) {
 		this.player = (Player) player;
 		this.lblName.setText(player.getName());
-		this.lblStations.setText(String.format(fmtStations, player.getNumStations()));
-		this.lblTrainCars.setText(String.format(fmtTrainCars, player.getNumTrains()));
+		this.lblStations.setText(String.format(fmtStations,
+				player.getNumStations()));
+		this.lblTrainCars.setText(String.format(fmtTrainCars,
+				player.getNumTrains()));
 		this.lblPoints.setText(String.format(fmtPoints, player.getScore()));
 		this.repaint();
 		this.revalidate();

@@ -43,6 +43,7 @@ public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 		return this.deal.get(index);
 	}
 
+	@Override
 	public boolean isDealFull() {
 		return (getSize() >= MAX_DEALT_CARDS);
 	}

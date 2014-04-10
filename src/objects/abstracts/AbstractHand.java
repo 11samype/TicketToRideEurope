@@ -2,8 +2,6 @@ package objects.abstracts;
 
 import java.util.ArrayList;
 
-import objects.TrainCarCard;
-import objects.TrainColor;
 import objects.interfaces.ICard;
 import objects.interfaces.IHand;
 
@@ -25,7 +23,6 @@ public abstract class AbstractHand<K extends ICard> implements IHand<K> {
 	public void addCard(K card) {
 		this.hand.add(card);
 	}
-
 
 	@Override
 	public abstract int numInHand(K card);
