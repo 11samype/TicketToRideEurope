@@ -18,9 +18,11 @@ public interface IPlayer {
 
 	public int getScore();
 
-	public IHand getHand();
+	public IHand<?> getHand();
 
 	public List<DestinationCard> getDestinations();
 
-	public List<TrainCar> getTrains();
+	public int getNumTrains();
+
+	public int getNumStations();
 }

@@ -22,7 +22,8 @@ public class PlayerTest {
 		assertEquals(0, p.getScore());
 		assertEquals(0, p.getHand().size());
 		assertEquals(0, p.getDestinations().size());
-		assertEquals(0, p.getTrains().size());
+		assertEquals(Player.MAX_NUM_TRAINS, p.getNumTrains());
+		assertEquals(Player.MAX_NUM_STATIONS, p.getNumStations());
 	}
 
 	@Test

@@ -5,21 +5,17 @@ import java.util.ArrayList;
 import objects.interfaces.ICard;
 import objects.interfaces.IDeal;
 
-/**
- * TODO Put here a description of what this class does.
- *
- * @author samynpd. Created Mar 28, 2014.
- */
 public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 
 	protected ArrayList<K> deal = new ArrayList<K>();
+	protected static final int MAX_DEALT_CARDS = 5;
 
 	@Override
 	public void addCard(K card) {
 
-		if (this.deal.size() >= 5) {
+		if (this.deal.size() >= MAX_DEALT_CARDS) {
 			throw new UnsupportedOperationException(
-					"Deal can't have more than 5 cards!");
+					"Deal can't have more than " + MAX_DEALT_CARDS + " cards!");
 		}
 
 		this.deal.add(card);
@@ -28,17 +24,26 @@ public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 
 	@Override
 	public K removeCard(K card) {
-		this.deal.remove(card);
-		return card;
+		if (this.deal.remove(card))
+			return card;
+		else
+			return null;
+	}
+
+	public int getSize() {
+		return this.deal.size();
 	}
 
 	@Override
-	public K removeCard(int index) {
+	public K removeCardAtPosition(int index) {
 		return this.deal.remove(index);
 	}
 
-	public K getCard(int index) {
+	public K getCardAtPosition(int index) {
 		return this.deal.get(index);
 	}
 
+	public boolean isDealFull() {
+		return (getSize() >= MAX_DEALT_CARDS);
+	}
 }

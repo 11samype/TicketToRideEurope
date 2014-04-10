@@ -34,7 +34,7 @@ public class CardManager {
 	// }
 
 	public TrainCarCard drawFromDeal(int index) {
-		TrainCarCard cardToReturn = this.deal.removeCard(index);
+		TrainCarCard cardToReturn = this.deal.removeCardAtPosition(index);
 		fillDealFromDeck();
 		return cardToReturn;
 	}
@@ -44,7 +44,7 @@ public class CardManager {
 	}
 
 	public TrainCarCard getDealCard(int index) {
-		return this.deal.getCard(index);
+		return this.deal.getCardAtPosition(index);
 	}
 
 	public int getSizeOfDeck() {

@@ -4,7 +4,7 @@ public interface IDeal<K> {
 
 	public K removeCard(K card);
 	
-	public K removeCard(int index);
+	public K removeCardAtPosition(int index);
 
 	public void addCard(K card);
 	
