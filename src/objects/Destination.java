@@ -2,9 +2,11 @@ package objects;
 
 public class Destination {
 	private String name;
+	protected boolean hasStation;
 
 	public Destination(String name) {
 		this.name = name;
+		this.hasStation = false;
 	}
 
 	public String getName() {
@@ -14,6 +16,18 @@ public class Destination {
 	@Override
 	public String toString() {
 		return this.name;
+	}
+
+	public boolean hasStation() {
+		return hasStation;
+	}
+
+	public boolean buildStation() {
+		if (!hasStation) {
+			hasStation = true;
+			return true;
+		}
+		return false;
 	}
 
 	@Override

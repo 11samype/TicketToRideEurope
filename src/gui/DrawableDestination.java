@@ -17,10 +17,9 @@ public class DrawableDestination extends Destination implements IDrawable {
 
 	public final static int DOT_RADIUS = 10;
 	private final static Color DOT_COLOR = Color.RED;
-	private final static Color SELECTED_COLOR = Color.YELLOW;
+	private final static Color SELECTED_COLOR = Color.BLACK;
 
 	private final Point location;
-	private boolean hasTrainStation;
 	private boolean isSelected;
 
 	public DrawableDestination(String name, Point loc) {

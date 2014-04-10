@@ -3,6 +3,7 @@ package objects.abstracts;
 import java.util.ArrayList;
 import java.util.List;
 
+import objects.Destination;
 import objects.DestinationCard;
 import objects.DestinationDeck;
 import objects.TrainCar;
@@ -32,7 +33,7 @@ public class AbstractPlayer implements IPlayer {
 
 	public AbstractPlayer(String name) {
 		this.name = name;
-		this.numTrains= MAX_NUM_TRAINS;
+		this.numTrains = MAX_NUM_TRAINS;
 		this.numStations = MAX_NUM_STATIONS;
 	}
 
@@ -47,13 +48,18 @@ public class AbstractPlayer implements IPlayer {
 	}
 
 	public void claimRoute(TrainRoute route) {
-		if (hand.numInHand(route.color) >= route.length ) {
+		if (hand.numInHand(route.color) >= route.length) {
 			this.routes.add(route);
+			this.numTrains -= route.length;
 			// TODO: Remove the cards from the players hand
 			for (int i = 0; i < route.length; i++) {
 				this.hand.removeCard(new TrainCarCard(route.getColor()));
 			}
 		}
+	}
+
+	public boolean placeStationOnDestination(Destination dest) {
+		return dest.buildStation();
 	}
 
 	@Override
