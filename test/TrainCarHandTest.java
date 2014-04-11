@@ -5,13 +5,6 @@ import objects.TrainColor;
 
 import org.junit.Test;
 
-
-/**
- * TODO Put here a description of what this class does.
- *
- * @author samynpd.
- *         Created Apr 11, 2014.
- */
 public class TrainCarHandTest {
 
 	@Test
@@ -44,6 +37,30 @@ public class TrainCarHandTest {
 		assertEquals(hand.getCard(1), red);
 		
 		hand.removeCard(blue);
+		assertEquals(hand.getCard(0), red);
+	}
+	
+	@Test
+	public void testRemoveCardWithColor() {
+		TrainCarHand hand = new TrainCarHand();
+		
+		TrainCarCard black = new TrainCarCard(TrainColor.BLACK);
+		TrainCarCard blue = new TrainCarCard(TrainColor.BLUE);
+		TrainCarCard red = new TrainCarCard(TrainColor.RED);
+		
+		hand.addCard(black);
+		hand.addCard(blue);
+		hand.addCard(red);
+		
+		assertEquals(3, hand.size());
+		
+		hand.removeCard(TrainColor.BLACK);
+		
+		assertEquals(2, hand.size());
+		assertEquals(hand.getCard(0), blue);
+		assertEquals(hand.getCard(1), red);
+		
+		hand.removeCard(TrainColor.BLUE);
 		assertEquals(hand.getCard(0), red);
 	}
 

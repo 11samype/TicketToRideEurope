@@ -23,5 +23,19 @@ public class TrainCarHand extends AbstractHand<TrainCarCard> {
 
 		return count;
 	}
+	
+	public void removeCard(TrainColor color) {
+		TrainCarCard cardToRemove;
+		
+		for (int i = 0; i < this.hand.size(); i++) {
+			TrainCarCard cardToTest = this.hand.get(i);
+			if(cardToTest.getColor() == color) {
+				cardToRemove = cardToTest;
+				this.hand.remove(cardToRemove);
+				return;
+			}
+		}
+		
+	}
 
 }

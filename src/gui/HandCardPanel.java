@@ -38,6 +38,8 @@ public class HandCardPanel extends JPanel {
 	}
 
 	public synchronized BufferedImage getCardImage() {
+		// loads card image from file
+		
 		if (this.cardImage == null) {
 			try {
 				this.cardImage = ImageIO.read(new File("img//"
@@ -88,6 +90,15 @@ public class HandCardPanel extends JPanel {
 		else
 			g.fillOval(x, y, radius, radius);
 		g.setColor(save);
+	}
+
+	
+	public int getNumCards() {
+		return this.numCards;
+	}
+	
+	public BufferedImage cardImage() {
+		return this.cardImage;
 	}
 
 }

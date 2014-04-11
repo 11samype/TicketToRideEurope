@@ -4,6 +4,8 @@ import java.util.List;
 
 import objects.DestinationCard;
 import objects.DestinationDeck;
+import objects.TrainCarCard;
+import objects.TrainCarDeal;
 import objects.TrainCarDeck;
 
 public interface IPlayer {
@@ -22,4 +24,6 @@ public interface IPlayer {
 	public int getNumTrains();
 
 	public int getNumStations();
+	
+	public void drawCardFromDeal(TrainCarDeal deal, TrainCarCard card);
 }

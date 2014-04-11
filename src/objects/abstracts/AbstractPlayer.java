@@ -8,6 +8,7 @@ import objects.DestinationCard;
 import objects.DestinationDeck;
 import objects.DestinationHand;
 import objects.TrainCarCard;
+import objects.TrainCarDeal;
 import objects.TrainCarDeck;
 import objects.TrainCarHand;
 import objects.TrainRoute;
@@ -52,8 +53,10 @@ public class AbstractPlayer implements IPlayer {
 			this.numTrains -= route.length;
 			// TODO: Remove the cards from the players hand
 			for (int i = 0; i < route.length; i++) {
-				this.hand.removeCard(new TrainCarCard(route.getColor()));
+				this.hand.removeCard(route.getColor());
 			}
+		} else {
+			throw new IndexOutOfBoundsException("Not enough cards for route!");
 		}
 	}
 	
@@ -105,6 +108,12 @@ public class AbstractPlayer implements IPlayer {
 	@Override
 	public int getNumStations() {
 		return this.numStations;
+	}
+
+	@Override
+	public void drawCardFromDeal(TrainCarDeal deal, TrainCarCard card) {
+		this.hand.addCard(deal.removeCard(card));
+		
 	}
 
 }
