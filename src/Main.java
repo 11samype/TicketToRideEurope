@@ -8,8 +8,7 @@ import gui.DrawableDestination;
 import gui.MainPanel;
 import gui.MapPanel;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import objects.Destination;
 import objects.DestinationRoute;
@@ -28,7 +27,7 @@ public class Main {
 			@Override
 			public void run() {
 				final JFrame window = new JFrame("TicketToRide Europe");
-				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 				MainPanel mainPanel = new MainPanel();
 

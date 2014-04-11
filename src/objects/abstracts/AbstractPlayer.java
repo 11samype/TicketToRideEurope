@@ -59,21 +59,21 @@ public class AbstractPlayer implements IPlayer {
 			throw new IndexOutOfBoundsException("Not enough cards for route!");
 		}
 	}
-	
+
 	public Object[][] getDestinationsInJTableFormat() {
-		
+
 		Object[][] rowData = new Object[destinations.size()][3];
-		
+
 		for (int i = 0; i < destinations.size(); i++) {
-			Object[] toadd = { destinations.getCard(i).getRoute().getStart().toString() , 
+			Object[] toadd = { destinations.getCard(i).getRoute().getStart().toString() ,
 					destinations.getCard(i).getRoute().getEnd().toString() ,
 					destinations.getCard(i).getRoute().getScore() };
-			
+
 			rowData[i] = toadd;
 			}
-		
+
 		return rowData;
-		
+
 	}
 
 	public boolean placeStationOnDestination(Destination dest) {
