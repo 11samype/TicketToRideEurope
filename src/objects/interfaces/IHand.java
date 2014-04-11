@@ -13,8 +13,8 @@ public interface IHand<K> {
 
 //	public void playCard(int index);
 
-	int numInHand(K card);
-
 	public int size();
+	
+	public K getCard(int index);
 
 }

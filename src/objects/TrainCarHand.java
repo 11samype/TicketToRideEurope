@@ -8,7 +8,6 @@ public class TrainCarHand extends AbstractHand<TrainCarCard> {
 		super();
 	}
 
-	@Override
 	public int numInHand(TrainCarCard card) {
 		return numInHand(card.getColor());
 	}

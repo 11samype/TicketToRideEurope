@@ -6,7 +6,6 @@ import net.miginfocom.swing.MigLayout;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 
@@ -51,6 +50,8 @@ public class MainPanel extends JPanel {
 	private HandCardPanel orangePanel;
 
 	private JPanel playerHandPanel;
+	
+	private JScrollPane destScrollPane;
 
 	// private GameManager gameManager;
 
@@ -70,6 +71,8 @@ public class MainPanel extends JPanel {
 	public HandCardPanel rainbowPanel;
 
 	private JPanel dealtCardsPanel;
+	
+	private HandCardPanel[] handPanels = new HandCardPanel[9];
 
 	public MainPanel() {
 		setLayout(new MigLayout(
@@ -220,7 +223,7 @@ public class MainPanel extends JPanel {
 		Object[][] rowData = { { "Start", "End", "Value" } };
 		Object[] columnNames = { "Destination Start", "Destination End",
 				"Points" };
-		destinationTable = new JTable(rowData, columnNames) {
+		this.destinationTable = new JTable(rowData, columnNames) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -228,65 +231,29 @@ public class MainPanel extends JPanel {
 
 		};
 
-		JScrollPane destScrollPane = new JScrollPane(destinationTable);
+		this.destScrollPane = new JScrollPane(this.destinationTable);
 		destScrollPane
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		destinationTable.setFillsViewportHeight(true);
-		playerInfoPanel.add(destScrollPane, "cell 0 0,grow");
+		this.destinationTable.setFillsViewportHeight(true);
+		this.playerInfoPanel.add(destScrollPane, "cell 0 0,grow");
 
 	}
 
 	private void addHandPanel() {
 		this.playerHandPanel = new JPanel();
-		this.playerHandPanel.setLayout(new BoxLayout(playerHandPanel,
+		this.playerHandPanel.setLayout(new BoxLayout(this.playerHandPanel,
 				BoxLayout.X_AXIS));
-		playerInfoPanel.add(this.playerHandPanel, "cell 1 0,grow");
-
-		// for (TrainColor color : TrainColor.getAllColors()) {
-		// HandCardPanel handCardPanel = new HandCardPanel(color);
-		// handCardPanel.setNumCards(this.gameManager.getDeck().numInDeck(color));
-		// panel_1.add(new HandCardPanel(color));
-		//
-		// }
-
-		Player currentPlayer = (Player) gameState.getCurrentPlayer();
+		this.playerInfoPanel.add(this.playerHandPanel, "cell 1 0,grow");
+		
+		Player currentPlayer = (Player) this.gameState.getCurrentPlayer();
 		TrainCarHand hand = currentPlayer.getHand();
-
-		this.blackPanel = new HandCardPanel(TrainColor.BLACK);
-		this.blackPanel.setNumCards(hand.numInHand(TrainColor.BLACK));
-		this.playerHandPanel.add(this.blackPanel);
-
-		this.whitePanel = new HandCardPanel(TrainColor.WHITE);
-		this.whitePanel.setNumCards(hand.numInHand(TrainColor.WHITE));
-		this.playerHandPanel.add(this.whitePanel);
-
-		this.redPanel = new HandCardPanel(TrainColor.RED);
-		this.redPanel.setNumCards(hand.numInHand(TrainColor.RED));
-		this.playerHandPanel.add(this.redPanel);
-
-		this.greenPanel = new HandCardPanel(TrainColor.GREEN);
-		this.greenPanel.setNumCards(hand.numInHand(TrainColor.GREEN));
-		this.playerHandPanel.add(this.greenPanel);
-
-		this.bluePanel = new HandCardPanel(TrainColor.BLUE);
-		this.bluePanel.setNumCards(hand.numInHand(TrainColor.BLUE));
-		this.playerHandPanel.add(this.bluePanel);
-
-		this.yellowPanel = new HandCardPanel(TrainColor.YELLOW);
-		this.yellowPanel.setNumCards(hand.numInHand(TrainColor.YELLOW));
-		this.playerHandPanel.add(this.yellowPanel);
-
-		this.purplePanel = new HandCardPanel(TrainColor.PINK);
-		this.purplePanel.setNumCards(hand.numInHand(TrainColor.PINK));
-		this.playerHandPanel.add(this.purplePanel);
-
-		this.orangePanel = new HandCardPanel(TrainColor.ORANGE);
-		this.orangePanel.setNumCards(hand.numInHand(TrainColor.ORANGE));
-		this.playerHandPanel.add(this.orangePanel);
-
-		this.rainbowPanel = new HandCardPanel(TrainColor.RAINBOW);
-		this.rainbowPanel.setNumCards(hand.numInHand(TrainColor.RAINBOW));
-		this.playerHandPanel.add(this.rainbowPanel);
+		List<TrainColor> colors = TrainColor.getAllColors();
+		for (int i = 0; i < colors.size() ; i++) {
+			HandCardPanel handCardPanel = new HandCardPanel(colors.get(i));
+			handCardPanel.setNumCards(hand.numInHand(colors.get(i)));
+			this.playerHandPanel.add(new HandCardPanel(colors.get(i)));
+			this.handPanels[i] = handCardPanel;
+		}
 
 	}
 
@@ -306,67 +273,23 @@ public class MainPanel extends JPanel {
 			// lblTrainCardCount.setText(Integer.toString(cardsLeft - 1));
 			// }
 
-			playerHandPanel.remove(MainPanel.this.blackPanel);
-			playerHandPanel.remove(MainPanel.this.whitePanel);
-			playerHandPanel.remove(MainPanel.this.redPanel);
-			playerHandPanel.remove(MainPanel.this.greenPanel);
-			playerHandPanel.remove(MainPanel.this.bluePanel);
-			playerHandPanel.remove(MainPanel.this.yellowPanel);
-			playerHandPanel.remove(MainPanel.this.purplePanel);
-			playerHandPanel.remove(MainPanel.this.orangePanel);
-			playerHandPanel.remove(MainPanel.this.rainbowPanel);
-
-			Player currentPlayer = (Player) gameState.getCurrentPlayer();
+			Player currentPlayer = (Player) MainPanel.this.gameState.getCurrentPlayer();
 			TrainCarHand hand = currentPlayer.getHand();
 
-			currentPlayer.drawCardFromDeck(gameState.getCardManager()
+			currentPlayer.drawCardFromDeck(MainPanel.this.gameState.getCardManager()
 					.getTrainCarDeck());
 
-			MainPanel.this.blackPanel = new HandCardPanel(TrainColor.BLACK);
-			MainPanel.this.blackPanel.setNumCards(hand
-					.numInHand(TrainColor.BLACK));
-			MainPanel.this.playerHandPanel.add(MainPanel.this.blackPanel);
-
-			MainPanel.this.whitePanel = new HandCardPanel(TrainColor.WHITE);
-			MainPanel.this.whitePanel.setNumCards(hand
-					.numInHand(TrainColor.WHITE));
-			MainPanel.this.playerHandPanel.add(MainPanel.this.whitePanel);
-
-			MainPanel.this.redPanel = new HandCardPanel(TrainColor.RED);
-			MainPanel.this.redPanel.setNumCards(hand.numInHand(TrainColor.RED));
-			MainPanel.this.playerHandPanel.add(MainPanel.this.redPanel);
-
-			MainPanel.this.greenPanel = new HandCardPanel(TrainColor.GREEN);
-			MainPanel.this.greenPanel.setNumCards(hand
-					.numInHand(TrainColor.GREEN));
-			MainPanel.this.playerHandPanel.add(MainPanel.this.greenPanel);
-
-			MainPanel.this.bluePanel = new HandCardPanel(TrainColor.BLUE);
-			MainPanel.this.bluePanel.setNumCards(hand
-					.numInHand(TrainColor.BLUE));
-			MainPanel.this.playerHandPanel.add(MainPanel.this.bluePanel);
-
-			MainPanel.this.yellowPanel = new HandCardPanel(TrainColor.YELLOW);
-			MainPanel.this.yellowPanel.setNumCards(hand
-					.numInHand(TrainColor.YELLOW));
-			MainPanel.this.playerHandPanel.add(MainPanel.this.yellowPanel);
-
-			MainPanel.this.purplePanel = new HandCardPanel(TrainColor.PINK);
-			MainPanel.this.purplePanel.setNumCards(hand
-					.numInHand(TrainColor.PINK));
-			MainPanel.this.playerHandPanel.add(MainPanel.this.purplePanel);
-
-			MainPanel.this.orangePanel = new HandCardPanel(TrainColor.ORANGE);
-			MainPanel.this.orangePanel.setNumCards(hand
-					.numInHand(TrainColor.ORANGE));
-			MainPanel.this.playerHandPanel.add(MainPanel.this.orangePanel);
-
-			MainPanel.this.rainbowPanel = new HandCardPanel(TrainColor.RAINBOW);
-			MainPanel.this.rainbowPanel.setNumCards(hand
-					.numInHand(TrainColor.RAINBOW));
-			MainPanel.this.playerHandPanel.add(MainPanel.this.rainbowPanel);
-
-			lblTrainCardCount.setText(Integer.toString(cardManager
+			List<TrainColor> colors = TrainColor.getAllColors();
+			for (int i = 0; i < colors.size() ; i++) {
+				MainPanel.this.handPanels[i].setNumCards(hand.numInHand(colors.get(i)));
+				MainPanel.this.handPanels[i].repaint();
+				MainPanel.this.handPanels[i].validate();
+			}
+			
+			//MainPanel.this.repaint();
+			//MainPanel.this.validate();
+			
+			MainPanel.this.lblTrainCardCount.setText(Integer.toString(MainPanel.this.cardManager
 					.getTrainCarDeck().size()));
 		}
 	}
@@ -380,10 +303,10 @@ public class MainPanel extends JPanel {
 		}
 
 		private void simulateDrawCard() {
-			if (deck.size() > 0) {
-				Player current = (Player) gameState.getCurrentPlayer();
-				current.drawCardFromDeck(deck);
-				lblDestinationCardCount.setText(Integer.toString(deck.size()));
+			if (this.deck.size() > 0) {
+				Player current = (Player) MainPanel.this.gameState.getCurrentPlayer();
+				current.drawCardFromDeck(this.deck);
+				MainPanel.this.lblDestinationCardCount.setText(Integer.toString(this.deck.size()));
 			}
 		}
 
@@ -394,13 +317,35 @@ public class MainPanel extends JPanel {
 			// SWITCH PLAYER WHENEVER DEST CARD CHOSEN
 
 			simulateDrawCard();
+			
+			//Object[][] rowData = { { "Start", "End", "Value" } };
+			Player current = (Player) MainPanel.this.gameState.getCurrentPlayer();
+			Object[][] rowData = current.getDestinationsInJTableFormat();
+			Object[] columnNames = { "Destination Start", "Destination End",
+					"Points" };
+			
+			MainPanel.this.destinationTable = new JTable(rowData, columnNames) {
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+
+			};
+
+			MainPanel.this.destScrollPane = new JScrollPane(MainPanel.this.destinationTable);
+			destScrollPane
+					.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+			MainPanel.this.destinationTable.setFillsViewportHeight(true);
+			//MainPanel.this.playerInfoPanel.add(destScrollPane, "cell 0 0,grow");
+			
+			MainPanel.this.destinationTable.repaint();
 
 			// remove(currentPlayerPanel);
 			// turnManager.nextPlayer();
-
-			if (!deck.isEmpty()) {
-				gameState.getTurnManager().rotatePlayers();
-				currentPlayerPanel.setPlayer(gameState.getCurrentPlayer());
+			
+			if (!this.deck.isEmpty()) {
+				MainPanel.this.gameState.getTurnManager().rotatePlayers();
+				MainPanel.this.currentPlayerPanel.setPlayer(gameState.getCurrentPlayer());
 			}
 
 			// MainPanel.this.currentPlayerPanel = new PlayerPanel(

@@ -6,6 +6,7 @@ import java.util.List;
 import objects.Destination;
 import objects.DestinationCard;
 import objects.DestinationDeck;
+import objects.DestinationHand;
 import objects.TrainCar;
 import objects.TrainCarCard;
 import objects.TrainCarDeck;
@@ -23,7 +24,7 @@ public class AbstractPlayer implements IPlayer {
 	protected int numTrains;
 	protected int numStations;
 	protected TrainCarHand hand = new TrainCarHand();
-	protected List<DestinationCard> destinations = new ArrayList<DestinationCard>();
+	protected DestinationHand destinations = new DestinationHand();
 	protected int score;
 	protected List<AbstractRoute> routes = new ArrayList<AbstractRoute>();
 
@@ -44,11 +45,11 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public void drawCardFromDeck(DestinationDeck deck) {
-		this.destinations.add(deck.draw());
+		this.destinations.addCard(deck.draw());
 	}
 
 	public void claimRoute(TrainRoute route) {
-		if (hand.numInHand(route.color) >= route.length) {
+		if (this.hand.numInHand(route.color) >= route.length) {
 			this.routes.add(route);
 			this.numTrains -= route.length;
 			// TODO: Remove the cards from the players hand
@@ -56,6 +57,22 @@ public class AbstractPlayer implements IPlayer {
 				this.hand.removeCard(new TrainCarCard(route.getColor()));
 			}
 		}
+	}
+	
+	public Object[][] getDestinationsInJTableFormat() {
+		
+		Object[][] rowData = new Object[destinations.size()][3];
+		
+		for (int i = 0; i < destinations.size(); i++) {
+			Object[] toadd = { destinations.getCard(i).getRoute().getStart().toString() , 
+					destinations.getCard(i).getRoute().getEnd().toString() ,
+					destinations.getCard(i).getRoute().getScore() };
+			
+			rowData[i] = toadd;
+			}
+		
+		return rowData;
+		
 	}
 
 	public boolean placeStationOnDestination(Destination dest) {
@@ -79,7 +96,7 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public List<DestinationCard> getDestinations() {
-		return this.destinations;
+		return this.destinations.hand;
 	}
 
 	@Override

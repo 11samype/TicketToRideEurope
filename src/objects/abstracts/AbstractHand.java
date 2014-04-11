@@ -26,13 +26,15 @@ public abstract class AbstractHand<K extends ICard> implements IHand<K> {
 		this.hand.add(card);
 	}
 
-
-	@Override
-	public abstract int numInHand(K card);
-
 	@Override
 	public int size() {
 		return this.hand.size();
+	}
+	
+	@Override
+	public K getCard(int index) {
+		
+		return this.hand.get(index);
 	}
 
 }
