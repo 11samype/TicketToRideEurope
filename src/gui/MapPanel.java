@@ -58,6 +58,10 @@ public class MapPanel extends JPanel {
 	public void setMapName(String name) {
 		this.mapName = name;
 	}
+	
+	public String getMapName() {
+		return this.mapName;
+	}
 
 	private void getDrawableDestinations() {
 		DestinationLocationReader destReader = DestinationLocationReader

@@ -72,5 +72,9 @@ public class PlayerPanel extends JPanel {
 		label.setFont(new Font("Lucida Bright", Font.BOLD, 14));
 		return label;
 	}
+	
+	public IPlayer getPlayer() {
+		return this.player;
+	}
 
 }

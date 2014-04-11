@@ -178,35 +178,15 @@ public class MainPanel extends JPanel {
 	}
 
 	private void dealCardsToDealPanel() {
-		DrawableTrainCarCard card1 = new DrawableTrainCarCard(cardManager
-				.getDealCard(0).getColor());
-		DealtCardPanel cardPanel1 = new DealtCardPanel();
-		cardPanel1.setCard(card1);
-		dealtCardsPanel.add(cardPanel1);
-
-		DrawableTrainCarCard card2 = new DrawableTrainCarCard(cardManager
-				.getDealCard(1).getColor());
-		DealtCardPanel cardPanel2 = new DealtCardPanel();
-		cardPanel2.setCard(card2);
-		dealtCardsPanel.add(cardPanel2);
-
-		DrawableTrainCarCard card3 = new DrawableTrainCarCard(cardManager
-				.getDealCard(2).getColor());
-		DealtCardPanel cardPanel3 = new DealtCardPanel();
-		cardPanel3.setCard(card3);
-		dealtCardsPanel.add(cardPanel3);
-
-		DrawableTrainCarCard card4 = new DrawableTrainCarCard(cardManager
-				.getDealCard(3).getColor());
-		DealtCardPanel cardPanel4 = new DealtCardPanel();
-		cardPanel4.setCard(card4);
-		dealtCardsPanel.add(cardPanel4);
-
-		DrawableTrainCarCard card5 = new DrawableTrainCarCard(cardManager
-				.getDealCard(4).getColor());
-		DealtCardPanel cardPanel5 = new DealtCardPanel();
-		cardPanel5.setCard(card5);
-		dealtCardsPanel.add(cardPanel5);
+		for (int i = 0; i < 5; i++) {
+			
+			DrawableTrainCarCard card = new DrawableTrainCarCard(cardManager
+					.getDealCard(i).getColor());
+			DealtCardPanel cardPanel = new DealtCardPanel();
+			cardPanel.setCard(card);
+			dealtCardsPanel.add(cardPanel);
+			
+		}
 
 	}
 
@@ -291,12 +271,12 @@ public class MainPanel extends JPanel {
 			List<TrainColor> colors = TrainColor.getAllColors();
 			for (int i = 0; i < colors.size() ; i++) {
 				MainPanel.this.handPanels[i].setNumCards(hand.numInHand(colors.get(i)));
-				MainPanel.this.handPanels[i].repaint();
-				MainPanel.this.handPanels[i].validate();
+				//MainPanel.this.handPanels[i].repaint();
+				//MainPanel.this.handPanels[i].validate();
 			}
 			
-			//MainPanel.this.repaint();
-			//MainPanel.this.validate();
+			MainPanel.this.repaint();
+			MainPanel.this.validate();
 			
 			MainPanel.this.lblTrainCardCount.setText(Integer.toString(MainPanel.this.cardManager
 					.getTrainCarDeck().size()));
