@@ -80,5 +80,14 @@ public class TrainCarDeckTest {
 
 		assertEquals(deck1.size(), deck2.size());
 	}
+	
+	@Test
+	public void testNumInDeck() {
+		TrainCarDeck deck = new TrainCarDeck();
+		
+		for (int i = 0; i < 5; i++) {
+			
+		}
+	}
 
 }

@@ -29,23 +29,4 @@ public class TrainCarDeck extends AbstractDeck<TrainCarCard> {
 
 	}
 
-	@Override
-	public int numInDeck(TrainCarCard card) {
-
-		return this.numInDeck(card.getColor());
-
-	}
-
-	public int numInDeck(final TrainColor color) {
-
-		int count = 0;
-
-		for (int i = 0; i < this.cards.size(); i++) {
-			if (this.cards.get(i).getColor().equals(color)) {
-				count++;
-			}
-		}
-
-		return count;
-	}
 }

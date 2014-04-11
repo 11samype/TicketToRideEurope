@@ -62,5 +62,15 @@ public class GameStateTest {
 		turnManager.rotatePlayers();
 		assertSame(game.getCurrentPlayer(), players.get(0));
 	}
+	
+	@Test
+	public void testgetPlayers() {
+		List<IPlayer> players = new ArrayList<IPlayer>();
+		for (int i = 0; i < 5; i++) {
+			players.add(new Player());
+		}
+		GameState game = GameState.getInstance().withPlayers(players);
+		assertEquals(game.getPlayers(), players);
+	}
 
 }

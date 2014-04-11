@@ -67,6 +67,7 @@ public abstract class AbstractRoute implements IRoute {
 		return result;
 	}
 
+	/*
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -89,6 +90,7 @@ public abstract class AbstractRoute implements IRoute {
 		} else if (!(start.equals(other.start) || start.equals(other.end)))
 			return false;
 		return true;
-
+	 
 	}
+	*/
 }
