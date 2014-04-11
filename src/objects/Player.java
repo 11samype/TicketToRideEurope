@@ -12,7 +12,7 @@ public class Player extends AbstractPlayer {
 	private TrainColor color;
 
 	public Player() {
-		this("New Player");
+		super();
 	}
 
 	public Player(String name) {
