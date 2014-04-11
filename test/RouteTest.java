@@ -90,14 +90,13 @@ public class RouteTest {
 	public void testGetLength() {
 		assertEquals(3, trainRC.getLength());
 
-		assertEquals(1, destR.getScore());
-		assertEquals(5, destR_score.getScore());
-
 	}
 
 	@Test
 	public void testGetScore() {
-
+		assertEquals(4, trainRC.getScore());
+		assertEquals(1, destR.getScore());
+		assertEquals(5, destR_score.getScore());
 	}
 
 	@Test
