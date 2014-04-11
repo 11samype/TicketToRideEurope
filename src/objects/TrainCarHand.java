@@ -23,5 +23,4 @@ public class TrainCarHand extends AbstractHand<TrainCarCard> {
 
 		return count;
 	}
-
 }

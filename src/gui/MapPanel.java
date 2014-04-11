@@ -25,7 +25,7 @@ public class MapPanel extends JPanel {
 	private Repainter repainterThread;
 	private BufferedImage bgImg;
 
-	private List<IDrawable> drawables = new ArrayList<>();
+	private List<IDrawable> drawables = new ArrayList<IDrawable>();
 	private String mapName;
 	private boolean isPaused = false;
 

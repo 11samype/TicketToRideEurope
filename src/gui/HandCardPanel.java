@@ -15,11 +15,6 @@ import javax.swing.JPanel;
 import objects.TrainCarCard;
 import objects.TrainColor;
 
-/**
- * TODO Put here a description of what this class does.
- * 
- * @author samynpd. Created Mar 28, 2014.
- */
 public class HandCardPanel extends JPanel {
 
 	private BufferedImage cardImage;
@@ -35,6 +30,12 @@ public class HandCardPanel extends JPanel {
 
 	public void setNumCards(int num) {
 		this.numCards = num;
+		this.repaint();
+		this.revalidate();
+	}
+
+	public int getNumCards() {
+		return this.numCards;
 	}
 
 	public synchronized BufferedImage getCardImage() {
