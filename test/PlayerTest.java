@@ -1,11 +1,11 @@
 
-
 import static org.junit.Assert.*;
 import objects.DestinationCard;
 import objects.DestinationDeck;
 import objects.DestinationRoute;
 import objects.Player;
 import objects.TrainCarDeck;
+import objects.abstracts.AbstractPlayer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,8 +25,8 @@ public class PlayerTest {
 		assertEquals(0, p.getScore());
 		assertEquals(0, p.getHand().size());
 		assertEquals(0, p.getDestinations().size());
-		assertEquals(Player.MAX_NUM_TRAINS, p.getNumTrains());
-		assertEquals(Player.MAX_NUM_STATIONS, p.getNumStations());
+		assertEquals(AbstractPlayer.MAX_NUM_TRAINS, p.getNumTrains());
+		assertEquals(AbstractPlayer.MAX_NUM_STATIONS, p.getNumStations());
 	}
 
 	@Test

@@ -17,7 +17,7 @@ import objects.TrainColor;
 
 /**
  * TODO Put here a description of what this class does.
- *
+ * 
  * @author samynpd. Created Mar 28, 2014.
  */
 public class HandCardPanel extends JPanel {
@@ -36,7 +36,6 @@ public class HandCardPanel extends JPanel {
 	public void setNumCards(int num) {
 		this.numCards = num;
 	}
-
 
 	public synchronized BufferedImage getCardImage() {
 		if (this.cardImage == null) {
@@ -71,16 +70,17 @@ public class HandCardPanel extends JPanel {
 		super.paintComponent(g);
 		g.drawImage(getRotatedCardImage(), 0, 0, getWidth(), getHeight(),
 				Color.BLACK, null);
-//		drawCircle(g, -20, -20, 45, true, Color.WHITE);
+		// drawCircle(g, -20, -20, 45, true, Color.WHITE);
 		g.setColor(Color.WHITE);
 		g.fillArc(0, -25, 45, 45, 0, -90);
-//		drawCircle(g, -20, -20, 45, false, Color.black);
+		// drawCircle(g, -20, -20, 45, false, Color.black);
 
 		g.setColor(Color.BLACK);
 		g.drawString(Integer.toString(this.numCards), 28, 13);
 	}
 
-	private void drawCircle(Graphics g, int x, int y, int radius, boolean filled, Color color) {
+	private void drawCircle(Graphics g, int x, int y, int radius,
+			boolean filled, Color color) {
 		Color save = g.getColor();
 		g.setColor(color);
 		if (!filled)

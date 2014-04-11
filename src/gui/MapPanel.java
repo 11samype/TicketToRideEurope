@@ -84,7 +84,7 @@ public class MapPanel extends JPanel {
 
 	/**
 	 * Gets a singleton background image
-	 *
+	 * 
 	 * @return the loaded background image
 	 */
 	private synchronized BufferedImage getBackgroundImage() {

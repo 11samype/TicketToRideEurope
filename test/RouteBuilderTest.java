@@ -1,5 +1,4 @@
 
-
 import static org.junit.Assert.*;
 import objects.Destination;
 import objects.FerryRoute;

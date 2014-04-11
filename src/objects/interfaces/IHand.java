@@ -1,6 +1,5 @@
 package objects.interfaces;
 
-
 public interface IHand<K> {
 
 	public void addCard(K card);
@@ -9,9 +8,9 @@ public interface IHand<K> {
 
 	public void removeCard(int index);
 
-//	public void playCard(K card);
+	// public void playCard(K card);
 
-//	public void playCard(int index);
+	// public void playCard(int index);
 
 	public int size();
 	

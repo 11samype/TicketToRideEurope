@@ -7,12 +7,10 @@ import objects.Destination;
 import objects.DestinationCard;
 import objects.DestinationDeck;
 import objects.DestinationHand;
-import objects.TrainCar;
 import objects.TrainCarCard;
 import objects.TrainCarDeck;
 import objects.TrainCarHand;
 import objects.TrainRoute;
-import objects.interfaces.IHand;
 import objects.interfaces.IPlayer;
 
 public class AbstractPlayer implements IPlayer {
@@ -106,7 +104,7 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public int getNumStations() {
-		return MAX_NUM_STATIONS;
+		return this.numStations;
 	}
 
 }

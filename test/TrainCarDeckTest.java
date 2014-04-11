@@ -1,5 +1,3 @@
-
-
 import static org.junit.Assert.*;
 
 import java.awt.Color;
@@ -16,7 +14,7 @@ public class TrainCarDeckTest {
 	public void testInitDeck() {
 		TrainCarDeck deck = new TrainCarDeck();
 		assertNotNull(deck);
-
+		assertEquals(deck.size(), 110);
 	}
 
 	@Test
@@ -27,6 +25,8 @@ public class TrainCarDeckTest {
 			TrainCarCard cardDrawn = deck.draw();
 			if (cardDrawn.getAwtColor() != Color.blue) {
 				shuffled = true;
+			} else {
+				continue;
 			}
 		}
 
@@ -81,9 +81,4 @@ public class TrainCarDeckTest {
 		assertEquals(deck1.size(), deck2.size());
 	}
 
-	@Test
-	public void testInitDeckSize() {
-		TrainCarDeck deck = new TrainCarDeck();
-		assertEquals(deck.size(), 110);
-	}
 }

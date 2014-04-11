@@ -1,5 +1,3 @@
-
-
 import static org.junit.Assert.*;
 import objects.Destination;
 import objects.DestinationRoute;
@@ -90,13 +88,20 @@ public class RouteTest {
 
 	@Test
 	public void testGetLength() {
-		assertTrue(trainRC.getLength() > 0);
 		assertEquals(3, trainRC.getLength());
 
-		assertTrue(destR.getScore() > 0);
-		assertTrue(destR_score.getScore() > 0);
 		assertEquals(1, destR.getScore());
 		assertEquals(5, destR_score.getScore());
+
+	}
+
+	@Test
+	public void testGetScore() {
+
+	}
+
+	@Test
+	public void testRouteEquals() {
 
 	}
 

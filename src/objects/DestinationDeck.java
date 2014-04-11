@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import objects.abstracts.AbstractDeck;
-import utils.DestinationReader;
+import utils.DestinationCardReader;
 
 public class DestinationDeck extends AbstractDeck<DestinationCard> {
 
@@ -17,9 +17,8 @@ public class DestinationDeck extends AbstractDeck<DestinationCard> {
 	protected void addCardsToDeck() {
 		List<DestinationCard> freshCards = new ArrayList<DestinationCard>();
 
-		DestinationReader destReader = new DestinationReader();
-		destReader.run();
-		Set<DestinationRoute> destinations = destReader.getRoutes();
+		DestinationCardReader reader = DestinationCardReader.getInstance();
+		Set<DestinationRoute> destinations = reader.getRoutes();
 
 		for (DestinationRoute route : destinations) {
 			freshCards.add(new DestinationCard(route));

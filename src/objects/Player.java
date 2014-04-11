@@ -19,13 +19,19 @@ public class Player extends AbstractPlayer {
 		super(name);
 		Random rGen = new Random();
 
-		List<TrainColor> arr = Arrays.asList(TrainColor.BLUE, TrainColor.RED, TrainColor.GREEN, TrainColor.WHITE, TrainColor.YELLOW);
+		List<TrainColor> arr = Arrays.asList(TrainColor.BLUE, TrainColor.RED,
+				TrainColor.GREEN, TrainColor.WHITE, TrainColor.YELLOW);
 
 		this.color = arr.get(rGen.nextInt(arr.size()));
 	}
 
 	public Color getColor() {
 		return this.color.getAwtColor();
+	}
+
+	@Override
+	public TrainCarHand getHand() {
+		return this.hand;
 	}
 
 }

@@ -3,23 +3,14 @@ package utils;
 import gui.DrawableDestination;
 
 import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import objects.Destination;
-import objects.RouteBuilder;
-import objects.TrainColor;
-import objects.interfaces.IRoute;
 
 public class DestinationLocationReader {
 	private HashSet<DrawableDestination> destSet = new HashSet<DrawableDestination>();
@@ -42,7 +33,8 @@ public class DestinationLocationReader {
 	private DestinationLocationReader() throws FileNotFoundException {
 		this.f = new File(fileName);
 		if (!this.f.exists()) {
-			throw new FileNotFoundException("Could not find the locations file for the cities");
+			throw new FileNotFoundException(
+					"Could not find the locations file for the cities");
 		}
 	}
 

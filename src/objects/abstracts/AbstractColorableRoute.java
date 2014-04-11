@@ -4,10 +4,10 @@ import java.awt.Color;
 
 import objects.Destination;
 import objects.TrainColor;
-import objects.interfaces.ITrainItem;
+import objects.interfaces.IColorable;
 
 public abstract class AbstractColorableRoute extends AbstractRoute implements
-		ITrainItem {
+		IColorable {
 
 	protected final TrainColor color;
 

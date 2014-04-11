@@ -35,13 +35,13 @@ Rostov-Sevastopol			(4)	tunnel	gray
 Rostov-Kharkov				(2)	train	green
 Kharkov-Moskva				(4)	train	gray
 Kharkov-Kyiv				(4)	train	gray
-Moskva-Smolenska			(2)	train	orange
+Moskva-Smolensk 			(2)	train	orange
 Moskva-Petrograd			(4)	train	white
-Kyiv-Smolenska				(3)	train	red
+Kyiv-Smolensk				(3)	train	red
 Kyiv-Wilno					(2)	train	gray
 Kyiv-Warszawa				(4)	train	gray
 Kyiv-Budapest				(6)	tunnel	gray
-WIlno-Smolenska				(3)	train	yellow
+Wilno-Smolensk				(3)	train	yellow
 Wilno-Warszawa				(3)	train	red
 Wilno-Riga					(4)	train	green
 Wilno-Petrograd				(4)	train	blue

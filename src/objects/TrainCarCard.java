@@ -1,11 +1,12 @@
 package objects;
 
 import java.awt.Color;
+
 import objects.abstracts.AbstractCard;
-import objects.interfaces.ITrainItem;
+import objects.interfaces.IColorable;
 
 public class TrainCarCard extends AbstractCard<TrainColor> implements
-		ITrainItem {
+		IColorable {
 
 	public TrainCarCard(TrainColor color) {
 		this.value = color;

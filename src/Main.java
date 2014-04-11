@@ -1,9 +1,10 @@
-import java.awt.Dimension;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import gui.DrawableDestination;
 import gui.MainPanel;
 import gui.MapPanel;
 
@@ -11,55 +12,90 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import objects.Destination;
+import objects.DestinationRoute;
 import objects.interfaces.IRoute;
+import utils.DestinationCardReader;
+import utils.DestinationLocationReader;
 import utils.TrainRouteReader;
 
 public class Main {
-	private JFrame window;
 
-	public Main() {
+	public static void main(String[] args) {
+
+		prepareGameData(true);
+
 		SwingUtilities.invokeLater(new Runnable() {
-
 			@Override
 			public void run() {
-				window = new JFrame("TicketToRide Europe");
+				final JFrame window = new JFrame("TicketToRide Europe");
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-				MainPanel panel = new MainPanel();
+				MainPanel mainPanel = new MainPanel();
 
 				MapPanel gamePanel = new MapPanel();
 				gamePanel.setMapName("Europe");
+				mainPanel.setMapPanel(gamePanel);
 
-				panel.setMapPanel(gamePanel);
-
-				window.getContentPane().add(panel);
+				window.getContentPane().add(mainPanel);
 				window.pack();
 				window.setVisible(true);
 			}
 		});
+	}
+
+	private static void prepareGameData(boolean log) {
+		readTrainRoutesFile(log);
+		readDestinationCardsFile(log);
+		readDestinationLocationFile(log);
 
 	}
 
-	public static void main(String[] args) {
-		new Main();
+	private static void readDestinationCardsFile(boolean log) {
+		DestinationCardReader reader = DestinationCardReader.getInstance();
+		if (log) {
+			Set<DestinationRoute> routes = reader.getRoutes();
+			int k = 1;
+			for (Iterator<DestinationRoute> i = routes.iterator(); i.hasNext();) {
+				DestinationRoute d = i.next();
+				System.out.printf("[%d] %15s -- %15s (%s)\n", k++, d.getStart(),
+						d.getEnd(), d.getScore());
+			}
+			System.out
+					.println("-----------------------------------------------------");
+		}
 
-		TrainRouteReader routeReader;
-		try {
-			routeReader = new TrainRouteReader("en");
-			routeReader.run();
+	}
 
-			HashMap<Destination, List<IRoute>> routeGraph = routeReader
-					.getGraph();
+	private static void readDestinationLocationFile(boolean log) {
+		DestinationLocationReader reader = DestinationLocationReader
+				.getInstance();
+		if (log) {
+			HashSet<DrawableDestination> dests = reader.getDestinations();
+			int k = 1;
+			for (Iterator<DrawableDestination> i = dests.iterator(); i
+					.hasNext();) {
+				DrawableDestination d = i.next();
+				System.out.printf("[%2d] %15s (%.2f, %.2f)\n", k++, d.getName(), d
+						.getCenter().getX(), d.getCenter().getY());
+			}
+			System.out
+					.println("----------------------------------------------------");
+		}
+	}
+
+	private static void readTrainRoutesFile(boolean log) {
+		TrainRouteReader reader = TrainRouteReader.getInstance();
+		if (log) {
+			HashMap<Destination, List<IRoute>> routeGraph = reader.getGraph();
+			int k = 1;
 			for (Iterator<Destination> i = routeGraph.keySet().iterator(); i
 					.hasNext();) {
 				Destination d = i.next();
-				System.out.printf("%15s : %s\n", d, routeGraph.get(d));
+				List<IRoute> routeLst = routeGraph.get(d);
+				System.out.printf("[%2d] %15s : %s\n", k++, d, routeLst);
 			}
-
-
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			System.out
+					.println("----------------------------------------------------");
 		}
 
 	}

@@ -3,14 +3,7 @@ package gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
-import java.awt.geom.Rectangle2D;
-
 import objects.Destination;
 
 public class DrawableDestination extends Destination implements IDrawable {
@@ -32,7 +25,8 @@ public class DrawableDestination extends Destination implements IDrawable {
 	}
 
 	public Point2D.Double getCenter() {
-		return new Point2D.Double(this.location.getX() + DOT_RADIUS, this.location.getY() + DOT_RADIUS);
+		return new Point2D.Double(this.location.getX() + DOT_RADIUS,
+				this.location.getY() + DOT_RADIUS);
 	}
 
 	@Override
