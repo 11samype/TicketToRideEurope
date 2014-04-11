@@ -1,6 +1,9 @@
 
 
 import static org.junit.Assert.*;
+import objects.DestinationCard;
+import objects.DestinationDeck;
+import objects.DestinationRoute;
 import objects.Player;
 import objects.TrainCarDeck;
 
@@ -52,6 +55,25 @@ public class PlayerTest {
 		assertNotEquals(0, p.getHand().size());
 		assertEquals(numberOfCards - 2, d.size());
 		assertEquals(2, p.getHand().size());
+	}
+	
+	@Test
+	public void testGetDestinationsInJTableFormat() {
+		DestinationDeck deck = new DestinationDeck();
+		
+		Player p = new Player();
+		
+		p.drawCardFromDeck(deck);
+		
+		DestinationCard dest = p.getDestinations().get(0);
+		String start = dest.getRoute().getStart().toString();
+		String end = dest.getRoute().getEnd().toString();
+		int points = dest.getRoute().getScore();
+		
+		Object[][] expected = { { start , end , points} };
+		
+		assertEquals(p.getDestinationsInJTableFormat(), expected);
+		
 	}
 
 }
