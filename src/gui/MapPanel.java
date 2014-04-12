@@ -45,8 +45,8 @@ public class MapPanel extends JPanel {
 	private boolean isPaused = false;
 
 	public MapPanel() {
-		getDrawableDestinations();
 		getDrawableRoutes();
+		getDrawableDestinations();
 		this.addMouseListener(new DestinationClickListener());
 		repaintAtFPS(FPS);
 	}
@@ -64,7 +64,6 @@ public class MapPanel extends JPanel {
 		return this.isPaused;
 	}
 
-
 	public void setMapName(String name) {
 		this.mapName = name;
 	}
@@ -81,11 +80,11 @@ public class MapPanel extends JPanel {
 	}
 
 	private synchronized void drawDrawables(Graphics g) {
-		for (IDrawable drawable : drawables) {
-			drawable.drawOn(g);
-		}
 		for (DrawableRoute route : drawableRoutes) {
 			route.drawOn(g);
+		}
+		for (IDrawable drawable : drawables) {
+			drawable.drawOn(g);
 		}
 	}
 
@@ -101,23 +100,28 @@ public class MapPanel extends JPanel {
 		Iterator<Destination> destIter = ROUTE_LOOKUP.keySet().iterator();
 		while (destIter.hasNext()) {
 			Destination _start = destIter.next();
-			DrawableDestination drawStart = DEST_LOC_LOOKUP.get(_start.getName());
+			DrawableDestination drawStart = DEST_LOC_LOOKUP.get(_start
+					.getName());
 			Iterator<IRoute> routeIter = ROUTE_LOOKUP.get(_start).iterator();
 			while (routeIter.hasNext()) {
 				IRoute iroute = routeIter.next();
-				DrawableDestination drawEnd = DEST_LOC_LOOKUP.get(iroute.getEnd().getName());
-				drawableRoutes.add(getDrawableRoute(drawStart, drawEnd, iroute));
+				DrawableDestination drawEnd = DEST_LOC_LOOKUP.get(iroute
+						.getEnd().getName());
+				drawableRoutes.add(constructDrawableRoute(drawStart, drawEnd,
+						iroute));
 			}
 		}
 	}
 
-	private DrawableRoute getDrawableRoute(DrawableDestination start, DrawableDestination end, IRoute iroute) {
+	private DrawableRoute constructDrawableRoute(DrawableDestination start,
+			DrawableDestination end, IRoute iroute) {
 		TrainColor color = TrainColor.RAINBOW;
 		if (iroute instanceof AbstractColorableRoute) {
 			AbstractColorableRoute route = (AbstractColorableRoute) iroute;
-			return new DrawableRoute(start, end, route.getLength(), route.getColor());
-		}
-		else return new DrawableRoute(start, end, iroute.getLength(), color);
+			return new DrawableRoute(start, end, route.getLength(),
+					route.getColor());
+		} else
+			return new DrawableRoute(start, end, iroute.getLength(), color);
 
 	}
 
@@ -167,6 +171,15 @@ public class MapPanel extends JPanel {
 			return super.add(d);
 		}
 
+		@Override
+		public boolean remove(Object o) {
+			if (o != null && o instanceof DrawableDestination) {
+				DrawableDestination dest = (DrawableDestination) o;
+				dest.deselect();
+			}
+			return super.remove(o);
+		}
+
 		public boolean isFull() {
 			return this.size() == MAX_SIZE;
 		}
@@ -188,14 +201,11 @@ public class MapPanel extends JPanel {
 					clickedDest = (DrawableDestination) drawable;
 					if (SwingUtilities.isLeftMouseButton(e)) {
 						if (selectedPoints.contains(clickedDest)) {
-							clickedDest.deselect();
 							selectedPoints.remove(clickedDest);
 						} else {
 							selectedPoints.add(clickedDest);
 							if (selectedPoints.isFull()) {
-								drawablesToAdd.add(new DrawableRoute(
-										selectedPoints.get(0), selectedPoints
-												.get(1)));
+								drawablesToAdd.add(new DrawableRoute(selectedPoints.get(0), selectedPoints.get(1)));
 								selectedPoints.clear();
 							}
 							System.out.println(clickedDest.getName());
