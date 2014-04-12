@@ -20,6 +20,10 @@ import javax.swing.SwingUtilities;
 import objects.Destination;
 import objects.GameState;
 import objects.Player;
+import objects.TrainColor;
+import objects.TrainRoute;
+import objects.TunnelRoute;
+import objects.abstracts.AbstractColorableRoute;
 import objects.interfaces.IRoute;
 import utils.DestinationLocationReader;
 import utils.TrainRouteReader;
@@ -33,6 +37,7 @@ public class MapPanel extends JPanel {
 			.getInstance().getDestinations();
 
 	private final List<IDrawable> drawables = new ArrayList<IDrawable>();
+	private final List<DrawableRoute> drawableRoutes = new ArrayList<DrawableRoute>();
 
 	private Repainter repainterThread;
 	private BufferedImage bgImg;
@@ -79,6 +84,9 @@ public class MapPanel extends JPanel {
 		for (IDrawable drawable : drawables) {
 			drawable.drawOn(g);
 		}
+		for (DrawableRoute route : drawableRoutes) {
+			route.drawOn(g);
+		}
 	}
 
 	private void getDrawableDestinations() {
@@ -95,12 +103,22 @@ public class MapPanel extends JPanel {
 			Destination _start = destIter.next();
 			DrawableDestination drawStart = DEST_LOC_LOOKUP.get(_start.getName());
 			Iterator<IRoute> routeIter = ROUTE_LOOKUP.get(_start).iterator();
-			for (IRoute route : ROUTE_LOOKUP.get(_start)) {
-				DrawableDestination drawEnd = DEST_LOC_LOOKUP.get(route.getEnd().getName());
-				drawables.add(new DrawableRoute(drawStart, drawEnd));
+			while (routeIter.hasNext()) {
+				IRoute iroute = routeIter.next();
+				DrawableDestination drawEnd = DEST_LOC_LOOKUP.get(iroute.getEnd().getName());
+				drawableRoutes.add(getDrawableRoute(drawStart, drawEnd, iroute));
 			}
-
 		}
+	}
+
+	private DrawableRoute getDrawableRoute(DrawableDestination start, DrawableDestination end, IRoute iroute) {
+		TrainColor color = TrainColor.RAINBOW;
+		if (iroute instanceof AbstractColorableRoute) {
+			AbstractColorableRoute route = (AbstractColorableRoute) iroute;
+			return new DrawableRoute(start, end, route.getLength(), route.getColor());
+		}
+		else return new DrawableRoute(start, end, iroute.getLength(), color);
+
 	}
 
 	public boolean addDrawable(IDrawable drawable) {

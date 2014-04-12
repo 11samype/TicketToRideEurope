@@ -31,7 +31,6 @@ public class DrawableRoute extends AbstractRoute implements IDrawable {
 		this.color = color;
 	}
 
-
 	@Override
 	public DrawableDestination getStart() {
 		return (DrawableDestination) this.start;
