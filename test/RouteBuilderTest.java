@@ -88,6 +88,8 @@ public class RouteBuilderTest {
 		assertSame(trainR.getStart(), trainR_reverse.getEnd());
 		assertSame(trainR.getEnd(), trainR_reverse.getStart());
 
+		assertEquals(trainR, trainR_reverse);
+
 	}
 
 }

@@ -24,6 +24,6 @@ public interface IPlayer {
 	public int getNumTrains();
 
 	public int getNumStations();
-	
-	public void drawCardFromDeal(TrainCarDeal deal, TrainCarCard card);
+
+	public void drawCardFromDeal(int index);
 }

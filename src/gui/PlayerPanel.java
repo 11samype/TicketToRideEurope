@@ -25,7 +25,7 @@ public class PlayerPanel extends JPanel {
 
 	/**
 	 * Create the panel.
-	 * 
+	 *
 	 * @param player
 	 */
 	public PlayerPanel(Player player) {
@@ -64,7 +64,7 @@ public class PlayerPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (this.player != null)
-			setBackground(this.player.getColor());
+			setBackground(this.player.getColor().getAwtColor());
 	}
 
 	private JLabel createJLabel(String lbl) {
@@ -72,7 +72,7 @@ public class PlayerPanel extends JPanel {
 		label.setFont(new Font("Lucida Bright", Font.BOLD, 14));
 		return label;
 	}
-	
+
 	public IPlayer getPlayer() {
 		return this.player;
 	}

@@ -36,6 +36,7 @@ import javax.swing.ScrollPaneConstants;
 
 public class MainPanel extends JPanel {
 	private final GameState gameState;
+	private CardManager cardManager;
 
 	private PlayerPanel currentPlayerPanel;
 	private JPanel mapPanel;
@@ -47,7 +48,6 @@ public class MainPanel extends JPanel {
 	private ArrayList<IPlayer> players = new ArrayList<IPlayer>();
 	private JPanel dealPanel;
 
-	private CardManager cardManager;
 
 	private JLabel lblTrainCardCount;
 
@@ -64,7 +64,7 @@ public class MainPanel extends JPanel {
 	public MainPanel() {
 		setLayout(new MigLayout(
 				"",
-				"[900px:1200px:1600px,grow,fill][10%:n,right]",
+				"[900px:1250px:1600px,grow,fill][10%:n,right]",
 				"[90.00:114.00:100.00,grow,fill][773px:773px:773px,fill][70:85.00:100,grow,bottom]"));
 
 		this.players = getPlayers();

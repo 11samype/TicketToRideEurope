@@ -3,6 +3,7 @@ package objects;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import objects.abstracts.AbstractPlayer;
@@ -17,21 +18,16 @@ public class Player extends AbstractPlayer {
 
 	public Player(String name) {
 		super(name);
-		Random rGen = new Random();
-
-		List<TrainColor> arr = Arrays.asList(TrainColor.BLUE, TrainColor.RED,
-				TrainColor.GREEN, TrainColor.WHITE, TrainColor.YELLOW);
-
-		this.color = arr.get(rGen.nextInt(arr.size()));
+		try {
+			this.color = GameState.availableColors.remove();
+		} catch (NoSuchElementException e) {
+			throw new NoSuchElementException(
+					"You cannot have more than 5 players!");
+		}
 	}
 
-	public Color getColor() {
-		return this.color.getAwtColor();
-	}
-
-	@Override
-	public TrainCarHand getHand() {
-		return this.hand;
+	public TrainColor getColor() {
+		return this.color;
 	}
 
 }

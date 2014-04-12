@@ -1,7 +1,11 @@
 import static org.junit.Assert.*;
+
+import java.awt.Color;
+
 import objects.Destination;
 import objects.DestinationRoute;
 import objects.FerryRoute;
+import objects.Player;
 import objects.TrainColor;
 import objects.TrainRoute;
 import objects.TunnelRoute;
@@ -14,23 +18,23 @@ public class RouteTest {
 	private Destination start = new Destination("Barcelona");
 	private Destination end = new Destination("Madrid");
 
-	private TrainRoute trainR;
+	private DestinationRoute destR;
+	private FerryRoute ferryR;
 	private TrainRoute trainRC;
 	private TunnelRoute tunnelR;
 	private TunnelRoute tunnelRC;
-	private FerryRoute ferryR;
-	private DestinationRoute destR;
 	private DestinationRoute destR_score;
+	private TrainRoute trainR;
 
 	@Before
 	public void setup() {
-		trainR = new TrainRoute(start, end, 4);
-		trainRC = new TrainRoute(start, end, TrainColor.BLUE, 3);
-		tunnelR = new TunnelRoute(start, end, 2);
-		tunnelRC = new TunnelRoute(end, start, TrainColor.GREEN, 2);
-		ferryR = new FerryRoute(start, end, 1, 2);
 		destR = new DestinationRoute(start, end);
-		destR_score = new DestinationRoute(start, end, 5);
+		ferryR = new FerryRoute(start, end, 2, 1);
+		trainRC = new TrainRoute(start, end, TrainColor.BLUE, 3);
+		tunnelR = new TunnelRoute(start, end, 4);
+		tunnelRC = new TunnelRoute(end, start, TrainColor.GREEN, 6);
+		destR_score = new DestinationRoute(start, end, 8);
+		trainR = new TrainRoute(start, end, 10);
 	}
 
 	@Test
@@ -84,6 +88,7 @@ public class RouteTest {
 	public void testInitGetColor() {
 		assertNotNull(tunnelRC.getColor());
 		assertEquals(TrainColor.GREEN, tunnelRC.getColor());
+		assertEquals(Color.GREEN, tunnelRC.getAwtColor());
 	}
 
 	@Test
@@ -93,14 +98,38 @@ public class RouteTest {
 	}
 
 	@Test
-	public void testGetScore() {
+	public void testGetRouteScore() {
+		assertEquals(2, ferryR.getScore());
 		assertEquals(4, trainRC.getScore());
+		assertEquals(7, tunnelR.getScore());
+		assertEquals(13, tunnelRC.getScore());
+		TrainRoute maxLength  = new TrainRoute(start, end, 8);
+		assertEquals(21, maxLength.getScore());
+
+		assertEquals(-1, trainR.getScore());
+	}
+
+	@Test
+	public void testGetDestinationRouteScore() {
 		assertEquals(1, destR.getScore());
-		assertEquals(5, destR_score.getScore());
+		assertEquals(8, destR_score.getScore());
+	}
+
+	@Test
+	public void testRouteNotEquals() {
+		assertNotEquals(trainR, null);
+		assertNotEquals(tunnelRC, ferryR); // different lengths
+		assertNotEquals(destR, new Player());
+
+		TrainRoute nullEnd = new TrainRoute(start, null, 2);
+		TrainRoute nullStart = new TrainRoute(null, end, 2);
+		assertNotEquals(nullStart, nullEnd);
 	}
 
 	@Test
 	public void testRouteEquals() {
+		assertEquals(trainR, trainR);
+
 
 	}
 

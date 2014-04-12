@@ -7,6 +7,7 @@ import objects.Destination;
 import objects.DestinationCard;
 import objects.DestinationDeck;
 import objects.DestinationHand;
+import objects.GameState;
 import objects.TrainCarCard;
 import objects.TrainCarDeal;
 import objects.TrainCarDeck;
@@ -47,6 +48,13 @@ public class AbstractPlayer implements IPlayer {
 		this.destinations.addCard(deck.draw());
 	}
 
+	@Override
+	public void drawCardFromDeal(int index) {
+		TrainCarCard pickedCard = GameState.getInstance().getCardManager().getDealCards().removeCardAtPosition(index);
+		System.out.printf("Drew index %d; %s\n", index, pickedCard.getColor());
+		this.hand.addCard(pickedCard);
+	}
+
 	public void claimRoute(TrainRoute route) {
 		if (this.hand.numInHand(route.color) >= route.length) {
 			this.routes.add(route);
@@ -56,24 +64,8 @@ public class AbstractPlayer implements IPlayer {
 				this.hand.removeCard(route.getColor());
 			}
 		} else {
-			throw new IndexOutOfBoundsException("Not enough cards for route!");
+			throw new UnsupportedOperationException("Not enough cards for route!");
 		}
-	}
-
-	public Object[][] getDestinationsInJTableFormat() {
-
-		Object[][] rowData = new Object[destinations.size()][3];
-
-		for (int i = 0; i < destinations.size(); i++) {
-			Object[] toadd = { destinations.getCard(i).getRoute().getStart().toString() ,
-					destinations.getCard(i).getRoute().getEnd().toString() ,
-					destinations.getCard(i).getRoute().getScore() };
-
-			rowData[i] = toadd;
-			}
-
-		return rowData;
-
 	}
 
 	public boolean placeStationOnDestination(Destination dest) {
@@ -108,12 +100,6 @@ public class AbstractPlayer implements IPlayer {
 	@Override
 	public int getNumStations() {
 		return this.numStations;
-	}
-
-	@Override
-	public void drawCardFromDeal(TrainCarDeal deal, TrainCarCard card) {
-		this.hand.addCard(deal.removeCard(card));
-		
 	}
 
 }

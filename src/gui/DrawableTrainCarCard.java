@@ -10,22 +10,22 @@ import objects.TrainCarCard;
 import objects.TrainColor;
 
 public class DrawableTrainCarCard extends TrainCarCard {
-	private BufferedImage carImage;
+	private BufferedImage image;
 
 	public DrawableTrainCarCard(TrainColor color) {
 		super(color);
 	}
 
 	public BufferedImage getImage() {
-		if (this.carImage == null) {
+		if (this.image == null) {
 			try {
-				this.carImage = ImageIO.read(new File("img//"
+				this.image = ImageIO.read(new File("img//"
 						+ getValue().toString().toLowerCase() + "card.png"));
 
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		return this.carImage;
+		return this.image;
 	}
 }

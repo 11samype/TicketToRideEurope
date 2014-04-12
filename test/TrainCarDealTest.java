@@ -1,5 +1,6 @@
 
 import static org.junit.Assert.*;
+import objects.NullTrainCarCard;
 import objects.TrainCarCard;
 import objects.TrainCarDeal;
 import objects.TrainColor;
@@ -33,7 +34,8 @@ public class TrainCarDealTest {
 		deal.removeCardAtPosition(1);
 		
 		assertEquals(black, deal.getCardAtPosition(0));
-		assertEquals(red, deal.getCardAtPosition(1));
+		assertEquals(new NullTrainCarCard(), deal.getCardAtPosition(1));
+		
 
 	}
 

@@ -13,7 +13,8 @@ public class Repainter extends Thread {
 	public void run() {
 		try {
 			while (true) {
-				if (!this.comp.isPaused()) {
+				if (!comp.isPaused())
+				 {
 					Thread.sleep(1000 / this.fps);
 					this.comp.repaint();
 				}

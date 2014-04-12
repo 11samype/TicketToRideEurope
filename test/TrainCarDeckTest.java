@@ -14,7 +14,7 @@ public class TrainCarDeckTest {
 	public void testInitDeck() {
 		TrainCarDeck deck = new TrainCarDeck();
 		assertNotNull(deck);
-		assertEquals(deck.size(), 110);
+		assertEquals(110, deck.size());
 	}
 
 	@Test
@@ -31,24 +31,6 @@ public class TrainCarDeckTest {
 		}
 
 		assertTrue(shuffled);
-	}
-
-	@Test
-	public void testUniqueCardsInDeck() {
-		TrainCarDeck deck = new TrainCarDeck();
-		boolean unique = true;
-		HashSet<TrainCarCard> seen = new HashSet<TrainCarCard>();
-
-		while (!deck.isEmpty()) {
-			TrainCarCard cardDrawn = deck.draw();
-			if (seen.contains(cardDrawn)) {
-				unique = false;
-			} else {
-				seen.add(cardDrawn);
-			}
-		}
-
-		assertTrue(unique);
 	}
 
 	@Test
@@ -79,15 +61,6 @@ public class TrainCarDeckTest {
 		deck2.populate(deck1.getCards());
 
 		assertEquals(deck1.size(), deck2.size());
-	}
-	
-	@Test
-	public void testNumInDeck() {
-		TrainCarDeck deck = new TrainCarDeck();
-		
-		for (int i = 0; i < 5; i++) {
-			
-		}
 	}
 
 }

@@ -7,6 +7,7 @@ import objects.Destination;
 import objects.DestinationCard;
 import objects.DestinationDeck;
 import objects.DestinationRoute;
+import objects.GameState;
 import objects.Player;
 import objects.TrainCarCard;
 import objects.TrainCarDeal;
@@ -31,14 +32,16 @@ public class PlayerTest {
 		assertNotNull(p);
 		assertEquals("New Player", p.getName());
 	}
-	
+
 	@Test
 	public void testInitPlayer() {
 		Player p = new Player("Conductor");
 		assertNotNull(p);
 		assertEquals("Conductor", p.getName());
 		assertEquals(0, p.getScore());
+		assertNotNull(p.getHand());
 		assertEquals(0, p.getHand().size());
+		assertNotNull(p.getDestinations());
 		assertEquals(0, p.getDestinations().size());
 		assertEquals(AbstractPlayer.MAX_NUM_TRAINS, p.getNumTrains());
 		assertEquals(AbstractPlayer.MAX_NUM_STATIONS, p.getNumStations());
@@ -71,33 +74,14 @@ public class PlayerTest {
 		assertEquals(numberOfCards - 2, d.size());
 		assertEquals(2, p.getHand().size());
 	}
-	
-	@Test
-	public void testGetDestinationsInJTableFormat() {
-		DestinationDeck deck = new DestinationDeck();
-		
-		Player p = new Player();
-		
-		p.drawCardFromDeck(deck);
-		
-		DestinationCard dest = p.getDestinations().get(0);
-		String start = dest.getRoute().getStart().toString();
-		String end = dest.getRoute().getEnd().toString();
-		int points = dest.getRoute().getScore();
-		
-		Object[][] expected = { { start , end , points} };
-		
-		assertEquals(p.getDestinationsInJTableFormat(), expected);
-		
-	}
-	
+
 	@Test
 	public void testClaimRoute() {
 		TrainCarDeck d = new TrainCarDeck();
 		while (!d.isEmpty()) {
 			d.draw();
 		}
-		
+
 		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
 
 		Player p = new Player();
@@ -105,28 +89,28 @@ public class PlayerTest {
 		for (int i = 0; i < 10; i++) {
 			cardList.add(new TrainCarCard(TrainColor.BLACK));
 		}
-		
+
 		d.populate(cardList);
-		
+
 		for (int i = 0; i < 9; i++) {
 			p.drawCardFromDeck(d);
 		}
-		
+
 		assertEquals(p.getHand().size(), 9);
-		
+
 		p.claimRoute(new TrainRoute(new Destination("here"), new Destination("there"), TrainColor.BLACK, 6));
-		
+
 		assertEquals(p.getHand().size(), 3);
-		
+
 	}
-	
-	@Test(expected = IndexOutOfBoundsException.class)
+
+	@Test(expected = UnsupportedOperationException.class)
 	public void testClaimRouteFail() {
 		TrainCarDeck d = new TrainCarDeck();
 		while (!d.isEmpty()) {
 			d.draw();
 		}
-		
+
 		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
 
 		Player p = new Player();
@@ -134,42 +118,43 @@ public class PlayerTest {
 		for (int i = 0; i < 10; i++) {
 			cardList.add(new TrainCarCard(TrainColor.BLACK));
 		}
-		
+
 		d.populate(cardList);
-		
+
 		for (int i = 0; i < 3; i++) {
 			p.drawCardFromDeck(d);
 		}
-		
+
 		p.claimRoute(new TrainRoute(new Destination("here"), new Destination("there"), TrainColor.BLACK, 6));
-		
+
 	}
-	
+
 	@Test
 	public void testDealToPlayer() {
-		TrainCarDeal d = new TrainCarDeal();
-		
-		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
-
 		Player p = new Player();
 
+		TrainCarDeal d = GameState.getInstance().getCardManager().getDealCards();
+
+		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
+
 		for (int i = 0; i < 5; i++) {
-			cardList.add(new TrainCarCard(TrainColor.BLACK));
+			cardList.add(d.getCardAtPosition(i));
+			System.out.printf("%d %s\n", i, d.getCardAtPosition(i).getColor());
 		}
-		
-		for (TrainCarCard card : cardList) {
-			d.addCard(card);
-		}
-		
+
 		for (int i = 0; i < 3; i++) {
-			p.drawCardFromDeal(d, d.getCardAtPosition(0));
+			p.drawCardFromDeal(i);
 		}
-		
-		assertEquals(p.getHand().size(), 3);
-		assertEquals(p.getHand().getCard(0), cardList.get(0));
-		assertEquals(p.getHand().getCard(1), cardList.get(1));
-		assertEquals(p.getHand().getCard(2), cardList.get(2));
+
+		for (int i = 0; i < p.getHand().size(); i++) {
+			System.out.println(p.getHand().getCard(i).getColor());
+		}
+
+		assertEquals(3, p.getHand().size());
+		assertEquals(cardList.get(0), p.getHand().getCard(0));
+		assertEquals(cardList.get(1), p.getHand().getCard(1));
+		assertEquals(cardList.get(2), p.getHand().getCard(2));
 	}
-	
+
 
 }

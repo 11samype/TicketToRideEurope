@@ -12,12 +12,12 @@ Zurich			408		428
 Munchen			485		357
 Frankfurt		419		306
 Roma			514		573
-Venice			502		470
+Venezia			502		470
 London			232		211
 Edinburgh		154		38
 Amsterdam		340		215
 Essen			435		224
-Kobenhaven		519		103
+Kobenhavn		519		103
 Stockholm		640		15
 Berlin			551		243
 Wien			612		375

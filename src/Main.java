@@ -69,11 +69,11 @@ public class Main {
 		DestinationLocationReader reader = DestinationLocationReader
 				.getInstance();
 		if (log) {
-			HashSet<DrawableDestination> dests = reader.getDestinations();
+			HashMap<String, DrawableDestination> dests = reader.getDestinations();
 			int k = 1;
-			for (Iterator<DrawableDestination> i = dests.iterator(); i
+			for (Iterator<String> i = dests.keySet().iterator(); i
 					.hasNext();) {
-				DrawableDestination d = i.next();
+				DrawableDestination d = dests.get(i.next());
 				System.out.printf("[%2d] %15s (%.2f, %.2f)\n", k++, d.getName(), d
 						.getCenter().getX(), d.getCenter().getY());
 			}

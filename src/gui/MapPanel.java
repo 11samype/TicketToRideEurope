@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -16,23 +17,33 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import objects.Destination;
+import objects.GameState;
+import objects.Player;
+import objects.interfaces.IRoute;
 import utils.DestinationLocationReader;
+import utils.TrainRouteReader;
 
 public class MapPanel extends JPanel {
 
 	private static int FPS = 60;
+	private static final HashMap<Destination, List<IRoute>> ROUTE_LOOKUP = TrainRouteReader
+			.getInstance().getGraph();
+	private static final HashMap<String, DrawableDestination> DEST_LOC_LOOKUP = DestinationLocationReader
+			.getInstance().getDestinations();
+
+	private final List<IDrawable> drawables = new ArrayList<IDrawable>();
 
 	private Repainter repainterThread;
 	private BufferedImage bgImg;
-
-	private List<IDrawable> drawables = new ArrayList<IDrawable>();
 	private String mapName;
 	private boolean isPaused = false;
 
 	public MapPanel() {
-		repaintAtFPS(FPS);
 		getDrawableDestinations();
+		getDrawableRoutes();
 		this.addMouseListener(new DestinationClickListener());
+		repaintAtFPS(FPS);
 	}
 
 	private void repaintAtFPS(int fps) {
@@ -48,6 +59,15 @@ public class MapPanel extends JPanel {
 		return this.isPaused;
 	}
 
+
+	public void setMapName(String name) {
+		this.mapName = name;
+	}
+
+	public String getMapName() {
+		return this.mapName;
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -55,40 +75,41 @@ public class MapPanel extends JPanel {
 		drawDrawables(g);
 	}
 
-	public void setMapName(String name) {
-		this.mapName = name;
-	}
-	
-	public String getMapName() {
-		return this.mapName;
-	}
-
-	private void getDrawableDestinations() {
-		DestinationLocationReader destReader = DestinationLocationReader
-				.getInstance();
-
-		HashSet<DrawableDestination> destinations = destReader
-				.getDestinations();
-		for (Iterator<DrawableDestination> iter = destinations.iterator(); iter
-				.hasNext();) {
-			DrawableDestination drawableDest = iter.next();
-			this.drawables.add(drawableDest);
-		}
-	}
-
 	private synchronized void drawDrawables(Graphics g) {
-		for (IDrawable drawable : this.drawables) {
+		for (IDrawable drawable : drawables) {
 			drawable.drawOn(g);
 		}
 	}
 
+	private void getDrawableDestinations() {
+		for (Iterator<String> iter = DEST_LOC_LOOKUP.keySet().iterator(); iter
+				.hasNext();) {
+			DrawableDestination drawableDest = DEST_LOC_LOOKUP.get(iter.next());
+			drawables.add(drawableDest);
+		}
+	}
+
+	private void getDrawableRoutes() {
+		Iterator<Destination> destIter = ROUTE_LOOKUP.keySet().iterator();
+		while (destIter.hasNext()) {
+			Destination _start = destIter.next();
+			DrawableDestination drawStart = DEST_LOC_LOOKUP.get(_start.getName());
+			Iterator<IRoute> routeIter = ROUTE_LOOKUP.get(_start).iterator();
+			for (IRoute route : ROUTE_LOOKUP.get(_start)) {
+				DrawableDestination drawEnd = DEST_LOC_LOOKUP.get(route.getEnd().getName());
+				drawables.add(new DrawableRoute(drawStart, drawEnd));
+			}
+
+		}
+	}
+
 	public boolean addDrawable(IDrawable drawable) {
-		return this.drawables.add(drawable);
+		return drawables.add(drawable);
 	}
 
 	/**
 	 * Gets a singleton background image
-	 * 
+	 *
 	 * @return the loaded background image
 	 */
 	private synchronized BufferedImage getBackgroundImage() {
@@ -138,6 +159,7 @@ public class MapPanel extends JPanel {
 
 		SelectionHolder selectedPoints = new SelectionHolder();
 		ArrayList<IDrawable> drawablesToAdd = new ArrayList<IDrawable>();
+		Player current = (Player) GameState.getInstance().getCurrentPlayer();
 
 		@Override
 		public void mouseClicked(MouseEvent e) {

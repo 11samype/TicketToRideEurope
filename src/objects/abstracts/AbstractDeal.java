@@ -2,6 +2,7 @@ package objects.abstracts;
 
 import java.util.ArrayList;
 
+import objects.NullTrainCarCard;
 import objects.interfaces.ICard;
 import objects.interfaces.IDeal;
 
@@ -12,35 +13,36 @@ public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 
 	@Override
 	public void addCard(K card) {
-
 		if (this.deal.size() >= MAX_DEALT_CARDS) {
 			throw new UnsupportedOperationException(
 					"Deal can't have more than " + MAX_DEALT_CARDS + " cards!");
 		}
-
 		this.deal.add(card);
 
-	}
-
-	@Override
-	public K removeCard(K card) {
-		if (this.deal.remove(card))
-			return card;
-		else
-			return null;
 	}
 
 	public int getSize() {
 		return this.deal.size();
 	}
 
-	@Override
-	public K removeCardAtPosition(int index) {
-		return this.deal.remove(index);
-	}
-
 	public K getCardAtPosition(int index) {
 		return this.deal.get(index);
+	}
+
+	@Override
+	public K removeCardAtPosition(int index) {
+		K getCard = this.deal.get(index);
+		this.deal.set(index, null);
+		return getCard;
+	}
+
+	@Override
+	public K removeCard(K card) {
+		int index = this.deal.indexOf(card);
+		if (index != -1)
+			return removeCardAtPosition(index);
+		else
+			return null;
 	}
 
 	@Override

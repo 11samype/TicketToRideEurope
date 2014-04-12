@@ -53,7 +53,7 @@ public abstract class AbstractRoute implements IRoute {
 		default:
 			break;
 		}
-		return this.length;
+		return -1;
 
 	}
 
@@ -67,7 +67,6 @@ public abstract class AbstractRoute implements IRoute {
 		return result;
 	}
 
-	/*
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -77,11 +76,6 @@ public abstract class AbstractRoute implements IRoute {
 		if (!(obj instanceof AbstractRoute))
 			return false;
 		AbstractRoute other = (AbstractRoute) obj;
-		if (end == null) {
-			if (other.end != null)
-				return false;
-		} else if (!(end.equals(other.end) || end.equals(other.start)))
-			return false;
 		if (length != other.length)
 			return false;
 		if (start == null) {
@@ -89,8 +83,12 @@ public abstract class AbstractRoute implements IRoute {
 				return false;
 		} else if (!(start.equals(other.start) || start.equals(other.end)))
 			return false;
+		if (end == null) {
+			if (other.end != null)
+				return false;
+		} else if (!(end.equals(other.end) || end.equals(other.start)))
+			return false;
 		return true;
-	 
+
 	}
-	*/
 }

@@ -8,12 +8,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DestinationLocationReader {
-	private HashSet<DrawableDestination> destSet = new HashSet<DrawableDestination>();
+	private HashMap<String, DrawableDestination> destMap = new HashMap<String, DrawableDestination>();
 	private File f;
 	private String fileName = "Cities.txt";
 
@@ -38,10 +39,10 @@ public class DestinationLocationReader {
 		}
 	}
 
-	public HashSet<DrawableDestination> getDestinations() {
-		if (this.destSet.isEmpty())
+	public HashMap<String, DrawableDestination> getDestinations() {
+		if (this.destMap.isEmpty())
 			run();
-		return this.destSet;
+		return this.destMap;
 	}
 
 	private void run() {
@@ -79,7 +80,7 @@ public class DestinationLocationReader {
 
 				dest = new DrawableDestination(destName, new Point(xLoc, yLoc));
 
-				destSet.add(dest);
+				destMap.put(destName, dest);
 
 			}
 		} catch (IOException e) {
