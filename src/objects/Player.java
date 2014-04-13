@@ -18,12 +18,7 @@ public class Player extends AbstractPlayer {
 
 	public Player(String name) {
 		super(name);
-		try {
-			this.color = GameState.availableColors.remove();
-		} catch (NoSuchElementException e) {
-			throw new NoSuchElementException(
-					"You cannot have more than 5 players!");
-		}
+		this.color = GameState.availableColors.poll();
 	}
 
 	public TrainColor getColor() {

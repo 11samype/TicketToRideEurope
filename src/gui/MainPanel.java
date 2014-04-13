@@ -48,7 +48,6 @@ public class MainPanel extends JPanel {
 	private ArrayList<IPlayer> players = new ArrayList<IPlayer>();
 	private JPanel dealPanel;
 
-
 	private JLabel lblTrainCardCount;
 
 	private JLabel lblDestinationCardCount;
@@ -59,7 +58,7 @@ public class MainPanel extends JPanel {
 
 	private JPanel dealtCardsPanel;
 
-//	private HandCardPanel[] handPanels = new HandCardPanel[9];
+	// private HandCardPanel[] handPanels = new HandCardPanel[9];
 
 	public MainPanel() {
 		setLayout(new MigLayout(
@@ -74,13 +73,13 @@ public class MainPanel extends JPanel {
 		addPlayersPanel();
 		addDestinationDeckPanel();
 
-		addMapPanel();
-		addDealPanel();
-
 		addPlayerInfoPanel();
 		addDestinationTable();
 
-		Player currentPlayer = (Player) gameState.getCurrentPlayer();
+		addMapPanel();
+		addDealPanel();
+
+		Player currentPlayer = getCurrentPlayer();
 		this.currentPlayerPanel = new PlayerPanel(currentPlayer);
 		add(this.currentPlayerPanel, "cell 1 2,grow");
 	}
@@ -128,7 +127,6 @@ public class MainPanel extends JPanel {
 		this.mapPanel.setLayout(overlay);
 		add(this.mapPanel, "cell 0 1,grow");
 
-
 		this.mapPanel.add(getMapPanel("Europe"));
 
 	}
@@ -166,15 +164,12 @@ public class MainPanel extends JPanel {
 
 	private void dealCardsToDealPanel() {
 		for (int i = 0; i < 5; i++) {
-
 			DrawableTrainCarCard card = new DrawableTrainCarCard(cardManager
 					.getDealCard(i).getColor());
 			DealtCardPanel cardPanel = new DealtCardPanel();
 			cardPanel.setCard(card);
 			dealtCardsPanel.add(cardPanel);
-
 		}
-
 	}
 
 	private void addPlayerInfoPanel() {
@@ -189,7 +184,7 @@ public class MainPanel extends JPanel {
 
 	private void addDestinationTable() {
 		this.destinationTable = new DestinationTable();
-		this.destinationTable.setPlayer(this.gameState.getCurrentPlayer());
+		this.destinationTable.setPlayer(getCurrentPlayer());
 
 		this.destScrollPane = new JScrollPane(this.destinationTable);
 		destScrollPane
@@ -202,12 +197,7 @@ public class MainPanel extends JPanel {
 	private void addHandPanel() {
 		this.playerHandPanel = new HandPanel();
 		this.playerInfoPanel.add(this.playerHandPanel, "cell 1 0,grow");
-
-		Player currentPlayer = (Player) this.gameState.getCurrentPlayer();
-		this.playerHandPanel.setPlayer(currentPlayer);
-
-
-
+		this.playerHandPanel.setPlayer(getCurrentPlayer());
 	}
 
 	private class TrainCarDeckListener extends MouseAdapter {
@@ -220,30 +210,16 @@ public class MainPanel extends JPanel {
 
 		private void simulateDrawCard() {
 			if (deck.size() > 0) {
-				Player current = (Player) gameState.getCurrentPlayer();
+				Player current = getCurrentPlayer();
 				current.drawCardFromDeck(deck);
+				playerHandPanel.setPlayer(current);
 				lblTrainCardCount.setText(Integer.toString(deck.size()));
 			}
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-			// int cardsLeft =
-			// Integer.parseInt(lblTrainCardCount.getText());
-			// if (cardsLeft > 0) {
-			// lblTrainCardCount.setText(Integer.toString(cardsLeft - 1));
-			// }
-
-			Player currentPlayer = (Player) MainPanel.this.gameState.getCurrentPlayer();
-			TrainCarHand hand = currentPlayer.getHand();
-
-			currentPlayer.drawCardFromDeck(MainPanel.this.gameState.getCardManager()
-					.getTrainCarDeck());
-
-			MainPanel.this.playerHandPanel.setPlayer(currentPlayer);
-
-			MainPanel.this.lblTrainCardCount.setText(Integer.toString(MainPanel.this.cardManager
-					.getTrainCarDeck().size()));
+			simulateDrawCard();
 		}
 	}
 
@@ -256,12 +232,9 @@ public class MainPanel extends JPanel {
 		}
 
 		private void simulateDrawCard() {
-			if (this.deck.size() > 0) {
-				Player current = (Player) MainPanel.this.gameState.getCurrentPlayer();
-				current.drawCardFromDeck(this.deck);
-				MainPanel.this.destinationTable.setPlayer(current);
-				MainPanel.this.lblDestinationCardCount.setText(Integer.toString(this.deck.size()));
-			}
+			Player current = getCurrentPlayer();
+			current.drawCardFromDeck(this.deck);
+			lblDestinationCardCount.setText(Integer.toString(this.deck.size()));
 		}
 
 		@Override
@@ -270,32 +243,33 @@ public class MainPanel extends JPanel {
 			// FOR DEMO PURPOSES
 			// SWITCH PLAYER WHENEVER DEST CARD CHOSEN
 
-			simulateDrawCard();
-
-			// remove(currentPlayerPanel);
-			// turnManager.nextPlayer();
-
 			if (!this.deck.isEmpty()) {
-				MainPanel.this.gameState.getTurnManager().rotatePlayers();
-				MainPanel.this.currentPlayerPanel.setPlayer(gameState.getCurrentPlayer());
+				simulateDrawCard();
+				nextTurn();
 			}
-
-			// MainPanel.this.currentPlayerPanel = new PlayerPanel(
-			// MainPanel.this.turnManager.getCurrentPlayer());
-
-			// add(MainPanel.this.currentPlayerPanel, "cell 1 2,grow");
 		}
 	}
 
 	private MapPanel getMapPanel(String mapName) {
-		MapPanel mapPanel = new MapPanel();
+		MapPanel mapPanel = new MapPanel(playerHandPanel);
 		mapPanel.setMapName(mapName);
 		return mapPanel;
 	}
 
 	public void setMapPanel(MapPanel panel) {
 		this.mapPanel = panel;
-		this.repaint();
+	}
+
+	public Player getCurrentPlayer() {
+		return (Player) this.gameState.getCurrentPlayer();
+	}
+
+	public void nextTurn() {
+		gameState.takeTurn();
+		destinationTable.setPlayer(getCurrentPlayer());
+		playerHandPanel.setPlayer(getCurrentPlayer());
+		currentPlayerPanel.setPlayer(getCurrentPlayer());
+		// TODO: Refill deal cards
 	}
 
 	// TODO: Get the players rather than hard-code them

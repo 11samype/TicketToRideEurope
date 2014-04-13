@@ -31,10 +31,6 @@ public class Main {
 
 				MainPanel mainPanel = new MainPanel();
 
-				MapPanel gamePanel = new MapPanel();
-				gamePanel.setMapName("Europe");
-				mainPanel.setMapPanel(gamePanel);
-
 				window.getContentPane().add(mainPanel);
 				window.pack();
 				window.setVisible(true);

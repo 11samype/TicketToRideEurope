@@ -50,19 +50,18 @@ public class GameStateTest {
 			players.add(new Player());
 		}
 		GameState game = GameState.getInstance().withPlayers(players);
-		TurnManager turnManager = game.getTurnManager();
 
 		assertSame(game.getCurrentPlayer(), players.get(0));
 
 		for (int i = 1; i < players.size(); i++) {
-			turnManager.rotatePlayers();
+			game.takeTurn();
 			assertSame(game.getCurrentPlayer(), players.get(i));
 		}
 
-		turnManager.rotatePlayers();
+		game.takeTurn();
 		assertSame(game.getCurrentPlayer(), players.get(0));
 	}
-	
+
 	@Test
 	public void testgetPlayers() {
 		List<IPlayer> players = new ArrayList<IPlayer>();

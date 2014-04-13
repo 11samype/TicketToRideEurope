@@ -19,8 +19,7 @@ public class DestinationTable extends JTable {
 
 	public DestinationTable() {
 		super();
-		this.dataModel = getDefaultModel();
-		this.setModel(dataModel);
+		reset();
 	}
 
 	@Override
@@ -29,17 +28,12 @@ public class DestinationTable extends JTable {
 	}
 
 	public void addDestination(DestinationRoute destRoute) {
-		DefaultTableModel model = (DefaultTableModel) this.getModel();
-		model.addRow(destinationToTableRow(destRoute));
+		this.getModel().addRow(destinationToTableRow(destRoute));
 	}
 
 	private Object[] destinationToTableRow(DestinationRoute destRoute) {
 		return new Object[] { destRoute.getStart(), destRoute.getEnd(),
 				destRoute.getScore() };
-	}
-
-	private DefaultTableModel getDefaultModel() {
-		return new DefaultTableModel(columnNames, 0);
 	}
 
 	@Override
@@ -54,7 +48,9 @@ public class DestinationTable extends JTable {
 	}
 
 	private void reset() {
-		setModel(getDefaultModel());
+		setModel(new DefaultTableModel(columnNames, 0));
+		repaint();
+		revalidate();
 	}
 
 	public void setPlayer(IPlayer player) {
@@ -64,7 +60,6 @@ public class DestinationTable extends JTable {
 			getModel()
 					.addRow(destinationToTableRow(destinationCard.getRoute()));
 		}
-
 		repaint();
 		revalidate();
 	}

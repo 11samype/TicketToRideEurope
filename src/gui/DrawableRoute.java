@@ -8,14 +8,14 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
 import objects.TrainColor;
+import objects.abstracts.AbstractColorableRoute;
 import objects.abstracts.AbstractRoute;
 
-public class DrawableRoute extends AbstractRoute implements IDrawable {
+public class DrawableRoute extends AbstractColorableRoute implements IDrawable {
 
 	// Width and height of rectangular region around mouse
 	// pointer to use for hit detection on lines
 	private static final int HIT_BOX_SIZE = 2;
-	private TrainColor color;
 
 	public DrawableRoute(DrawableDestination start, DrawableDestination end,
 			int length) {
@@ -27,8 +27,7 @@ public class DrawableRoute extends AbstractRoute implements IDrawable {
 	}
 
 	public DrawableRoute(DrawableDestination start, DrawableDestination end, int length, TrainColor color) {
-		super(start, end, length);
-		this.color = color;
+		super(start, end, color, length);
 	}
 
 	@Override

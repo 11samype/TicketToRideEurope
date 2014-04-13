@@ -12,7 +12,7 @@ public class TrainCarHand extends AbstractHand<TrainCarCard> {
 		return numInHand(card.getColor());
 	}
 
-	public int numInHand(final TrainColor color) {
+	public int numInHand(TrainColor color) {
 		int count = 0;
 
 		for (int i = 0; i < this.hand.size(); i++) {
@@ -23,19 +23,15 @@ public class TrainCarHand extends AbstractHand<TrainCarCard> {
 
 		return count;
 	}
-	
+
 	public void removeCard(TrainColor color) {
-		TrainCarCard cardToRemove;
-		
 		for (int i = 0; i < this.hand.size(); i++) {
-			TrainCarCard cardToTest = this.hand.get(i);
-			if(cardToTest.getColor() == color) {
-				cardToRemove = cardToTest;
-				this.hand.remove(cardToRemove);
+			if (this.hand.get(i).getColor().equals(color)) {
+				this.hand.remove(i);
 				return;
 			}
 		}
-		
+
 	}
 
 }

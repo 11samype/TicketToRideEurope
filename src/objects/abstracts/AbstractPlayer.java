@@ -9,11 +9,11 @@ import objects.DestinationDeck;
 import objects.DestinationHand;
 import objects.GameState;
 import objects.TrainCarCard;
-import objects.TrainCarDeal;
 import objects.TrainCarDeck;
 import objects.TrainCarHand;
-import objects.TrainRoute;
+import objects.TrainColor;
 import objects.interfaces.IPlayer;
+import objects.interfaces.IRoute;
 
 public class AbstractPlayer implements IPlayer {
 
@@ -26,7 +26,7 @@ public class AbstractPlayer implements IPlayer {
 	protected TrainCarHand hand = new TrainCarHand();
 	protected DestinationHand destinations = new DestinationHand();
 	protected int score;
-	protected List<AbstractRoute> routes = new ArrayList<AbstractRoute>();
+	protected List<IRoute> routes = new ArrayList<IRoute>();
 
 	public AbstractPlayer() {
 		this("New Player");
@@ -50,21 +50,31 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public void drawCardFromDeal(int index) {
-		TrainCarCard pickedCard = GameState.getInstance().getCardManager().getDealCards().removeCardAtPosition(index);
+		TrainCarCard pickedCard = GameState.getInstance().getCardManager()
+				.getDealCards().removeCardAtPosition(index);
 		System.out.printf("Drew index %d; %s\n", index, pickedCard.getColor());
 		this.hand.addCard(pickedCard);
 	}
 
-	public void claimRoute(TrainRoute route) {
-		if (this.hand.numInHand(route.color) >= route.length) {
+	public void claimRoute(IRoute route) throws UnsupportedOperationException {
+		TrainColor routeColor = (route instanceof AbstractColorableRoute) ? ((AbstractColorableRoute) route)
+				.getColor() : TrainColor.RAINBOW;
+
+		int numberOfColorInHand = this.hand.numInHand(routeColor);
+		int numberOfRainbowInHand = this.hand.numInHand(TrainColor.RAINBOW);
+		int routeLength =  route.getLength();
+		if (numberOfColorInHand >= routeLength) {
+			this.numTrains -= routeLength;
 			this.routes.add(route);
-			this.numTrains -= route.length;
-			// TODO: Remove the cards from the players hand
-			for (int i = 0; i < route.length; i++) {
-				this.hand.removeCard(route.getColor());
+
+			for (int i = 0; i < routeLength; i++) {
+				this.hand.removeCard(routeColor);
 			}
 		} else {
-			throw new UnsupportedOperationException("Not enough cards for route!");
+			throw new UnsupportedOperationException(
+					"Not enough cards for route!\nYou have "
+			+ numberOfColorInHand + " " + routeColor +
+			" but the route is worth " + routeLength);
 		}
 	}
 
@@ -100,6 +110,11 @@ public class AbstractPlayer implements IPlayer {
 	@Override
 	public int getNumStations() {
 		return this.numStations;
+	}
+
+	@Override
+	public List<IRoute> getRoutes() {
+		return this.routes;
 	}
 
 }

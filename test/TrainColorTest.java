@@ -25,8 +25,6 @@ public class TrainColorTest {
 		List<TrainColor> colors = TrainColor.getAllColors();
 		assertNotNull(colors);
 		int size = colors.size();
-		assertFalse(size == 0);
-		assertTrue(size > 0);
 		assertEquals(9, size);
 	}
 

@@ -103,14 +103,6 @@ public class GameState {
 		public DiscardPile getDiscardPile() {
 			return this.discardPile;
 		}
-
-		public void dealTrainCarCardToPlayer(Player player) {
-			player.drawCardFromDeck(this.trainCarDeck);
-		}
-
-		public void dealDestinationCardToPlayer(Player player) {
-			player.drawCardFromDeck(this.destinationDeck);
-		}
 	}
 
 	public class TurnManager {
