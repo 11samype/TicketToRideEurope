@@ -18,6 +18,7 @@ public class PlayerPanel extends JPanel {
 	private JLabel lblTrainCars;
 	private JLabel lblPoints;
 	private Player player;
+	private Thread repainterThread;
 
 	private static final String fmtStations = "Stations: %d";
 	private static final String fmtTrainCars = "Train Cars: %d";
@@ -31,6 +32,22 @@ public class PlayerPanel extends JPanel {
 	public PlayerPanel(Player player) {
 		this.player = player;
 		initGUI();
+		repaintAtFPS(60);
+	}
+
+	private void repaintAtFPS(int fps) {
+		if (this.repainterThread == null) {
+			this.repainterThread = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while (true) {
+						setPlayer(getPlayer());
+					}
+
+				}
+			});
+			this.repainterThread.start();
+		}
 	}
 
 	private void initGUI() {
@@ -38,9 +55,9 @@ public class PlayerPanel extends JPanel {
 		setLayout(layout);
 
 		this.lblName = createJLabel(this.player.getName());
-		this.lblStations = createJLabel(String.format(fmtStations, 0));
-		this.lblTrainCars = createJLabel(String.format(fmtTrainCars, 0));
-		this.lblPoints = createJLabel(String.format(fmtPoints, 0));
+		this.lblStations = createJLabel(String.format(fmtStations, this.player.getNumStations()));
+		this.lblTrainCars = createJLabel(String.format(fmtTrainCars, this.player.getNumTrains()));
+		this.lblPoints = createJLabel(String.format(fmtPoints, 0)); // TODO: Calculate Points
 
 		add(this.lblName);
 		add(this.lblStations);

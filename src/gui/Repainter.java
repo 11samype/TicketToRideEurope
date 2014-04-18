@@ -1,10 +1,12 @@
 package gui;
 
+import java.awt.Component;
+
 public class Repainter extends Thread {
 	private int fps;
-	private final MapPanel comp;
+	private final Component comp;
 
-	public Repainter(MapPanel comp, int fps) {
+	public Repainter(Component comp, int fps) {
 		this.comp = comp;
 		this.fps = fps;
 	}
@@ -13,14 +15,10 @@ public class Repainter extends Thread {
 	public void run() {
 		try {
 			while (true) {
-				if (!comp.isPaused())
-				 {
 					Thread.sleep(1000 / this.fps);
 					this.comp.repaint();
-				}
 			}
 		} catch (InterruptedException e) {
-			// nothing to catch
 			e.printStackTrace();
 		}
 	}

@@ -15,7 +15,7 @@ import objects.DestinationRoute;
 
 public class DestinationCardReader {
 
-	private String fileName = "destinations.txt";
+	private String fileName = "Destinations-orig.txt";
 	private File f;
 
 	private Set<DestinationRoute> routes = new HashSet<DestinationRoute>();
