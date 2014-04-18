@@ -7,13 +7,6 @@ import gui.DrawableDoubleRoute;
 
 import org.junit.Test;
 
-
-/**
- * TODO Put here a description of what this class does.
- *
- * @author samynpd.
- *         Created Apr 11, 2014.
- */
 public class DrawableDoubleRouteTest {
 
 	@Test

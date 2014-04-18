@@ -31,7 +31,7 @@ public abstract class AbstractCard<V> implements ICard {
 				return false;
 		} else if (!value.equals(other.value))
 			return false;
-		return true;
+		return true; //unreachable?
 	}
 
 }

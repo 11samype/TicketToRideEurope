@@ -22,16 +22,19 @@ public class RouteBuilderTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSameDestinationException() {
+		@SuppressWarnings("unused")
 		RouteBuilder bad = new RouteBuilder(end, end, 1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testZeroLengthException() {
+		@SuppressWarnings("unused")
 		RouteBuilder bad = new RouteBuilder(start, end, 0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testNegativeLengthException() {
+		@SuppressWarnings("unused")
 		RouteBuilder bad = new RouteBuilder(start, end, -2);
 	}
 
