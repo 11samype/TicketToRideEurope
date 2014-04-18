@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -184,6 +185,10 @@ public class MapPanel extends JPanel {
 			DrawableRoute drawableRouteToClaim = constructDrawableRoute(routeToClaim, current.getColor());
 			for (IPlayer player : GameState.getInstance().getPlayers()) {
 				if (player == current && player.getRoutes().contains(routeToClaim)) {
+					JOptionPane.showMessageDialog(this,
+						    "Unable to claim route.\nYou already own that!",
+						    "Claim Error",
+						    JOptionPane.ERROR_MESSAGE);
 					throw new UnsupportedOperationException("Unable to claim route.\nYou already own that!");
 				}
 				if (!player.getRoutes().contains(routeToClaim)) {
@@ -192,11 +197,19 @@ public class MapPanel extends JPanel {
 						playerHandPanel.setPlayer(current);
 						drawablesToAdd.add(drawableRouteToClaim);
 					} catch (UnsupportedOperationException e) {
+						JOptionPane.showMessageDialog(this,
+							    "Unable to claim route.\nNot enough cards for this route!",
+							    "Claim Error",
+							    JOptionPane.ERROR_MESSAGE);
 						e.printStackTrace();
 					}
 					return;
 				}
 				else
+					JOptionPane.showMessageDialog(this,
+						    "Unable to claim route.\nThat route has already been taken!",
+						    "Claim Error",
+						    JOptionPane.ERROR_MESSAGE);
 					throw new UnsupportedOperationException("Unable to claim route.\nThat route has already been taken!");
 			}
 		}

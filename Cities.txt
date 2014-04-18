@@ -43,5 +43,5 @@ Sevastopol		1009 	501
 Sochi			1109 	518
 Rostov			1115 	418
 Kharkov			1069 	355
-Moskva			1186 	178
+Moskva			1086 	178
 Smolensk		987		209
