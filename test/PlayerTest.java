@@ -2,6 +2,7 @@
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Queue;
 
 import objects.Destination;
 import objects.DestinationCard;
@@ -21,23 +22,28 @@ import org.junit.Test;
 
 public class PlayerTest {
 
+	private Queue<TrainColor> colors;
+
 	@Before
-	public void setUp() throws Exception {
+	public void setup() {
+		this.colors = GameState.availableColors;
 
 	}
 
 	@Test
-	public void testPlayer() {
+	public void testNewPlayer() {
 		Player p = new Player();
 		assertNotNull(p);
 		assertEquals("New Player", p.getName());
 	}
 
 	@Test
-	public void testInitPlayer() {
+	public void testInitPlayerInfo() {
+
+		TrainColor nextAvail = colors.peek();
 		Player p = new Player("Conductor");
-		assertNotNull(p);
-		assertEquals("Conductor", p.getName());
+		assertEquals(nextAvail, p.getColor());
+
 		assertEquals(0, p.getScore());
 		assertNotNull(p.getHand());
 		assertEquals(0, p.getHand().size());
@@ -75,13 +81,10 @@ public class PlayerTest {
 		assertEquals(2, p.getHand().size());
 	}
 
+
 	@Test
 	public void testClaimRoute() {
 		TrainCarDeck d = new TrainCarDeck();
-		while (!d.isEmpty()) {
-			d.draw();
-		}
-
 		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
 
 		Player p = new Player();
@@ -98,19 +101,17 @@ public class PlayerTest {
 
 		assertEquals(p.getHand().size(), 9);
 
-		p.claimRoute(new TrainRoute(new Destination("here"), new Destination("there"), TrainColor.BLACK, 6));
+		TrainRoute routeToClaim = new TrainRoute(new Destination("here"), new Destination("there"), TrainColor.BLACK, 6);
+		p.claimRoute(routeToClaim);
 
 		assertEquals(p.getHand().size(), 3);
+		assertSame(p.getRoutes().get(0), routeToClaim);
 
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void testClaimRouteFail() {
 		TrainCarDeck d = new TrainCarDeck();
-		while (!d.isEmpty()) {
-			d.draw();
-		}
-
 		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
 
 		Player p = new Player();
@@ -125,7 +126,8 @@ public class PlayerTest {
 			p.drawCardFromDeck(d);
 		}
 
-		p.claimRoute(new TrainRoute(new Destination("here"), new Destination("there"), TrainColor.BLACK, 6));
+		TrainRoute routeToClaim = new TrainRoute(new Destination("here"), new Destination("there"), TrainColor.BLACK, 6);
+		p.claimRoute(routeToClaim);
 
 	}
 

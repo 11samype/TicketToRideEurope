@@ -76,7 +76,7 @@ public class MapPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		// drawBackground(g);
+//		 drawBackground(g);
 		drawDrawables(g);
 	}
 

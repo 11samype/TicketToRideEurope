@@ -43,9 +43,11 @@ public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 
 	@Override
 	public void drawOn(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-		Stroke saveStroke = g2.getStroke();
-		g2.setStroke(new BasicStroke(DrawableDestination.DOT_RADIUS / 2));
+		Graphics2D g2 = (Graphics2D) g.create();
+		BasicStroke dashed = new BasicStroke(DrawableDestination.DOT_RADIUS / 2);
+		g2.setStroke(dashed);
+
+
 		Line2D topRouteLine = getTopLine();
 		Line2D bottomRouteLine = getBottomLine();
 		g2.drawLine((int) topRouteLine.getX1(), (int) topRouteLine.getY1(),
@@ -53,7 +55,7 @@ public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 		g2.drawLine((int) bottomRouteLine.getX1(),
 				(int) bottomRouteLine.getY1(), (int) bottomRouteLine.getX2(),
 				(int) bottomRouteLine.getY2());
-		g2.setStroke(saveStroke);
+		g2.dispose();
 	}
 
 	private double getSlope() {
