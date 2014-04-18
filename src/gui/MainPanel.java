@@ -15,6 +15,8 @@ import objects.DestinationDeck;
 import objects.GameState;
 import objects.GameState.CardManager;
 import objects.Player;
+import objects.TrainCarCard;
+import objects.TrainCarDeal;
 import objects.TrainCarDeck;
 import objects.TrainCarHand;
 import objects.TrainColor;
@@ -146,6 +148,37 @@ public class MainPanel extends JPanel {
 
 		dealCardsToDealPanel();
 	}
+	
+	private class DealCardListener extends MouseAdapter {
+
+		private int cardInt;
+		private final DealtCardPanel panel;
+		private CardManager cardManager;
+
+
+		public DealCardListener(int cardInt, DealtCardPanel panel) {
+			this.cardInt = cardInt;
+			this.panel = panel;
+
+		}
+
+		private void simulateDrawCard() {
+			Player current = getCurrentPlayer();
+			current.drawCardFromDeal(this.cardInt);
+			MainPanel.this.playerHandPanel.setPlayer(getCurrentPlayer());
+			
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+
+				simulateDrawCard();
+				this.cardManager = GameState.getInstance().getCardManager();
+				this.cardManager.fillDealFromDeck();
+				panel.setCard(null);
+				
+		}
+	}
 
 	private void addTrainCarDeckPanel() {
 		TrainCarDeck carDeck = cardManager.getTrainCarDeck();
@@ -168,6 +201,7 @@ public class MainPanel extends JPanel {
 					.getDealCard(i).getColor());
 			DealtCardPanel cardPanel = new DealtCardPanel();
 			cardPanel.setCard(card);
+			cardPanel.addMouseListener(new DealCardListener(i, cardPanel));
 			dealtCardsPanel.add(cardPanel);
 		}
 	}

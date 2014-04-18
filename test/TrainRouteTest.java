@@ -21,9 +21,9 @@ public class TrainRouteTest {
 		assertFalse(route1.equals(route2));
 		
 		Destination start = new Destination("start");
-		TrainRoute nullRoute = new TrainRoute(start, null, length);
+		TrainRoute nullEndRoute = new TrainRoute(start, null, length);
 		
-		assertFalse(nullRoute.equals(route2));
+		assertFalse(nullEndRoute.equals(route2));
 	}
 
 }

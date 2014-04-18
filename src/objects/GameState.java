@@ -1,5 +1,6 @@
 package objects;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,10 +73,16 @@ public class GameState {
 			fillDealFromDeck();
 		}
 
+		/*
+		 * returns cards added
+		 */
 		public void fillDealFromDeck() {
+			
 			while (!this.deal.isDealFull()) {
-				this.deal.addCard(trainCarDeck.draw());
+				TrainCarCard card = trainCarDeck.draw();
+				this.deal.addCard(card);
 			}
+
 		}
 
 		public TrainCarCard drawDealCard(int index) {

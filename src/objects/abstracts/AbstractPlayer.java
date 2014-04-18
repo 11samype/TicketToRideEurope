@@ -9,6 +9,7 @@ import objects.DestinationDeck;
 import objects.DestinationHand;
 import objects.GameState;
 import objects.TrainCarCard;
+import objects.TrainCarDeal;
 import objects.TrainCarDeck;
 import objects.TrainCarHand;
 import objects.TrainColor;
@@ -55,7 +56,7 @@ public class AbstractPlayer implements IPlayer {
 		System.out.printf("Drew index %d; %s\n", index, pickedCard.getColor());
 		this.hand.addCard(pickedCard);
 	}
-
+	
 	public void claimRoute(IRoute route) throws UnsupportedOperationException {
 		TrainColor routeColor = (route instanceof AbstractColorableRoute) ? ((AbstractColorableRoute) route)
 				.getColor() : TrainColor.RAINBOW;

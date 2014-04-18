@@ -13,16 +13,30 @@ public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 
 	@Override
 	public void addCard(K card) {
-		if (this.deal.size() >= MAX_DEALT_CARDS) {
+		if (this.deal.size() > MAX_DEALT_CARDS) {
 			throw new UnsupportedOperationException(
 					"Deal can't have more than " + MAX_DEALT_CARDS + " cards!");
 		}
-		this.deal.add(card);
+		
+		for (int i = 0; i < this.deal.size(); i++) {
+			if (this.deal.get(i) == null) {
+				this.deal.set(i, card);
+				return;
+			}
+		}
+
 
 	}
 
 	public int getSize() {
-		return this.deal.size();
+		int num = 0;
+		for (int i = 0; i < this.deal.size(); i++) {
+			if (deal.get(i) != null) {
+				num++;
+			} 
+		}
+		
+		return num;
 	}
 
 	public K getCardAtPosition(int index) {
@@ -39,8 +53,9 @@ public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 	@Override
 	public K removeCard(K card) {
 		int index = this.deal.indexOf(card);
-		if (index != -1)
+		if (index != -1) {
 			return removeCardAtPosition(index);
+		}
 		else
 			return null;
 	}

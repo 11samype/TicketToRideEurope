@@ -26,8 +26,10 @@ public class DealtCardPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (this.card == null) {
+			g.setColor(Color.black);
+			g.drawRect(0, 0, getWidth() - 2, getHeight() - 2);
 			g.setColor(Color.LIGHT_GRAY);
-			g.fillRect(0, 0, getWidth(), getHeight());
+			g.fillRect(0, 0, getWidth() - 2, getHeight() - 2);
 		} else {
 			g.drawImage(card.getImage(), 0, 0, getWidth(), getHeight(),
 					Color.BLACK, null);
