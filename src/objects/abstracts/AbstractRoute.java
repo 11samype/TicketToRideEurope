@@ -76,17 +76,17 @@ public abstract class AbstractRoute implements IRoute {
 		if (!(obj instanceof AbstractRoute))
 			return false;
 		AbstractRoute other = (AbstractRoute) obj;
-		if (length != other.length)
+		if (this.length != other.length)
 			return false;
-		if (start == null) {
+		if (this.start == null) {
 			if (other.start != null)
 				return false;
-		} else if (!(start.equals(other.start) || start.equals(other.end)))
+		} else if (!(this.start.equals(other.start) || this.start.equals(other.end)))
 			return false;
-		if (end == null) {
-			if (other.end != null)
+		if (this.end == null) {
+			if (other.end != null) //need to finish in train route test
 				return false;
-		} else if (!(end.equals(other.end) || end.equals(other.start)))
+		} else if (!(this.end.equals(other.end) || this.end.equals(other.start)))
 			return false;
 		return true;
 
