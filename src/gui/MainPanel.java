@@ -178,7 +178,7 @@ public class MainPanel extends JPanel {
 				simulateDrawCard();
 				this.cardManager = GameState.getInstance().getCardManager();
 				this.cardManager.fillDealFromDeck();
-				panel.setCard(null);
+				panel.setCard(new DrawableTrainCarCard(this.cardManager.getDealCard(cardInt).getColor()));
 				
 		}
 	}
