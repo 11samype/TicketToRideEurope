@@ -154,11 +154,13 @@ public class MainPanel extends JPanel {
 		private int cardInt;
 		private final DealtCardPanel panel;
 		private CardManager cardManager;
+		private TrainCarDeck deck;
 
 
-		public DealCardListener(int cardInt, DealtCardPanel panel) {
+		public DealCardListener(int cardInt, DealtCardPanel panel, TrainCarDeck deck) {
 			this.cardInt = cardInt;
 			this.panel = panel;
+			this.deck = deck;
 
 		}
 
@@ -166,6 +168,7 @@ public class MainPanel extends JPanel {
 			Player current = getCurrentPlayer();
 			current.drawCardFromDeal(this.cardInt);
 			MainPanel.this.playerHandPanel.setPlayer(getCurrentPlayer());
+			lblTrainCardCount.setText(Integer.toString(deck.size()));
 			
 		}
 
@@ -201,7 +204,7 @@ public class MainPanel extends JPanel {
 					.getDealCard(i).getColor());
 			DealtCardPanel cardPanel = new DealtCardPanel();
 			cardPanel.setCard(card);
-			cardPanel.addMouseListener(new DealCardListener(i, cardPanel));
+			cardPanel.addMouseListener(new DealCardListener(i, cardPanel, cardManager.getTrainCarDeck()));
 			dealtCardsPanel.add(cardPanel);
 		}
 	}
