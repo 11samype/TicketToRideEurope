@@ -47,9 +47,10 @@ public class MapPanel extends JPanel {
 
 	public MapPanel(HandPanel playerHandPanel) {
 		this.playerHandPanel = playerHandPanel;
-		getDrawableRoutes();
-		getDrawableDestinations();
+		initDrawableRoutes();
+		initDrawableDestinations();
 		this.addMouseListener(new DestinationClickListener());
+		this.addMouseListener(new RouteClickListener());
 		repaintAtFPS(FPS);
 	}
 
@@ -77,7 +78,7 @@ public class MapPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-//		 drawBackground(g);
+		// drawBackground(g);
 		drawDrawables(g);
 	}
 
@@ -90,7 +91,7 @@ public class MapPanel extends JPanel {
 		}
 	}
 
-	private void getDrawableDestinations() {
+	private void initDrawableDestinations() {
 		for (Iterator<String> iter = DEST_LOC_LOOKUP.keySet().iterator(); iter
 				.hasNext();) {
 			DrawableDestination drawableDest = DEST_LOC_LOOKUP.get(iter.next());
@@ -98,7 +99,7 @@ public class MapPanel extends JPanel {
 		}
 	}
 
-	private void getDrawableRoutes() {
+	private void initDrawableRoutes() {
 		Iterator<Destination> destIter = ROUTE_LOOKUP.keySet().iterator();
 		while (destIter.hasNext()) {
 			Destination _start = destIter.next();
@@ -136,11 +137,11 @@ public class MapPanel extends JPanel {
 		}
 	}
 
-	public boolean areConnected(Destination start, Destination end) {
+	public static boolean areConnected(Destination start, Destination end) {
 		return getRouteBetween(start, end) != null;
 	}
 
-	public IRoute getRouteBetween(Destination start, Destination end) {
+	public static IRoute getRouteBetween(Destination start, Destination end) {
 		List<IRoute> routes = ROUTE_LOOKUP.get(start);
 		if (routes != null) {
 			for (int i = 0; i < routes.size(); i++) {
@@ -179,17 +180,21 @@ public class MapPanel extends JPanel {
 	}
 
 	public void tryToClaimRoute(Player current, SelectionHolder selectedPoints,
-			ArrayList<DrawableRoute> drawablesToAdd) throws UnsupportedOperationException {
-		IRoute routeToClaim = getRouteBetween(selectedPoints.get(0), selectedPoints.get(1));
+			ArrayList<DrawableRoute> drawablesToAdd)
+			throws UnsupportedOperationException {
+		IRoute routeToClaim = getRouteBetween(selectedPoints.get(0),
+				selectedPoints.get(1));
 		if (routeToClaim != null) {
-			DrawableRoute drawableRouteToClaim = constructDrawableRoute(routeToClaim, current.getColor());
+			DrawableRoute drawableRouteToClaim = constructDrawableRoute(
+					routeToClaim, current.getColor());
 			for (IPlayer player : GameState.getInstance().getPlayers()) {
-				if (player == current && player.getRoutes().contains(routeToClaim)) {
+				if (player == current
+						&& player.getRoutes().contains(routeToClaim)) {
 					JOptionPane.showMessageDialog(this,
-						    "Unable to claim route.\nYou already own that!",
-						    "Claim Error",
-						    JOptionPane.ERROR_MESSAGE);
-					throw new UnsupportedOperationException("Unable to claim route.\nYou already own that!");
+							"Unable to claim route.\nYou already own that!",
+							"Claim Error", JOptionPane.ERROR_MESSAGE);
+					throw new UnsupportedOperationException(
+							"Unable to claim route.\nYou already own that!");
 				}
 				if (!player.getRoutes().contains(routeToClaim)) {
 					try {
@@ -197,20 +202,23 @@ public class MapPanel extends JPanel {
 						playerHandPanel.setPlayer(current);
 						drawablesToAdd.add(drawableRouteToClaim);
 					} catch (UnsupportedOperationException e) {
-						JOptionPane.showMessageDialog(this,
-							    "Unable to claim route.\nNot enough cards for this route!",
-							    "Claim Error",
-							    JOptionPane.ERROR_MESSAGE);
+						JOptionPane
+								.showMessageDialog(
+										this,
+										"Unable to claim route.\nNot enough cards for this route!",
+										"Claim Error",
+										JOptionPane.ERROR_MESSAGE);
 						e.printStackTrace();
 					}
 					return;
-				}
-				else
-					JOptionPane.showMessageDialog(this,
-						    "Unable to claim route.\nThat route has already been taken!",
-						    "Claim Error",
-						    JOptionPane.ERROR_MESSAGE);
-					throw new UnsupportedOperationException("Unable to claim route.\nThat route has already been taken!");
+				} else
+					JOptionPane
+							.showMessageDialog(
+									this,
+									"Unable to claim route.\nThat route has already been taken!",
+									"Claim Error", JOptionPane.ERROR_MESSAGE);
+				throw new UnsupportedOperationException(
+						"Unable to claim route.\nThat route has already been taken!");
 			}
 		}
 	}
@@ -222,12 +230,12 @@ public class MapPanel extends JPanel {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			DrawableDestination clickedDest = null;
-			Player current = (Player) GameState.getInstance().getCurrentPlayer();
+			Player current = (Player) GameState.getInstance()
+					.getCurrentPlayer();
 			ArrayList<DrawableRoute> drawablesToAdd = new ArrayList<DrawableRoute>();
 
 			for (IDrawable drawable : drawables) {
-				if (drawable.contains(e.getPoint())
-						&& (drawable instanceof DrawableDestination)) {
+				if (drawable.contains(e.getPoint()) && (drawable instanceof DrawableDestination)) {
 					clickedDest = (DrawableDestination) drawable;
 
 					if (SwingUtilities.isLeftMouseButton(e)) {
@@ -237,18 +245,17 @@ public class MapPanel extends JPanel {
 							selectedPoints.add(clickedDest);
 							if (selectedPoints.isFull()) {
 								try {
-									tryToClaimRoute(current, selectedPoints, drawablesToAdd);
+									tryToClaimRoute(current, selectedPoints,
+											drawablesToAdd);
 								} catch (UnsupportedOperationException ex) {
 									ex.printStackTrace();
-								}
-								finally {
+								} finally {
 									selectedPoints.clear();
 								}
 							}
 						}
 						System.out.println(clickedDest.getName());
-					}
-					else if (SwingUtilities.isRightMouseButton(e)) {
+					} else if (SwingUtilities.isRightMouseButton(e)) {
 						System.out.println(clickedDest.getName());
 					}
 				} // end if contains
@@ -258,6 +265,28 @@ public class MapPanel extends JPanel {
 			drawableRoutes.addAll(drawablesToAdd);
 			drawablesToAdd.clear();
 
+		}
+	}
+
+	private class RouteClickListener extends MouseAdapter {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			DrawableRoute clickedRoute = null;
+			Player current = (Player) GameState.getInstance()
+					.getCurrentPlayer();
+
+			for (IDrawable drawable : drawables) {
+				if (drawable.contains(e.getPoint()) && (drawable instanceof DrawableRoute)) {
+					clickedRoute = (DrawableRoute) drawable;
+
+					if (SwingUtilities.isLeftMouseButton(e)) {
+
+					} else if (SwingUtilities.isRightMouseButton(e)) {
+
+					}
+				}
+			}
 		}
 	}
 }
