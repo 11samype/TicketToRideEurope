@@ -13,7 +13,7 @@ public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 
 	@Override
 	public void addCard(K card) {
-		if (this.deal.size() > MAX_DEALT_CARDS) {
+		if (getSize() >= MAX_DEALT_CARDS) {
 			throw new UnsupportedOperationException(
 					"Deal can't have more than " + MAX_DEALT_CARDS + " cards!");
 		}

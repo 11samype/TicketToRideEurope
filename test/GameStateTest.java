@@ -20,6 +20,7 @@ public class GameStateTest {
 	@Test
 	public void testInitGame() {
 		GameState game = GameState.getInstance();
+		game.init();
 		CardManager cardManager = game.getCardManager();
 		assertNotNull(game);
 		assertEquals(46, cardManager.getDestinationDeck().size());

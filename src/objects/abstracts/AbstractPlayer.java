@@ -53,6 +53,8 @@ public class AbstractPlayer implements IPlayer {
 	public void drawCardFromDeal(int index) {
 		TrainCarCard pickedCard = GameState.getInstance().getCardManager()
 				.getDealCards().removeCardAtPosition(index);
+		//fill deal
+		GameState.getInstance().getCardManager().fillDealFromDeck();
 		System.out.printf("Drew index %d; %s\n", index, pickedCard.getColor());
 		this.hand.addCard(pickedCard);
 	}
