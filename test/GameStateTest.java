@@ -7,6 +7,7 @@ import objects.GameState;
 import objects.Player;
 import objects.GameState.CardManager;
 import objects.GameState.TurnManager;
+import objects.TrainCarCard;
 import objects.TrainRoute;
 import objects.interfaces.IPlayer;
 
@@ -71,6 +72,16 @@ public class GameStateTest {
 		}
 		GameState game = GameState.getInstance().withPlayers(players);
 		assertEquals(game.getPlayers(), players);
+	}
+	
+	@Test
+	public void testGetDealCard() {
+
+		GameState game = GameState.getInstance();
+		
+		TrainCarCard dealCard = game.getCardManager().getDealCard(0);
+		assertTrue(dealCard instanceof TrainCarCard);
+		assertNotNull(dealCard);
 	}
 
 }
