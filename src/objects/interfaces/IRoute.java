@@ -8,4 +8,6 @@ public interface IRoute {
 	public Destination getEnd();
 
 	public int getLength();
+
+	public int getScore();
 }
