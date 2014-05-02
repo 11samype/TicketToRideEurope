@@ -1,7 +1,11 @@
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import gui.DrawableDestination;
@@ -18,6 +22,43 @@ import utils.DestinationLocationReader;
 import utils.TrainRouteReader;
 
 public class Main {
+
+	private static final String _cityBundleName = "Cities";
+
+	public static Locale CURRENT_LOCALE = getGameLocale();
+	public static ResourceBundle CITIES_BUNDLE = ResourceBundle.getBundle(
+			_cityBundleName, CURRENT_LOCALE);
+
+	public static Locale getGameLocale() {
+		return new Locale("game", "ORIG");
+	}
+
+	public static void useGameLocale() {
+		CURRENT_LOCALE = getGameLocale();
+		CITIES_BUNDLE = ResourceBundle.getBundle(_cityBundleName,
+				CURRENT_LOCALE);
+	}
+
+	public static String getStringFromBundle(ResourceBundle bundle, String key) {
+		try {
+			return bundle.getString(key);
+		} catch (MissingResourceException e) {
+			e.printStackTrace();
+			return '!' + key + '!';
+		}
+	}
+
+	public static String getStringFromBundle(ResourceBundle bundle, String key,
+			Object... params) {
+		try {
+			MessageFormat formatter = new MessageFormat(bundle.getString(key),
+					CURRENT_LOCALE);
+			return formatter.format(params);
+		} catch (MissingResourceException e) {
+			e.printStackTrace();
+			return '!' + key + '!';
+		}
+	}
 
 	public static void main(String[] args) {
 
@@ -52,8 +93,8 @@ public class Main {
 			int k = 1;
 			for (Iterator<DestinationRoute> i = routes.iterator(); i.hasNext();) {
 				DestinationRoute d = i.next();
-				System.out.printf("[%d] %15s -- %15s (%s)\n", k++, d.getStart(),
-						d.getEnd(), d.getScore());
+				System.out.printf("[%d] %15s -- %15s (%s)\n", k++,
+						d.getStart(), d.getEnd(), d.getScore());
 			}
 			System.out
 					.println("-----------------------------------------------------");
@@ -65,13 +106,14 @@ public class Main {
 		DestinationLocationReader reader = DestinationLocationReader
 				.getInstance();
 		if (log) {
-			HashMap<String, DrawableDestination> dests = reader.getDestinations();
+			HashMap<String, DrawableDestination> dests = reader
+					.getDestinations();
 			int k = 1;
-			for (Iterator<String> i = dests.keySet().iterator(); i
-					.hasNext();) {
+			for (Iterator<String> i = dests.keySet().iterator(); i.hasNext();) {
 				DrawableDestination d = dests.get(i.next());
-				System.out.printf("[%2d] %15s (%.2f, %.2f)\n", k++, d.getName(), d
-						.getCenter().getX(), d.getCenter().getY());
+				System.out
+						.printf("[%2d] %15s (%.2f, %.2f)\n", k++, d.getName(),
+								d.getCenter().getX(), d.getCenter().getY());
 			}
 			System.out
 					.println("----------------------------------------------------");
