@@ -7,9 +7,7 @@ public class TrainCarDeal extends AbstractDeal<TrainCarCard> {
 	public TrainCarDeal() {
 		super();
 
-		for (int i = 0; i < MAX_DEALT_CARDS; i++) {
-			this.deal.add(null);
-		}
+		
 		
 	}
 

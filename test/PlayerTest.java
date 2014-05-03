@@ -1,13 +1,15 @@
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
 import java.util.Queue;
 
 import objects.Destination;
-import objects.DestinationCard;
 import objects.DestinationDeck;
-import objects.DestinationRoute;
 import objects.GameState;
 import objects.Player;
 import objects.TrainCarCard;

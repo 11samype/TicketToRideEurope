@@ -16,6 +16,10 @@ public class DrawableTrainCarCard extends TrainCarCard {
 		super(color);
 	}
 
+	public DrawableTrainCarCard(TrainCarCard card) {
+		super(card.getColor());
+	}
+
 	public BufferedImage getImage() {
 		if (this.image == null) {
 			try {

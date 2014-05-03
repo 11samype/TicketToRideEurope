@@ -1,14 +1,15 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import objects.GameState;
-import objects.Player;
 import objects.GameState.CardManager;
-import objects.GameState.TurnManager;
+import objects.Player;
 import objects.TrainCarCard;
-import objects.TrainRoute;
 import objects.interfaces.IPlayer;
 
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class GameStateTest {
 		assertEquals(46, cardManager.getDestinationDeck().size());
 		assertEquals(105, cardManager.getTrainCarDeck().size());
 
-		assertTrue(cardManager.getDealCards().isDealFull());
+		assertTrue(cardManager.getDealCards().isFull());
 		assertEquals(5, cardManager.getDealCards().getSize());
 
 		assertEquals(0, cardManager.getDiscardPile().size());
@@ -53,15 +54,15 @@ public class GameStateTest {
 		}
 		GameState game = GameState.getInstance().withPlayers(players);
 
-		assertSame(game.getCurrentPlayer(), players.get(0));
+		assertSame(GameState.getCurrentPlayer(), players.get(0));
 
 		for (int i = 1; i < players.size(); i++) {
-			game.takeTurn();
-			assertSame(game.getCurrentPlayer(), players.get(i));
+			GameState.takeTurn();
+			assertSame(GameState.getCurrentPlayer(), players.get(i));
 		}
 
-		game.takeTurn();
-		assertSame(game.getCurrentPlayer(), players.get(0));
+		GameState.takeTurn();
+		assertSame(GameState.getCurrentPlayer(), players.get(0));
 	}
 
 	@Test
@@ -71,14 +72,14 @@ public class GameStateTest {
 			players.add(new Player());
 		}
 		GameState game = GameState.getInstance().withPlayers(players);
-		assertEquals(game.getPlayers(), players);
+		assertEquals(GameState.getPlayers(), players);
 	}
-	
+
 	@Test
 	public void testGetDealCard() {
 
 		GameState game = GameState.getInstance();
-		
+
 		TrainCarCard dealCard = game.getCardManager().getDealCard(0);
 		assertTrue(dealCard instanceof TrainCarCard);
 		assertNotNull(dealCard);

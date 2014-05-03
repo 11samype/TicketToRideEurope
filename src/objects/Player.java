@@ -1,11 +1,5 @@
 package objects;
 
-import java.awt.Color;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Random;
-
 import objects.abstracts.AbstractPlayer;
 
 public class Player extends AbstractPlayer {

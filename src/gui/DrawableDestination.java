@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.geom.Point2D;
+
 import objects.Destination;
 
 public class DrawableDestination extends Destination implements IDrawable {

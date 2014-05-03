@@ -1,10 +1,10 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import gui.DrawableDestination;
+import gui.DrawableRoute;
 
 import java.awt.Point;
 
-import gui.DrawableDestination;
-import gui.DrawableDoubleRoute;
-import gui.DrawableRoute;
 import objects.TrainColor;
 
 import org.junit.Test;

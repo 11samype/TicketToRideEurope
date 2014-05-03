@@ -40,7 +40,7 @@ public class HandCardPanel extends JPanel {
 
 	public synchronized BufferedImage getCardImage() {
 		// loads card image from file
-		
+
 		if (this.cardImage == null) {
 			try {
 				this.cardImage = ImageIO.read(new File("img//"
@@ -73,7 +73,6 @@ public class HandCardPanel extends JPanel {
 		super.paintComponent(g);
 		g.drawImage(getRotatedCardImage(), 0, 0, getWidth(), getHeight(),
 				Color.BLACK, null);
-		// drawCircle(g, -20, -20, 45, true, Color.WHITE);
 		g.setColor(Color.WHITE);
 		g.fillArc(0, -25, 45, 45, 0, -90);
 		// drawCircle(g, -20, -20, 45, false, Color.black);
@@ -91,10 +90,6 @@ public class HandCardPanel extends JPanel {
 		else
 			g.fillOval(x, y, radius, radius);
 		g.setColor(save);
-	}
-	
-	public BufferedImage cardImage() {
-		return this.cardImage;
 	}
 
 }

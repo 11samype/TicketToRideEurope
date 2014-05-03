@@ -1,11 +1,9 @@
 package objects;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Stack;
 
 import objects.interfaces.IPlayer;
 
@@ -13,8 +11,9 @@ public class GameState {
 	private static GameState sInstance;
 	private CardManager cardManager;
 	private TurnManager turnManager;
-	public static final Queue<TrainColor> availableColors = new LinkedList<TrainColor>(Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
-			TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW));
+	public static final Queue<TrainColor> availableColors = new LinkedList<TrainColor>(
+			Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
+					TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW));
 
 	public static GameState getInstance() {
 		if (sInstance == null)
@@ -45,15 +44,15 @@ public class GameState {
 		return this.turnManager;
 	}
 
-	public void takeTurn() {
-		getTurnManager().rotatePlayers();
+	public static void takeTurn() {
+		GameState.getInstance().getTurnManager().rotatePlayers();
 	}
 
-	public List<IPlayer> getPlayers() {
+	public static List<IPlayer> getPlayers() {
 		return GameState.getInstance().getTurnManager().getPlayers();
 	}
 
-	public IPlayer getCurrentPlayer() {
+	public static IPlayer getCurrentPlayer() {
 		return GameState.getInstance().getTurnManager().getCurrentPlayer();
 	}
 
@@ -77,10 +76,8 @@ public class GameState {
 		 * returns cards added
 		 */
 		public void fillDealFromDeck() {
-			
-			while (!this.deal.isDealFull()) {
-				TrainCarCard card = trainCarDeck.draw();
-				this.deal.addCard(card);
+			while (!this.deal.isFull() && !trainCarDeck.isEmpty()) {
+				this.deal.addCard(trainCarDeck.draw());
 			}
 
 		}

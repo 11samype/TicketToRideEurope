@@ -1,47 +1,37 @@
 package gui;
 
-import javax.swing.JPanel;
-
-import net.miginfocom.swing.MigLayout;
-
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
-
-import javax.swing.JLabel;
-
-import objects.DestinationDeck;
-import objects.GameState;
-import objects.GameState.CardManager;
-import objects.Player;
-import objects.TrainCarCard;
-import objects.TrainCarDeal;
-import objects.TrainCarDeck;
-import objects.TrainCarHand;
-import objects.TrainColor;
-import objects.interfaces.IPlayer;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
-
-import java.awt.Font;
-
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.OverlayLayout;
 import javax.swing.ScrollPaneConstants;
+
+import net.miginfocom.swing.MigLayout;
+import objects.DestinationDeck;
+import objects.GameState;
+import objects.GameState.CardManager;
+import objects.Player;
+import objects.TrainCarCard;
+import objects.TrainCarDeck;
+import objects.interfaces.IPlayer;
 
 public class MainPanel extends JPanel {
 	private final GameState gameState;
 	private CardManager cardManager;
 
 	private PlayerPanel currentPlayerPanel;
-	private JPanel mapPanel;
+	private JPanel mapPanelRoot;
 
 	private HandPanel playerHandPanel;
 
@@ -59,8 +49,6 @@ public class MainPanel extends JPanel {
 	private JPanel playerInfoPanel;
 
 	private JPanel dealtCardsPanel;
-
-	// private HandCardPanel[] handPanels = new HandCardPanel[9];
 
 	public MainPanel() {
 		setLayout(new MigLayout(
@@ -119,17 +107,17 @@ public class MainPanel extends JPanel {
 	}
 
 	private void addMapPanel() {
-		this.mapPanel = new JPanel() {
+		this.mapPanelRoot = new JPanel() {
 			@Override
 			public boolean isOptimizedDrawingEnabled() {
 				return false;
 			}
 		};
-		LayoutManager overlay = new OverlayLayout(this.mapPanel);
-		this.mapPanel.setLayout(overlay);
-		add(this.mapPanel, "cell 0 1,grow");
+		LayoutManager overlay = new OverlayLayout(this.mapPanelRoot);
+		this.mapPanelRoot.setLayout(overlay);
+		add(this.mapPanelRoot, "cell 0 1,grow");
 
-		this.mapPanel.add(getMapPanel("Europe"));
+		this.mapPanelRoot.add(getMapPanel("Europe"));
 
 	}
 
@@ -148,38 +136,50 @@ public class MainPanel extends JPanel {
 
 		dealCardsToDealPanel();
 	}
-	
+
 	private class DealCardListener extends MouseAdapter {
 
 		private int cardInt;
-		private final DealtCardPanel panel;
+		private final DealtCardPanel cardPanel;
 		private CardManager cardManager;
 		private TrainCarDeck deck;
 
-
-		public DealCardListener(int cardInt, DealtCardPanel panel, TrainCarDeck deck) {
+		public DealCardListener(int cardInt, DealtCardPanel panel,
+				TrainCarDeck deck) {
 			this.cardInt = cardInt;
-			this.panel = panel;
+			this.cardPanel = panel;
 			this.deck = deck;
 
 		}
 
 		private void simulateDrawCard() {
 			Player current = getCurrentPlayer();
+
 			current.drawCardFromDeal(this.cardInt);
-			MainPanel.this.playerHandPanel.setPlayer(getCurrentPlayer());
+			playerHandPanel.setPlayer(getCurrentPlayer());
 			lblTrainCardCount.setText(Integer.toString(deck.size()));
-			
+
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
+			this.cardManager = GameState.getInstance().getCardManager();
+			NullDrawableTrainCarCard nullCard = new NullDrawableTrainCarCard();
 
-				simulateDrawCard();
-				this.cardManager = GameState.getInstance().getCardManager();
-				this.cardManager.fillDealFromDeck();
-				panel.setCard(new DrawableTrainCarCard(this.cardManager.getDealCard(cardInt).getColor()));
-				
+			TrainCarCard cardAtPos = this.cardManager.getDealCard(cardInt);
+			DrawableTrainCarCard clickedCard = null;
+			if (cardAtPos != null) {
+				clickedCard = new DrawableTrainCarCard(cardAtPos);
+				if (!clickedCard.equals(nullCard)) {
+					simulateDrawCard();
+					if (!deck.isEmpty()) {
+						this.cardManager.fillDealFromDeck();
+						cardPanel.setCard(clickedCard);
+					} else {
+						cardPanel.setCard(nullCard);
+					}
+				}
+			}
 		}
 	}
 
@@ -200,11 +200,12 @@ public class MainPanel extends JPanel {
 
 	private void dealCardsToDealPanel() {
 		for (int i = 0; i < 5; i++) {
+			DealtCardPanel cardPanel = new DealtCardPanel();
+			cardPanel.addMouseListener(new DealCardListener(i, cardPanel,
+					cardManager.getTrainCarDeck()));
 			DrawableTrainCarCard card = new DrawableTrainCarCard(cardManager
 					.getDealCard(i).getColor());
-			DealtCardPanel cardPanel = new DealtCardPanel();
 			cardPanel.setCard(card);
-			cardPanel.addMouseListener(new DealCardListener(i, cardPanel, cardManager.getTrainCarDeck()));
 			dealtCardsPanel.add(cardPanel);
 		}
 	}
@@ -246,7 +247,7 @@ public class MainPanel extends JPanel {
 		}
 
 		private void simulateDrawCard() {
-			if (deck.size() > 0) {
+			if (!deck.isEmpty()) {
 				Player current = getCurrentPlayer();
 				current.drawCardFromDeck(deck);
 				playerHandPanel.setPlayer(current);
@@ -294,7 +295,7 @@ public class MainPanel extends JPanel {
 	}
 
 	public void setMapPanel(MapPanel panel) {
-		this.mapPanel = panel;
+		this.mapPanelRoot = panel;
 	}
 
 	public Player getCurrentPlayer() {
@@ -306,17 +307,14 @@ public class MainPanel extends JPanel {
 		destinationTable.setPlayer(getCurrentPlayer());
 		playerHandPanel.setPlayer(getCurrentPlayer());
 		currentPlayerPanel.setPlayer(getCurrentPlayer());
-		// TODO: Refill deal cards
 	}
 
 	// TODO: Get the players rather than hard-code them
 	private ArrayList<IPlayer> getPlayers() {
 		ArrayList<IPlayer> players = new ArrayList<IPlayer>();
-		players.add(new Player("Alice"));
-		players.add(new Player("Bob"));
-		players.add(new Player("Charlie"));
-		players.add(new Player("Dan"));
-		players.add(new Player("Jeff"));
+		for (int i = 0; i < 5; i++) {
+			players.add(new Player("Player " + i));
+		}
 		return players;
 	}
 

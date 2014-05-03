@@ -1,4 +1,4 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import gui.HandCardPanel;
 import objects.TrainColor;
 
@@ -10,19 +10,9 @@ public class HandCardPanelTest {
 	@Test
 	public void testSetNumCards() {
 		HandCardPanel panel = new HandCardPanel(TrainColor.BLACK);
-		
+
 		assertEquals(0, panel.getNumCards());
 		panel.setNumCards(4);
 		assertEquals(4, panel.getNumCards());
 	}
-	
-	@Test
-	public void testgetCardImage() {
-		HandCardPanel panel = new HandCardPanel(TrainColor.BLACK);
-		
-		panel.getCardImage();
-		
-		assertNotNull(panel.cardImage());
-	}
-
 }

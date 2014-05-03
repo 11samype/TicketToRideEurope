@@ -1,4 +1,4 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import objects.Destination;
 import objects.DestinationRoute;
 

@@ -1,16 +1,14 @@
 package gui;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-
 import java.awt.Font;
+import java.awt.Graphics;
 
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import objects.Player;
 import objects.interfaces.IPlayer;
-
-import java.awt.Graphics;
 
 public class PlayerPanel extends JPanel {
 	private JLabel lblName;
@@ -32,7 +30,7 @@ public class PlayerPanel extends JPanel {
 	public PlayerPanel(Player player) {
 		this.player = player;
 		initGUI();
-		repaintAtFPS(60);
+//		repaintAtFPS(60); // memory leak?
 	}
 
 	private void repaintAtFPS(int fps) {

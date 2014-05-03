@@ -1,6 +1,6 @@
 
-import static org.junit.Assert.*;
-import objects.NullTrainCarCard;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import objects.TrainCarCard;
 import objects.TrainCarDeal;
 import objects.TrainColor;

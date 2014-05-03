@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
 import javax.swing.JPanel;
 
 public class DealtCardPanel extends JPanel {
@@ -31,8 +33,10 @@ public class DealtCardPanel extends JPanel {
 			g.setColor(Color.LIGHT_GRAY);
 			g.fillRect(0, 0, getWidth() - 2, getHeight() - 2);
 		} else {
-			g.drawImage(card.getImage(), 0, 0, getWidth(), getHeight(),
-					Color.BLACK, null);
+			BufferedImage cardImage = card.getImage();
+			if (cardImage != null)
+				g.drawImage(cardImage, 0, 0, getWidth(), getHeight(),
+						Color.BLACK, null);
 		}
 	}
 }

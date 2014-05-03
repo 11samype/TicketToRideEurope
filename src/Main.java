@@ -1,6 +1,8 @@
+import gui.DrawableDestination;
+import gui.MainPanel;
+
 import java.text.MessageFormat;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -8,11 +10,9 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import gui.DrawableDestination;
-import gui.MainPanel;
-import gui.MapPanel;
-
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import objects.Destination;
 import objects.DestinationRoute;

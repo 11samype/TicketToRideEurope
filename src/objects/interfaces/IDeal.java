@@ -8,6 +8,6 @@ public interface IDeal<K> {
 
 	public void addCard(K card);
 
-	public boolean isDealFull();
+	public boolean isFull();
 
 }

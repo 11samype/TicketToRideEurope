@@ -1,4 +1,4 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 import objects.NullTrainCarCard;
 
 import org.junit.Test;

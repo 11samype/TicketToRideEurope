@@ -5,7 +5,6 @@ import gui.DrawableDestination;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
 
 import objects.Destination;
 import objects.DestinationCard;
@@ -14,7 +13,6 @@ import objects.DestinationHand;
 import objects.DestinationRoute;
 import objects.GameState;
 import objects.TrainCarCard;
-import objects.TrainCarDeal;
 import objects.TrainCarDeck;
 import objects.TrainCarHand;
 import objects.TrainColor;
@@ -63,8 +61,7 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public void drawCardFromDeal(int index) {
-		TrainCarCard pickedCard = GameState.getInstance().getCardManager()
-				.drawDealCard(index);
+		TrainCarCard pickedCard = GameState.getInstance().getCardManager().drawDealCard(index);
 		System.out.printf("Drew index %d; %s\n", index, pickedCard.getColor());
 		this.hand.addCard(pickedCard);
 	}
@@ -75,20 +72,31 @@ public class AbstractPlayer implements IPlayer {
 
 		int numberOfColorInHand = this.hand.numInHand(routeColor);
 		int numberOfRainbowInHand = this.hand.numInHand(TrainColor.RAINBOW);
-		int routeLength =  route.getLength();
+		int routeLength = route.getLength();
 		if (numberOfColorInHand >= routeLength) {
-			this.numTrains -= routeLength;
+			discardCardsOfColor(routeLength, routeColor);
 			this.routes.add(route);
-			if (!(route instanceof DestinationRoute))
-				this.score += route.getScore();
-			for (int i = 0; i < routeLength; i++) {
-				this.hand.removeCard(routeColor);
-			}
+			placeTrains(routeLength);
+			addScoreForRoute(route);
 		} else {
 			throw new UnsupportedOperationException(
 					"Not enough cards for route!\nYou have "
-			+ numberOfColorInHand + " " + routeColor +
-			" but the route is worth " + routeLength);
+							+ numberOfColorInHand + " " + routeColor
+							+ " but the route is worth " + routeLength);
+		}
+	}
+
+	private void placeTrains(int numTrains) {
+		this.numTrains -= numTrains;
+	}
+
+	private void addScoreForRoute(IRoute route) {
+		this.score += route.getScore();
+	}
+
+	public void discardCardsOfColor(int num, TrainColor color) {
+		for (int i = 0; i < num; i++) {
+			this.hand.removeCard(color);
 		}
 	}
 
@@ -103,20 +111,20 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public int getScore() {
-//		int score = 0;
-//
-//		for (DestinationCard destinationCard: destinationRoutes.hand) {
-//			DestinationRoute route = destinationCard.getRoute();
-//			if (this.hasCompleted(route)) {
-//				score += route.getScore();
-//			} else {
-//				score -= route.getScore();
-//			}
-//		}
-//
-//		for (IRoute claimedRoute : this.routes) {
-//			score += claimedRoute.getScore();
-//		}
+		// int score = 0;
+		//
+		// for (DestinationCard destinationCard: destinationRoutes.hand) {
+		// DestinationRoute route = destinationCard.getRoute();
+		// if (this.hasCompleted(route)) {
+		// score += route.getScore();
+		// } else {
+		// score -= route.getScore();
+		// }
+		// }
+		//
+		// for (IRoute claimedRoute : this.routes) {
+		// score += claimedRoute.getScore();
+		// }
 		return score;
 	}
 
@@ -124,32 +132,37 @@ public class AbstractPlayer implements IPlayer {
 		return false;
 
 		// TODO Depth-first search routes
-//		DestinationSearchNode start = new DestinationSearchNode(destRoute.getStart());
-//		Destination end = destRoute.getEnd();
-//
-//		Stack<DestinationSearchNode> stack = new Stack<DestinationSearchNode>();
-//		// search from destination start
-//		stack.push(start);
-//		start.visit();
-//
-//		// try to find destination end by searching through players connected routes
-//		while (!stack.isEmpty()) {
-//			DestinationSearchNode searchFrom = stack.peek();
-//			List<IRoute> routesFromStart = ROUTE_LOOKUP.get(searchFrom.getDestination());
-//			for (IRoute possibleRoute : routesFromStart) {
-//				if (this.routes.contains(possibleRoute)) {
-//					// here we know the player can reach another city
-//					DestinationSearchNode next = new DestinationSearchNode(possibleRoute.getEnd());
-//					next.visit();
-//					stack.push(next);
-//				}
-//
-//			}
-//			// return true; // somewhere
-//		}
-//
-//
-//		return false;
+		// DestinationSearchNode start = new
+		// DestinationSearchNode(destRoute.getStart());
+		// Destination end = destRoute.getEnd();
+		//
+		// Stack<DestinationSearchNode> stack = new
+		// Stack<DestinationSearchNode>();
+		// // search from destination start
+		// stack.push(start);
+		// start.visit();
+		//
+		// // try to find destination end by searching through players connected
+		// routes
+		// while (!stack.isEmpty()) {
+		// DestinationSearchNode searchFrom = stack.peek();
+		// List<IRoute> routesFromStart =
+		// ROUTE_LOOKUP.get(searchFrom.getDestination());
+		// for (IRoute possibleRoute : routesFromStart) {
+		// if (this.routes.contains(possibleRoute)) {
+		// // here we know the player can reach another city
+		// DestinationSearchNode next = new
+		// DestinationSearchNode(possibleRoute.getEnd());
+		// next.visit();
+		// stack.push(next);
+		// }
+		//
+		// }
+		// // return true; // somewhere
+		// }
+		//
+		//
+		// return false;
 	}
 
 	private class DestinationSearchNode {

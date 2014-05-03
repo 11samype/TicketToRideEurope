@@ -1,9 +1,9 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import objects.Destination;
 import objects.DestinationCard;
 import objects.DestinationRoute;
 import objects.TrainCarDeck;
-import objects.abstracts.AbstractDeck;
 
 import org.junit.Test;
 

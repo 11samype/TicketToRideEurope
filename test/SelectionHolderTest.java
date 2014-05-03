@@ -1,8 +1,8 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gui.DrawableDestination;
 
 import java.awt.Point;
-
-import gui.DrawableDestination;
 
 import org.junit.Test;
 
