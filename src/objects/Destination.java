@@ -1,12 +1,14 @@
 package objects;
 
+import objects.abstracts.AbstractPlayer;
+import objects.interfaces.IPlayer;
+
 public class Destination {
-	private String name;
-	protected boolean hasStation;
+	protected String name;
+	protected Player ownedBy;
 
 	public Destination(String name) {
 		this.name = name;
-		this.hasStation = false;
 	}
 
 	public String getName() {
@@ -19,13 +21,18 @@ public class Destination {
 	}
 
 	public boolean hasStation() {
-		return hasStation;
+		return ownedBy != null;
 	}
 
-	public boolean buildStation() {
-		if (!hasStation) {
-			hasStation = true;
-			return true;
+	public boolean buildStation(Player player) {
+		if (!this.hasStation()) {
+			boolean built = player.placeStationOnDestination(this);
+			if (built) {
+				ownedBy = player;
+				return true;
+			}
+			else
+				throw new UnsupportedOperationException("Player has no stations left!");
 		}
 		return false;
 	}

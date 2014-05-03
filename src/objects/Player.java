@@ -19,4 +19,6 @@ public class Player extends AbstractPlayer {
 		return this.color;
 	}
 
+
+
 }

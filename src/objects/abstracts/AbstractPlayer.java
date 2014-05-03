@@ -19,14 +19,10 @@ import objects.TrainColor;
 import objects.interfaces.IPlayer;
 import objects.interfaces.IRoute;
 import utils.DestinationLocationReader;
+import utils.GraphHelper;
 import utils.TrainRouteReader;
 
 public class AbstractPlayer implements IPlayer {
-
-	private static final HashMap<Destination, List<IRoute>> ROUTE_LOOKUP = TrainRouteReader
-			.getInstance().getGraph();
-	private static final HashMap<String, DrawableDestination> DEST_LOC_LOOKUP = DestinationLocationReader
-			.getInstance().getDestinations();
 
 	public static final int MAX_NUM_STATIONS = 3;
 	public static final int MAX_NUM_TRAINS = 45;
@@ -56,12 +52,15 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public void drawCardFromDeck(DestinationDeck deck) {
-		this.destinationRoutes.addCard(deck.draw());
+		DestinationCard drawn = deck.draw();
+		this.destinationRoutes.addCard(drawn);
+		this.score -= drawn.getScore();
 	}
 
 	@Override
 	public void drawCardFromDeal(int index) {
-		TrainCarCard pickedCard = GameState.getInstance().getCardManager().drawDealCard(index);
+		TrainCarCard pickedCard = GameState.getInstance().getCardManager()
+				.drawDealCard(index);
 		System.out.printf("Drew index %d; %s\n", index, pickedCard.getColor());
 		this.hand.addCard(pickedCard);
 	}
@@ -91,7 +90,17 @@ public class AbstractPlayer implements IPlayer {
 	}
 
 	private void addScoreForRoute(IRoute route) {
-		this.score += route.getScore();
+		// add score for any type other than destination
+		if (!(route instanceof DestinationRoute))
+			this.score += route.getScore();
+
+		// check to see if adding this route completed a destination card
+		for (DestinationCard destCard : this.destinationRoutes.getCards()) {
+			if (GraphHelper.hasPlayerCompletedDestinationRoute(this,
+					destCard.getRoute())) {
+				this.score += destCard.getScore();
+			}
+		}
 	}
 
 	public void discardCardsOfColor(int num, TrainColor color) {
@@ -101,7 +110,12 @@ public class AbstractPlayer implements IPlayer {
 	}
 
 	public boolean placeStationOnDestination(Destination dest) {
-		return dest.buildStation();
+		if (this.numStations != 0) {
+			this.numStations--;
+			return true;
+		}
+		return false;
+
 	}
 
 	@Override
@@ -129,61 +143,8 @@ public class AbstractPlayer implements IPlayer {
 	}
 
 	public boolean hasCompleted(DestinationRoute destRoute) {
-		return false;
+		return GraphHelper.hasPlayerCompletedDestinationRoute(this, destRoute);
 
-		// TODO Depth-first search routes
-		// DestinationSearchNode start = new
-		// DestinationSearchNode(destRoute.getStart());
-		// Destination end = destRoute.getEnd();
-		//
-		// Stack<DestinationSearchNode> stack = new
-		// Stack<DestinationSearchNode>();
-		// // search from destination start
-		// stack.push(start);
-		// start.visit();
-		//
-		// // try to find destination end by searching through players connected
-		// routes
-		// while (!stack.isEmpty()) {
-		// DestinationSearchNode searchFrom = stack.peek();
-		// List<IRoute> routesFromStart =
-		// ROUTE_LOOKUP.get(searchFrom.getDestination());
-		// for (IRoute possibleRoute : routesFromStart) {
-		// if (this.routes.contains(possibleRoute)) {
-		// // here we know the player can reach another city
-		// DestinationSearchNode next = new
-		// DestinationSearchNode(possibleRoute.getEnd());
-		// next.visit();
-		// stack.push(next);
-		// }
-		//
-		// }
-		// // return true; // somewhere
-		// }
-		//
-		//
-		// return false;
-	}
-
-	private class DestinationSearchNode {
-		private boolean visited = false;
-		private final Destination dest;
-
-		public DestinationSearchNode(Destination dest) {
-			this.dest = dest;
-		}
-
-		private boolean wasVisited() {
-			return visited;
-		}
-
-		private void visit() {
-			this.visited = true;
-		}
-
-		public Destination getDestination() {
-			return dest;
-		}
 	}
 
 	@Override

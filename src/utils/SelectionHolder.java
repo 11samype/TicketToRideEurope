@@ -1,34 +1,36 @@
 package utils;
 
-import gui.DrawableDestination;
-
 import java.util.ArrayList;
 
-public class SelectionHolder extends ArrayList<DrawableDestination> {
-	private final static int MAX_SIZE = 2;
+public class SelectionHolder extends ArrayList<SelectionHolder.Selectable> {
+	private final int MAX_SIZE;
+
+	public SelectionHolder(int max_size) {
+		MAX_SIZE = max_size;
+	}
 
 	@Override
 	public void clear() {
-		for (DrawableDestination selectedDest : this) {
-			selectedDest.deselect();
+		for (Selectable selected : this) {
+			selected.deselect();
 		}
 		super.clear();
 	}
 
 	@Override
-	public boolean add(DrawableDestination d) {
-		d.select();
+	public boolean add(Selectable s) {
+		s.select();
 		if (this.size() >= MAX_SIZE) {
 			this.clear();
 		}
-		return super.add(d);
+		return super.add(s);
 	}
 
 	@Override
 	public boolean remove(Object o) {
-		if (o != null && o instanceof DrawableDestination) {
-			DrawableDestination dest = (DrawableDestination) o;
-			dest.deselect();
+		if (o != null && o instanceof Selectable) {
+			Selectable s = (Selectable) o;
+			s.deselect();
 		}
 		return super.remove(o);
 	}
@@ -36,5 +38,11 @@ public class SelectionHolder extends ArrayList<DrawableDestination> {
 	public boolean isFull() {
 		return this.size() == MAX_SIZE;
 	}
+
+	public interface Selectable {
+		public void select();
+		public void deselect();
+	}
+
 
 }

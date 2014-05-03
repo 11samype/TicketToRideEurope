@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import objects.Destination;
+import objects.Player;
 
 import org.junit.Test;
 
@@ -51,17 +52,19 @@ public class DestinationTest {
 	@Test
 	public void testBuildStation() {
 		Destination d = new Destination("place");
+		Player builder = new Player("Bob");
 		assertFalse(d.hasStation());
-		d.buildStation();
+		d.buildStation(builder);
 		assertTrue(d.hasStation());
 	}
 
 	@Test
 	public void testBuildStationOnDestinationWithStation() {
 		Destination d = new Destination("place");
-		boolean tryBuild = d.buildStation();
+		Player builder = new Player("Bob");
+		boolean tryBuild = d.buildStation(builder);
 		assertTrue(tryBuild);
-		tryBuild = d.buildStation();
+		tryBuild = d.buildStation(builder);
 		assertFalse(tryBuild);
 	}
 

@@ -1,5 +1,7 @@
 package objects.interfaces;
 
+import java.util.List;
+
 public interface IHand<K> {
 
 	public void addCard(K card);
@@ -13,7 +15,8 @@ public interface IHand<K> {
 	// public void playCard(int index);
 
 	public int size();
-	
+
+	public List<K> getCards();
 	public K getCard(int index);
 
 }

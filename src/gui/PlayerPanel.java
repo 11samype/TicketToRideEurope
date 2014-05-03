@@ -17,6 +17,7 @@ public class PlayerPanel extends JPanel {
 	private JLabel lblPoints;
 	private Player player;
 	private Thread repainterThread;
+	private int fps;
 
 	private static final String fmtStations = "Stations: %d";
 	private static final String fmtTrainCars = "Train Cars: %d";
@@ -30,16 +31,22 @@ public class PlayerPanel extends JPanel {
 	public PlayerPanel(Player player) {
 		this.player = player;
 		initGUI();
-//		repaintAtFPS(60); // memory leak?
+		repaintAtFPS(60);
 	}
 
 	private void repaintAtFPS(int fps) {
+		this.fps = fps;
 		if (this.repainterThread == null) {
 			this.repainterThread = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					while (true) {
-						setPlayer(getPlayer());
+						try {
+							Thread.sleep(1000 / PlayerPanel.this.fps);
+							setPlayer(getPlayer()); // repaint
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
 
 				}

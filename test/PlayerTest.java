@@ -1,9 +1,5 @@
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Queue;
@@ -159,43 +155,44 @@ public class PlayerTest {
 		assertEquals(cardList.get(1), p.getHand().getCard(1));
 		assertEquals(cardList.get(2), p.getHand().getCard(2));
 	}
-	
+
 	@Test
 	public void testDrawCardFromDestinationDeck() {
-		
+
 		DestinationDeck destDeck = new DestinationDeck();
-		
+
 		int initialSize = destDeck.size();
-		
+
 		Player player = new Player();
-		
+
 		player.drawCardFromDeck(destDeck);
-		
+
 		assertEquals(initialSize - 1, destDeck.size());
-		
+
 		assertEquals(1, player.getDestinations().size());
-		
+
 		player.drawCardFromDeck(destDeck);
 		player.drawCardFromDeck(destDeck);
 		player.drawCardFromDeck(destDeck);
-		
+
 		assertEquals(initialSize - 4, destDeck.size());
-		
+
 		assertEquals(4, player.getDestinations().size());
-		
+
 	}
-	
+
 	@Test
 	public void testPlaceStationOnDestination() {
-		
+
 		Destination dest = new Destination("here");
-		
+
 		Player player = new Player();
-		
-		player.placeStationOnDestination(dest);
-		
-		assertFalse(dest.buildStation());
-		
+
+		dest.buildStation(player);
+
+		assertTrue(dest.hasStation());
+		assertFalse(dest.buildStation(player));
+
 	}
 
 

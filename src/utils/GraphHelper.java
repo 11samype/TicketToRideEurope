@@ -21,6 +21,39 @@ public final class GraphHelper {
 	public static boolean hasPlayerCompletedDestinationRoute(
 			AbstractPlayer player, DestinationRoute route) {
 		return false;
+
+		// TODO Depth-first search routes
+				// DestinationSearchNode start = new
+				// DestinationSearchNode(destRoute.getStart());
+				// Destination end = destRoute.getEnd();
+				//
+				// Stack<DestinationSearchNode> stack = new
+				// Stack<DestinationSearchNode>();
+				// // search from destination start
+				// stack.push(start);
+				// start.visit();
+				//
+				// // try to find destination end by searching through players connected
+				// routes
+				// while (!stack.isEmpty()) {
+				// DestinationSearchNode searchFrom = stack.peek();
+				// List<IRoute> routesFromStart =
+				// ROUTE_LOOKUP.get(searchFrom.getDestination());
+				// for (IRoute possibleRoute : routesFromStart) {
+				// if (this.routes.contains(possibleRoute)) {
+				// // here we know the player can reach another city
+				// DestinationSearchNode next = new
+				// DestinationSearchNode(possibleRoute.getEnd());
+				// next.visit();
+				// stack.push(next);
+				// }
+				//
+				// }
+				// // return true; // somewhere
+				// }
+				//
+				//
+				// return false;
 	}
 
 	public static boolean areConnected(Destination start, Destination end) {
@@ -37,5 +70,26 @@ public final class GraphHelper {
 			}
 		}
 		return null;
+	}
+
+	public class DestinationSearchNode {
+		private boolean visited = false;
+		private final Destination dest;
+
+		public DestinationSearchNode(Destination dest) {
+			this.dest = dest;
+		}
+
+		private boolean wasVisited() {
+			return visited;
+		}
+
+		private void visit() {
+			this.visited = true;
+		}
+
+		public Destination getDestination() {
+			return dest;
+		}
 	}
 }

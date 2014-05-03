@@ -38,10 +38,10 @@ public class MapPanel extends JPanel {
 
 	public MapPanel(HandPanel playerHandPanel) {
 		this.playerHandPanel = playerHandPanel;
-		initDrawableRoutes();
 		initDrawableDestinations();
+		initDrawableRoutes();
 		this.addMouseListener(new DestinationClickListener());
-		this.addMouseListener(new RouteClickListener());
+//		this.addMouseListener(new RouteClickListener());
 		repaintAtFPS(FPS);
 	}
 
@@ -151,9 +151,10 @@ public class MapPanel extends JPanel {
 //	}
 
 	public void tryToClaimRoute(Player current, SelectionHolder selectedPoints,
-			ArrayList<DrawableRoute> drawablesToAdd)
-					throws UnsupportedOperationException {
-		IRoute routeToClaim = GraphHelper.getRouteBetween(selectedPoints.get(0), selectedPoints.get(1));
+			ArrayList<DrawableRoute> drawablesToAdd) throws UnsupportedOperationException {
+		IRoute routeToClaim = GraphHelper.getRouteBetween(
+				(Destination) selectedPoints.get(0),
+				(Destination) selectedPoints.get(1));
 		if (routeToClaim != null) {
 			GameState.getInstance();
 			for (IPlayer player : GameState.getPlayers()) {
@@ -194,9 +195,32 @@ public class MapPanel extends JPanel {
 		}
 	}
 
+	public void tryToBuildStation(Player current, Destination dest) {
+		boolean placed = false;
+		try {
+			placed = dest.buildStation(current);
+			if (!placed) {
+				JOptionPane
+				.showMessageDialog(
+						this,
+						"Unable to build station.\nA station already exists here!",
+						"Build Station Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (UnsupportedOperationException e) {
+			JOptionPane
+			.showMessageDialog(
+					this,
+					"Unable to build station.\nYou have no stations left!",
+					"Build Station Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+	}
+
 	private class DestinationClickListener extends MouseAdapter {
 
-		SelectionHolder selectedPoints = new SelectionHolder();
+		SelectionHolder selectedPoints = new SelectionHolder(2);
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
@@ -226,7 +250,7 @@ public class MapPanel extends JPanel {
 						}
 						System.out.println(clickedDest.getName());
 					} else if (SwingUtilities.isRightMouseButton(e)) {
-						System.out.println(clickedDest.getName());
+						tryToBuildStation(current, clickedDest);
 					}
 				} // end if contains
 

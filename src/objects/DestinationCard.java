@@ -12,7 +12,7 @@ public class DestinationCard extends AbstractCard<DestinationRoute> {
 	}
 
 	public int getScore() {
-		return getValue().getScore();
+		return getRoute().getScore();
 	}
 
 }
