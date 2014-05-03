@@ -1,13 +1,18 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -31,7 +36,7 @@ public class MapPanel extends JPanel {
 	private final List<DrawableRoute> drawableRoutes = new ArrayList<DrawableRoute>();
 
 	private Repainter repainterThread;
-//	private BufferedImage bgImg;
+	private BufferedImage bgImg;
 	private String mapName;
 	private boolean isPaused = false;
 	private HandPanel playerHandPanel;
@@ -133,22 +138,21 @@ public class MapPanel extends JPanel {
 	 *
 	 * @return the loaded background image
 	 */
-//	private synchronized BufferedImage getBackgroundImage() {
-//		if (this.bgImg == null) {
-//			try {
-//				this.bgImg = ImageIO.read(new File("img//" + this.mapName
-//						+ ".png"));
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		return this.bgImg;
-//	}
+	private synchronized BufferedImage getBackgroundImage() {
+		if (this.bgImg == null) {
+			try {
+				this.bgImg = ImageIO.read(new File("img//" + this.mapName
+						+ ".png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return this.bgImg;
+	}
 
-//	private synchronized void drawBackground(Graphics g) {
-//		g.drawImage(getBackgroundImage(), 0, 0, getWidth(), getHeight(),
-//				Color.BLACK, null);
-//	}
+	private synchronized void drawBackground(Graphics g) {
+		g.drawImage(getBackgroundImage(), 0, 0, getWidth(), getHeight(), Color.BLACK, null);
+	}
 
 	public void tryToClaimRoute(Player current, SelectionHolder selectedPoints,
 			ArrayList<DrawableRoute> drawablesToAdd) throws UnsupportedOperationException {
