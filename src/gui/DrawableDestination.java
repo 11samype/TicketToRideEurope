@@ -43,7 +43,7 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 		int x = (int) location.getX();
 		int y = (int) location.getY();
 		if (this.hasStation()) {
-			drawStation(x, y, g2);
+			drawStation(g2, x, y);
 		}
 
 		drawCircle(g2, x, y, DOT_RADIUS, isSelected, DOT_COLOR);
@@ -54,7 +54,7 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 		g2.dispose();
 	}
 
-	private void drawStation(int x, int y, Graphics2D g2) {
+	private void drawStation(Graphics2D g2, int x, int y) {
 		Stroke saveStroke = g2.getStroke();
 		g2.setStroke(new BasicStroke(2.0f));
 		drawSquare(g2, x,  y, 2*DOT_RADIUS, this.hasStation(), stationColor);

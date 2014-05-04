@@ -73,7 +73,7 @@ public class DestinationTable extends JTable {
 			getModel().addRow(destinationToTableRow(route));
 			for (int i = 0; i < getModel().getColumnCount(); i++) {
 				TableColumn column = getColumnModel().getColumn(i);
-				column.setCellRenderer(new RouteCompletedCellRenderer(player, route));
+				column.setCellRenderer(new RouteCompletedCellRenderer(player));
 			}
 		}
 		repaint();

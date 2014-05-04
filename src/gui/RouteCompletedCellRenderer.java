@@ -12,12 +12,10 @@ import utils.GraphHelper;
 
 public class RouteCompletedCellRenderer extends DefaultTableCellRenderer {
 	IPlayer player;
-	DestinationRoute route;
 
-	public RouteCompletedCellRenderer(IPlayer player, DestinationRoute route) {
+	public RouteCompletedCellRenderer(IPlayer player) {
 
 		this.player = player;
-		this.route = route;
 	}
 
 	@Override
@@ -28,12 +26,11 @@ public class RouteCompletedCellRenderer extends DefaultTableCellRenderer {
 		final Component cell = super.getTableCellRendererComponent(destTable, obj, isSelected, hasFocus, row, column);
 		DestinationRoute routeInTable = destTable.getRouteInRow(row);
 
-		boolean inCorrectRow = route.equals(routeInTable);
 
-		if (inCorrectRow && GraphHelper.hasPlayerCompletedDestinationRoute(player, route)) {
+		if (GraphHelper.hasPlayerCompletedDestinationRoute(player, routeInTable)) {
 			cell.setBackground(Color.green);
 			System.out.println("Coloring row: " + row);
-			System.out.println("[Route] " + route);
+			System.out.println("[Route] " + routeInTable);
 		} else {
 			cell.setBackground(Color.white);
 			System.out.println("Clearing row: " + row);
