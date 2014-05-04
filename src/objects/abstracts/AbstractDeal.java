@@ -7,21 +7,21 @@ import objects.interfaces.IDeal;
 
 public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 
-	protected static final int MAX_DEALT_CARDS = 5;
-	protected ArrayList<K> deal = new ArrayList<K>(MAX_DEALT_CARDS);
+	public static final int MAX_CARDS = 5;
+	protected ArrayList<K> deal = new ArrayList<K>(MAX_CARDS);
 	protected int size = 0;
 
 	public AbstractDeal() {
-		for (int i = 0; i < MAX_DEALT_CARDS; i++) {
+		for (int i = 0; i < MAX_CARDS; i++) {
 			this.deal.add(null);
 		}
 	}
 
 	@Override
 	public void addCard(K card) {
-		if (getSize() >= MAX_DEALT_CARDS) {
+		if (getSize() >= MAX_CARDS) {
 			throw new UnsupportedOperationException(
-					"Deal can't have more than " + MAX_DEALT_CARDS + " cards!");
+					"Deal can't have more than " + MAX_CARDS + " cards!");
 		}
 
 		for (int i = 0; i < this.deal.size(); i++) {
@@ -35,17 +35,12 @@ public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 
 	}
 
+	@Override
 	public int getSize() {
-//		int num = 0;
-//		for (int i = 0; i < this.deal.size(); i++) {
-//			if (deal.get(i) != null) {
-//				num++;
-//			}
-//		}
-
 		return this.size;
 	}
 
+	@Override
 	public K getCardAtPosition(int index) {
 		return this.deal.get(index);
 	}
@@ -70,6 +65,6 @@ public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 
 	@Override
 	public boolean isFull() {
-		return getSize() >= MAX_DEALT_CARDS;
+		return getSize() >= MAX_CARDS;
 	}
 }

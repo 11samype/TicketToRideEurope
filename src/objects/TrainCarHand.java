@@ -27,6 +27,7 @@ public class TrainCarHand extends AbstractHand<TrainCarCard> {
 	public void removeCard(TrainColor color) {
 		for (int i = 0; i < this.hand.size(); i++) {
 			if (this.hand.get(i).getColor().equals(color)) {
+				GameState.getCardManager().discard(this.hand.get(i));
 				this.hand.remove(i);
 				return;
 			}

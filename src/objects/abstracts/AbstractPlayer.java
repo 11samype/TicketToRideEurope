@@ -1,9 +1,6 @@
 package objects.abstracts;
 
-import gui.DrawableDestination;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import objects.Destination;
@@ -11,16 +8,14 @@ import objects.DestinationCard;
 import objects.DestinationDeck;
 import objects.DestinationHand;
 import objects.DestinationRoute;
-import objects.GameState;
+import objects.GameState.CardManager;
 import objects.TrainCarCard;
 import objects.TrainCarDeck;
 import objects.TrainCarHand;
 import objects.TrainColor;
 import objects.interfaces.IPlayer;
 import objects.interfaces.IRoute;
-import utils.DestinationLocationReader;
 import utils.GraphHelper;
-import utils.TrainRouteReader;
 
 public class AbstractPlayer implements IPlayer {
 
@@ -58,11 +53,12 @@ public class AbstractPlayer implements IPlayer {
 	}
 
 	@Override
-	public void drawCardFromDeal(int index) {
-		TrainCarCard pickedCard = GameState.getInstance().getCardManager()
-				.drawDealCard(index);
-		System.out.printf("Drew index %d; %s\n", index, pickedCard.getColor());
-		this.hand.addCard(pickedCard);
+	public void drawCardFromDeal(CardManager cardManager, int index) {
+			TrainCarCard pickedCard = cardManager.drawDealCard(index);
+			System.out.printf("Drew index %d; %s\n", index, pickedCard.getColor());
+			this.hand.addCard(pickedCard);
+
+
 	}
 
 	public void claimRoute(IRoute route) throws UnsupportedOperationException {
@@ -96,8 +92,7 @@ public class AbstractPlayer implements IPlayer {
 
 		// check to see if adding this route completed a destination card
 		for (DestinationCard destCard : this.destinationRoutes.getCards()) {
-			if (GraphHelper.hasPlayerCompletedDestinationRoute(this,
-					destCard.getRoute())) {
+			if (GraphHelper.hasPlayerCompletedDestinationRoute(this, destCard.getRoute())) {
 				this.score += destCard.getScore();
 			}
 		}
@@ -142,18 +137,13 @@ public class AbstractPlayer implements IPlayer {
 		return score;
 	}
 
-	public boolean hasCompleted(DestinationRoute destRoute) {
-		return GraphHelper.hasPlayerCompletedDestinationRoute(this, destRoute);
-
-	}
-
 	@Override
 	public TrainCarHand getHand() {
 		return this.hand;
 	}
 
 	@Override
-	public List<DestinationCard> getDestinations() {
+	public List<DestinationCard> getDestinationHand() {
 		return this.destinationRoutes.hand;
 	}
 

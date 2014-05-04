@@ -55,10 +55,14 @@ public class DestinationTable extends JTable {
 
 	public void setPlayer(IPlayer player) {
 		this.reset();
-		List<DestinationCard> playerDestCards = player.getDestinations();
+		List<DestinationCard> playerDestCards = player.getDestinationHand();
 		for (DestinationCard destinationCard : playerDestCards) {
-			getModel()
-					.addRow(destinationToTableRow(destinationCard.getRoute()));
+			DestinationRoute route = destinationCard.getRoute();
+			getModel().addRow(destinationToTableRow(route));
+			int newRowIndex = getModel().getRowCount();
+			for (int i = 0; i < getColumnCount(); i++) {
+				getColumnModel().getColumn(i).setCellRenderer(new RouteCompletedCellRenderer(player, route));
+			}
 		}
 		repaint();
 		revalidate();

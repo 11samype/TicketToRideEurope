@@ -29,39 +29,39 @@ public final class GraphHelper {
 	public static final HashMap<String, DrawableDestination> DEST_LOC_LOOKUP = DestinationLocationReader
 			.getInstance().getDestinations();
 
-	public static boolean areConnected(Destination start, Destination end) {
+	public static boolean areAdjacent(Destination start, Destination end) {
 			return getFullGraph().containsEdge(start, end);
 	//		return getRouteBetween(start, end) != null;
 		}
 
-	public static IRoute getRouteBetween(Destination start, Destination end) {
+	public static IRoute getAdjecentRouteBetween(Destination start, Destination end) {
 			return getFullGraph().getEdge(start, end);
-
-	//		List<IRoute> routes = ROUTE_LOOKUP.get(start);
-	//		if (routes != null) {
-	//			for (int i = 0; i < routes.size(); i++) {
-	//				if (routes.get(i).getEnd().equals(end)) {
-	//					return routes.get(i);
-	//				}
-	//			}
-	//		}
-	//
-	//		return null;
 		}
 
 	public static boolean hasPlayerCompletedDestinationRoute(IPlayer player, DestinationRoute destRoute) {
-		Multigraph<Destination, IRoute> playerGraph = getPlayerGraph(player);
-		ConnectivityInspector<Destination, IRoute> connectionInspector = new ConnectivityInspector<Destination, IRoute>(playerGraph);
-		return connectionInspector.pathExists(destRoute.getStart(), destRoute.getEnd());
+//		Multigraph<Destination, IRoute> playerGraph = getPlayerGraph(player);
+//		ConnectivityInspector<Destination, IRoute> connectionInspector = new ConnectivityInspector<Destination, IRoute>(playerGraph);
+//		return connectionInspector.pathExists(destRoute.getStart(), destRoute.getEnd());
+		return pathExistsFrom(getPlayerGraph(player), destRoute.getStart(), destRoute.getEnd());
+	}
+
+	public static boolean pathExistsFrom(Destination start, Destination end) {
+//		Multigraph<Destination, IRoute> graph = getFullGraph();
+//		ConnectivityInspector<Destination, IRoute> connectionInspector = new ConnectivityInspector<Destination, IRoute>(graph);
+//		return connectionInspector.pathExists(start, end);
+		return pathExistsFrom(getFullGraph(), start, end);
+	}
+
+	public static <V extends Destination, E extends IRoute> boolean pathExistsFrom(UndirectedGraph<V, E> graph, V start, V end) {
+		ConnectivityInspector<V, E> connectionInspector = new ConnectivityInspector<V, E>(graph);
+		return connectionInspector.pathExists(start, end);
 	}
 
 	public static Multigraph<Destination, IRoute> getPlayerGraph(IPlayer player) {
 		Multigraph<Destination, IRoute> playerGraph = getDestinationGraph();
 		for (IRoute route : player.getRoutes()) {
-			if (!playerGraph.containsEdge(route)) {
 				playerGraph.addEdge(route.getStart(), route.getEnd(), route);
 //				playerGraph.setEdgeWeight(route, route.getLength());
-			}
 		}
 		return playerGraph;
 	}
@@ -72,11 +72,14 @@ public final class GraphHelper {
 		if (_graphInstance == null) {
 			_graphInstance = getDestinationGraph();
 			for (Iterator<Destination> iterator = _graphInstance.vertexSet().iterator(); iterator.hasNext();) {
-				Destination destVertex = iterator.next();
-				for (IRoute routeFromDest : ROUTE_LOOKUP.get(destVertex)) {
-					if (!_graphInstance.containsEdge(routeFromDest)) {
-						_graphInstance.addEdge(destVertex, routeFromDest.getEnd(), routeFromDest);
+				Destination start = iterator.next();
+				for (IRoute routeFromStart : ROUTE_LOOKUP.get(start)) {
+					Destination end = routeFromStart.getEnd();
+					if (!(_graphInstance.containsEdge(start, end) && _graphInstance.containsEdge(end, start))) {
+						_graphInstance.addEdge(start, end, routeFromStart);
 //						_graphInstance.setEdgeWeight(routeFromDest, routeFromDest.getLength());
+					} else {
+//						System.out.println(routeFromStart);
 					}
 				}
 			}

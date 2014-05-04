@@ -22,9 +22,13 @@ public class GameStateTest {
 	@Test
 	public void testInitGame() {
 		GameState game = GameState.getInstance();
-		game.init();
-		CardManager cardManager = game.getCardManager();
 		assertNotNull(game);
+
+	}
+
+	@Test
+	public void testInitCardManager() {
+		CardManager cardManager = GameState.getCardManager();
 		assertEquals(46, cardManager.getDestinationDeck().size());
 		assertEquals(105, cardManager.getTrainCarDeck().size());
 
@@ -52,7 +56,8 @@ public class GameStateTest {
 		for (int i = 0; i < 5; i++) {
 			players.add(new Player());
 		}
-		GameState game = GameState.getInstance().withPlayers(players);
+
+		GameState.withPlayers(players);
 
 		assertSame(GameState.getCurrentPlayer(), players.get(0));
 
@@ -71,17 +76,13 @@ public class GameStateTest {
 		for (int i = 0; i < 5; i++) {
 			players.add(new Player());
 		}
-		GameState game = GameState.getInstance().withPlayers(players);
+		GameState.withPlayers(players);
 		assertEquals(GameState.getPlayers(), players);
 	}
 
 	@Test
 	public void testGetDealCard() {
-
-		GameState game = GameState.getInstance();
-
-		TrainCarCard dealCard = game.getCardManager().getDealCard(0);
-		assertTrue(dealCard instanceof TrainCarCard);
+		TrainCarCard dealCard = GameState.getCardManager().getDealCard(0);
 		assertNotNull(dealCard);
 	}
 

@@ -7,6 +7,7 @@ import java.util.Queue;
 import objects.Destination;
 import objects.DestinationDeck;
 import objects.GameState;
+import objects.GameState.CardManager;
 import objects.Player;
 import objects.TrainCarCard;
 import objects.TrainCarDeal;
@@ -45,8 +46,8 @@ public class PlayerTest {
 		assertEquals(0, p.getScore());
 		assertNotNull(p.getHand());
 		assertEquals(0, p.getHand().size());
-		assertNotNull(p.getDestinations());
-		assertEquals(0, p.getDestinations().size());
+		assertNotNull(p.getDestinationHand());
+		assertEquals(0, p.getDestinationHand().size());
 		assertEquals(AbstractPlayer.MAX_NUM_TRAINS, p.getNumTrains());
 		assertEquals(AbstractPlayer.MAX_NUM_STATIONS, p.getNumStations());
 	}
@@ -133,7 +134,8 @@ public class PlayerTest {
 	public void testDealToPlayer() {
 		Player p = new Player();
 
-		TrainCarDeal d = GameState.getInstance().getCardManager().getDealCards();
+		CardManager m = GameState.getInstance().getCardManager();
+		TrainCarDeal d = m.getDealCards();
 
 		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
 
@@ -143,7 +145,7 @@ public class PlayerTest {
 		}
 
 		for (int i = 0; i < 3; i++) {
-			p.drawCardFromDeal(i);
+			p.drawCardFromDeal(m, i);
 		}
 
 		for (int i = 0; i < p.getHand().size(); i++) {
@@ -169,7 +171,7 @@ public class PlayerTest {
 
 		assertEquals(initialSize - 1, destDeck.size());
 
-		assertEquals(1, player.getDestinations().size());
+		assertEquals(1, player.getDestinationHand().size());
 
 		player.drawCardFromDeck(destDeck);
 		player.drawCardFromDeck(destDeck);
@@ -177,7 +179,7 @@ public class PlayerTest {
 
 		assertEquals(initialSize - 4, destDeck.size());
 
-		assertEquals(4, player.getDestinations().size());
+		assertEquals(4, player.getDestinationHand().size());
 
 	}
 

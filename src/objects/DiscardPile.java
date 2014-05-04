@@ -4,26 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import objects.abstracts.AbstractDeck;
+import objects.interfaces.ICard;
 
-public class DiscardPile extends AbstractDeck<TrainCarCard> {
+public class DiscardPile<K extends ICard> extends AbstractDeck<K> {
 
 	public DiscardPile() {
 		addCardsToDeck(); // starts empty
 	}
 
-	public void add(TrainCarCard card) {
+	@Override
+	protected void addCardsToDeck() {
+		populate(new ArrayList<K>());
+	}
+
+	public void add(K card) {
 		this.cards.add(card);
 	}
 
-	public List<TrainCarCard> pickup() {
-		List<TrainCarCard> cardsToReturn = new ArrayList<TrainCarCard>(
-				this.cards);
+	public List<K> pickup() {
+		List<K> cardsToReturn = new ArrayList<K>(this.cards);
 		this.cards.clear();
 		return cardsToReturn;
 	}
 
-	@Override
-	protected void addCardsToDeck() {
-		populate(new ArrayList<TrainCarCard>());
-	}
 }

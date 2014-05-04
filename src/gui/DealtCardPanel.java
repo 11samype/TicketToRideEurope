@@ -10,10 +10,6 @@ public class DealtCardPanel extends JPanel {
 
 	private DrawableTrainCarCard card;
 
-	public DealtCardPanel() {
-		this(null);
-	}
-
 	public DealtCardPanel(DrawableTrainCarCard card) {
 		this.setCard(card);
 	}
@@ -34,9 +30,8 @@ public class DealtCardPanel extends JPanel {
 			g.fillRect(0, 0, getWidth() - 2, getHeight() - 2);
 		} else {
 			BufferedImage cardImage = card.getImage();
-			if (cardImage != null)
-				g.drawImage(cardImage, 0, 0, getWidth(), getHeight(),
-						Color.BLACK, null);
+			g.drawImage(cardImage, 0, 0, getWidth(), getHeight(), Color.BLACK,
+					null);
 		}
 	}
 }

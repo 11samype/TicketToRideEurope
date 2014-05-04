@@ -10,4 +10,8 @@ public interface IDeal<K> {
 
 	public boolean isFull();
 
+	public K getCardAtPosition(int index);
+
+	public int getSize();
+
 }

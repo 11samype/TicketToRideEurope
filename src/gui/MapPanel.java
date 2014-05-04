@@ -156,7 +156,7 @@ public class MapPanel extends JPanel {
 
 	public void tryToClaimRoute(Player current, SelectionHolder selectedPoints,
 			ArrayList<DrawableRoute> drawablesToAdd) throws UnsupportedOperationException {
-		IRoute routeToClaim = GraphHelper.getRouteBetween(
+		IRoute routeToClaim = GraphHelper.getAdjecentRouteBetween(
 				(Destination) selectedPoints.get(0),
 				(Destination) selectedPoints.get(1));
 		if (routeToClaim != null) {

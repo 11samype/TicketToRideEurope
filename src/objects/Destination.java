@@ -1,8 +1,5 @@
 package objects;
 
-import objects.abstracts.AbstractPlayer;
-import objects.interfaces.IPlayer;
-
 public class Destination {
 	protected String name;
 	protected Player ownedBy;

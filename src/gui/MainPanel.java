@@ -57,8 +57,8 @@ public class MainPanel extends JPanel {
 				"[90.00:114.00:100.00,grow,fill][773px:773px:773px,fill][70:85.00:100,grow,bottom]"));
 
 		this.players = getPlayers();
-		this.gameState = GameState.getInstance().withPlayers(players);
-		this.cardManager = gameState.getCardManager();
+		this.gameState = GameState.withPlayers(players);
+		this.cardManager = GameState.getCardManager();
 
 		addPlayersPanel();
 		addDestinationDeckPanel();
@@ -81,7 +81,7 @@ public class MainPanel extends JPanel {
 		playerPanelLayout.setHgap(10);
 		playerPanel.setLayout(playerPanelLayout);
 
-		List<IPlayer> players = this.gameState.getPlayers();
+		List<IPlayer> players = GameState.getPlayers();
 		for (int i = 0; i < players.size(); i++) {
 			playerPanel.add(new PlayerPanel((Player) players.get(i)));
 		}
@@ -90,7 +90,7 @@ public class MainPanel extends JPanel {
 	}
 
 	private void addDestinationDeckPanel() {
-		DestinationDeck destDeck = gameState.getCardManager()
+		DestinationDeck destDeck = GameState.getCardManager()
 				.getDestinationDeck();
 
 		JPanel destCardDeckPanel = new JPanel();
@@ -137,52 +137,6 @@ public class MainPanel extends JPanel {
 		dealCardsToDealPanel();
 	}
 
-	private class DealCardListener extends MouseAdapter {
-
-		private int cardInt;
-		private final DealtCardPanel cardPanel;
-		private CardManager cardManager;
-		private TrainCarDeck deck;
-
-		public DealCardListener(int cardInt, DealtCardPanel panel,
-				TrainCarDeck deck) {
-			this.cardInt = cardInt;
-			this.cardPanel = panel;
-			this.deck = deck;
-
-		}
-
-		private void simulateDrawCard() {
-			Player current = getCurrentPlayer();
-
-			current.drawCardFromDeal(this.cardInt);
-			playerHandPanel.setPlayer(getCurrentPlayer());
-			lblTrainCardCount.setText(Integer.toString(deck.size()));
-
-		}
-
-		@Override
-		public void mouseClicked(MouseEvent arg0) {
-			this.cardManager = GameState.getInstance().getCardManager();
-			NullDrawableTrainCarCard nullCard = new NullDrawableTrainCarCard();
-
-			TrainCarCard cardAtPos = this.cardManager.getDealCard(cardInt);
-			DrawableTrainCarCard clickedCard = null;
-			if (cardAtPos != null) {
-				clickedCard = new DrawableTrainCarCard(cardAtPos);
-				if (!clickedCard.equals(nullCard)) {
-					simulateDrawCard();
-					if (!deck.isEmpty()) {
-						this.cardManager.fillDealFromDeck();
-						cardPanel.setCard(clickedCard);
-					} else {
-						cardPanel.setCard(nullCard);
-					}
-				}
-			}
-		}
-	}
-
 	private void addTrainCarDeckPanel() {
 		TrainCarDeck carDeck = cardManager.getTrainCarDeck();
 
@@ -200,12 +154,10 @@ public class MainPanel extends JPanel {
 
 	private void dealCardsToDealPanel() {
 		for (int i = 0; i < 5; i++) {
-			DealtCardPanel cardPanel = new DealtCardPanel();
-			cardPanel.addMouseListener(new DealCardListener(i, cardPanel,
-					cardManager.getTrainCarDeck()));
 			DrawableTrainCarCard card = new DrawableTrainCarCard(cardManager
 					.getDealCard(i).getColor());
-			cardPanel.setCard(card);
+			DealtCardPanel cardPanel = new DealtCardPanel(card);
+			cardPanel.addMouseListener(new DealCardListener(i, cardPanel, cardManager.getTrainCarDeck()));
 			dealtCardsPanel.add(cardPanel);
 		}
 	}
@@ -238,29 +190,6 @@ public class MainPanel extends JPanel {
 		this.playerHandPanel.setPlayer(getCurrentPlayer());
 	}
 
-	private class TrainCarDeckListener extends MouseAdapter {
-
-		private TrainCarDeck deck;
-
-		public TrainCarDeckListener(TrainCarDeck trainCarDeck) {
-			this.deck = trainCarDeck;
-		}
-
-		private void simulateDrawCard() {
-			if (!deck.isEmpty()) {
-				Player current = getCurrentPlayer();
-				current.drawCardFromDeck(deck);
-				playerHandPanel.setPlayer(current);
-				lblTrainCardCount.setText(Integer.toString(deck.size()));
-			}
-		}
-
-		@Override
-		public void mouseClicked(MouseEvent arg0) {
-			simulateDrawCard();
-		}
-	}
-
 	private class DestinationDeckListener extends MouseAdapter {
 
 		private final DestinationDeck deck;
@@ -288,6 +217,78 @@ public class MainPanel extends JPanel {
 		}
 	}
 
+	private class DealCardListener extends MouseAdapter {
+
+		private int cardInt;
+		private final DealtCardPanel cardPanel;
+		private TrainCarDeck deck;
+
+		public DealCardListener(int cardInt, DealtCardPanel panel,
+				TrainCarDeck deck) {
+			this.cardInt = cardInt;
+			this.cardPanel = panel;
+			this.deck = deck;
+
+		}
+
+		private void simulateDrawCard(int cardPos) {
+			getCurrentPlayer().drawCardFromDeal(cardManager, cardPos);
+			playerHandPanel.setPlayer(getCurrentPlayer());
+			lblTrainCardCount.setText(Integer.toString(deck.size()));
+
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+
+			TrainCarCard cardAtPos = cardManager.getDealCard(cardInt);
+			if (cardAtPos != null) {
+				simulateDrawCard(cardInt);
+				final DrawableTrainCarCard newCard = new DrawableTrainCarCard(cardAtPos);
+				if (!deck.isEmpty()) {
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							cardPanel.setCard(null);
+							try {
+								Thread.sleep(300);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							} finally {
+								cardPanel.setCard(newCard);
+							}
+						}
+					}).start();
+				} else {
+					cardPanel.setCard(null);
+				}
+			}
+		}
+	}
+
+	private class TrainCarDeckListener extends MouseAdapter {
+
+		private TrainCarDeck deck;
+
+		public TrainCarDeckListener(TrainCarDeck trainCarDeck) {
+			this.deck = trainCarDeck;
+		}
+
+		private void simulateDrawCard() {
+			if (!deck.isEmpty()) {
+				Player current = getCurrentPlayer();
+				current.drawCardFromDeck(deck);
+				playerHandPanel.setPlayer(current);
+				lblTrainCardCount.setText(Integer.toString(deck.size()));
+			}
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			simulateDrawCard();
+		}
+	}
+
 	private MapPanel getMapPanel(String mapName) {
 		MapPanel mapPanel = new MapPanel(playerHandPanel);
 		mapPanel.setMapName(mapName);
@@ -299,11 +300,11 @@ public class MainPanel extends JPanel {
 	}
 
 	public Player getCurrentPlayer() {
-		return (Player) this.gameState.getCurrentPlayer();
+		return (Player) GameState.getCurrentPlayer();
 	}
 
 	public void nextTurn() {
-		gameState.takeTurn();
+		GameState.takeTurn();
 		destinationTable.setPlayer(getCurrentPlayer());
 		playerHandPanel.setPlayer(getCurrentPlayer());
 		currentPlayerPanel.setPlayer(getCurrentPlayer());

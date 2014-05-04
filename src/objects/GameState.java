@@ -1,10 +1,14 @@
 package objects;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import objects.abstracts.AbstractDeal;
+import objects.interfaces.IDeal;
+import objects.interfaces.IDeck;
 import objects.interfaces.IPlayer;
 
 public class GameState {
@@ -16,70 +20,65 @@ public class GameState {
 					TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW));
 
 	public static GameState getInstance() {
-		if (sInstance == null)
+		if (sInstance == null) {
 			sInstance = new GameState();
+		}
 		return sInstance;
 	}
 
 	private GameState() {
-		init();
+		this(new ArrayList<IPlayer>());
 	}
 
-	public void init() {
-		// TODO Clear the board, get number of players, deal the cards
+	private GameState(List<IPlayer> players) {
 		this.cardManager = new CardManager();
+		this.turnManager = new TurnManager(players);
 	}
 
-	public GameState withPlayers(List<IPlayer> players) {
-		GameState game = GameState.getInstance();
-		game.turnManager = new TurnManager(players);
-		return game;
+	public static GameState withPlayers(List<IPlayer> players) {
+		sInstance = new GameState(players);
+		return getInstance();
 	}
 
-	public CardManager getCardManager() {
-		return this.cardManager;
+	public static CardManager getCardManager() {
+		return GameState.getInstance().cardManager;
 	}
 
-	public TurnManager getTurnManager() {
-		return this.turnManager;
+	public static TurnManager getTurnManager() {
+		return GameState.getInstance().turnManager;
 	}
 
 	public static void takeTurn() {
-		GameState.getInstance().getTurnManager().rotatePlayers();
+		GameState.getTurnManager().rotatePlayers();
 	}
 
 	public static List<IPlayer> getPlayers() {
-		return GameState.getInstance().getTurnManager().getPlayers();
+		return GameState.getTurnManager().getPlayers();
 	}
 
 	public static IPlayer getCurrentPlayer() {
-		return GameState.getInstance().getTurnManager().getCurrentPlayer();
+		return GameState.getTurnManager().getCurrentPlayer();
 	}
 
 	public class CardManager {
 
-		private DestinationDeck destinationDeck;
-		private TrainCarDeck trainCarDeck;
-		private TrainCarDeal deal;
-		private DiscardPile discardPile;
+		private IDeck<DestinationCard> destinationDeck;
+		private IDeck<TrainCarCard> trainCarDeck;
+		private IDeal<TrainCarCard> deal;
+		private IDeck<TrainCarCard> discardPile;
 
 		public CardManager() {
 			this.destinationDeck = new DestinationDeck();
 			this.trainCarDeck = new TrainCarDeck();
 			this.deal = new TrainCarDeal();
-			this.discardPile = new DiscardPile();
-
+			this.discardPile = new DiscardPile<TrainCarCard>();
 			fillDealFromDeck();
 		}
 
-		/*
-		 * returns cards added
-		 */
 		public void fillDealFromDeck() {
 			while (!this.deal.isFull() && !trainCarDeck.isEmpty()) {
 				this.deal.addCard(trainCarDeck.draw());
 			}
-
 		}
 
 		public TrainCarCard drawDealCard(int index) {
@@ -89,23 +88,27 @@ public class GameState {
 		}
 
 		public TrainCarCard getDealCard(int index) {
-			return getDealCards().getCardAtPosition(index);
+			return ((AbstractDeal<TrainCarCard>) getDealCards()).getCardAtPosition(index);
 		}
 
 		public TrainCarDeal getDealCards() {
-			return this.deal;
+			return (TrainCarDeal) this.deal;
+		}
+
+		public void discard(TrainCarCard card) {
+			getDiscardPile().add(card);
 		}
 
 		public TrainCarDeck getTrainCarDeck() {
-			return this.trainCarDeck;
+			return (TrainCarDeck) this.trainCarDeck;
 		}
 
 		public DestinationDeck getDestinationDeck() {
-			return this.destinationDeck;
+			return (DestinationDeck) this.destinationDeck;
 		}
 
-		public DiscardPile getDiscardPile() {
-			return this.discardPile;
+		public DiscardPile<TrainCarCard> getDiscardPile() {
+			return (DiscardPile<TrainCarCard>) this.discardPile;
 		}
 	}
 

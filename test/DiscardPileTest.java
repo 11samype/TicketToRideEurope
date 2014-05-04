@@ -15,19 +15,19 @@ public class DiscardPileTest {
 
 	@Test
 	public void testInitDiscardPile() {
-		DiscardPile discardPile = new DiscardPile();
+		DiscardPile<?> discardPile = new DiscardPile<>();
 		assertNotNull(discardPile);
 	}
 
 	@Test
 	public void testInitIsEmpty() {
-		DiscardPile discardPile = new DiscardPile();
+		DiscardPile<?> discardPile = new DiscardPile<>();
 		assertTrue(discardPile.isEmpty());
 	}
 
 	@Test
 	public void testDiscard() {
-		DiscardPile discardPile = new DiscardPile();
+		DiscardPile<TrainCarCard> discardPile = new DiscardPile<TrainCarCard>();
 
 		discardPile.add(new TrainCarCard(TrainColor.BLUE));
 		discardPile.add(new TrainCarCard(TrainColor.BLUE));
@@ -37,7 +37,7 @@ public class DiscardPileTest {
 
 	@Test
 	public void testPickupDiscard() {
-		DiscardPile discardPile = new DiscardPile();
+		DiscardPile<TrainCarCard> discardPile = new DiscardPile<TrainCarCard>();
 
 		discardPile.add(new TrainCarCard(TrainColor.BLUE));
 		discardPile.add(new TrainCarCard(TrainColor.GREEN));
