@@ -75,8 +75,8 @@ public class DestinationTable extends JTable {
 				TableColumn column = getColumnModel().getColumn(i);
 				column.setCellRenderer(new RouteCompletedCellRenderer(player, route));
 			}
-			repaint();
-			revalidate();
 		}
+		repaint();
+		revalidate();
 	}
 }

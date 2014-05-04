@@ -34,6 +34,9 @@ public class RouteCompletedCellRenderer extends DefaultTableCellRenderer {
 			cell.setBackground(Color.green);
 			System.out.println("Coloring row: " + row);
 			System.out.println("[Route] " + route);
+		} else {
+			cell.setBackground(Color.white);
+			System.out.println("Clearing row: " + row);
 		}
 
 		return cell;
