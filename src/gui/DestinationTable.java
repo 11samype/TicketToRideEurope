@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
+import objects.Destination;
 import objects.DestinationCard;
 import objects.DestinationRoute;
 import objects.interfaces.IPlayer;
@@ -20,6 +22,7 @@ public class DestinationTable extends JTable {
 	public DestinationTable() {
 		super();
 		reset();
+		getTableHeader().setReorderingAllowed(false);
 	}
 
 	@Override
@@ -34,6 +37,15 @@ public class DestinationTable extends JTable {
 	private Object[] destinationToTableRow(DestinationRoute destRoute) {
 		return new Object[] { destRoute.getStart(), destRoute.getEnd(),
 				destRoute.getScore() };
+	}
+
+	public DestinationRoute getRouteInRow(int row) {
+		Destination start, end;
+		int score = 0;
+		start = new Destination(getModel().getValueAt(row, 0).toString());
+		end = new Destination(getModel().getValueAt(row, 1).toString());
+		score = Integer.parseInt(getModel().getValueAt(row, 2).toString());
+		return new DestinationRoute(start, end, score);
 	}
 
 	@Override
@@ -59,13 +71,12 @@ public class DestinationTable extends JTable {
 		for (DestinationCard destinationCard : playerDestCards) {
 			DestinationRoute route = destinationCard.getRoute();
 			getModel().addRow(destinationToTableRow(route));
-			int newRowIndex = getModel().getRowCount();
-			for (int i = 0; i < getColumnCount(); i++) {
-				getColumnModel().getColumn(i).setCellRenderer(new RouteCompletedCellRenderer(player, route));
+			for (int i = 0; i < getModel().getColumnCount(); i++) {
+				TableColumn column = getColumnModel().getColumn(i);
+				column.setCellRenderer(new RouteCompletedCellRenderer(player, route));
 			}
+			repaint();
+			revalidate();
 		}
-		repaint();
-		revalidate();
 	}
-
 }

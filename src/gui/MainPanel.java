@@ -50,7 +50,16 @@ public class MainPanel extends JPanel {
 
 	private JPanel dealtCardsPanel;
 
-	public MainPanel() {
+	private static MainPanel sInstance;
+
+	public static MainPanel getInstance() {
+		if (sInstance == null) {
+			sInstance = new MainPanel();
+		}
+		return sInstance;
+	}
+
+	private MainPanel() {
 		setLayout(new MigLayout(
 				"",
 				"[900px:1250px:1600px,grow,fill][10%:n,right]",
@@ -290,7 +299,7 @@ public class MainPanel extends JPanel {
 	}
 
 	private MapPanel getMapPanel(String mapName) {
-		MapPanel mapPanel = new MapPanel(playerHandPanel);
+		MapPanel mapPanel = new MapPanel();
 		mapPanel.setMapName(mapName);
 		return mapPanel;
 	}
@@ -305,6 +314,10 @@ public class MainPanel extends JPanel {
 
 	public void nextTurn() {
 		GameState.takeTurn();
+		updatePlayerDetails();
+	}
+
+	public void updatePlayerDetails() {
 		destinationTable.setPlayer(getCurrentPlayer());
 		playerHandPanel.setPlayer(getCurrentPlayer());
 		currentPlayerPanel.setPlayer(getCurrentPlayer());

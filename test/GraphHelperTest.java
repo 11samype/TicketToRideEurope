@@ -1,9 +1,12 @@
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import objects.Destination;
@@ -12,7 +15,6 @@ import objects.interfaces.IRoute;
 
 import org.jgrapht.graph.Multigraph;
 import org.jgrapht.graph.WeightedMultigraph;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

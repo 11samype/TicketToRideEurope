@@ -30,7 +30,7 @@ import utils.SelectionHolder;
 public class MapPanel extends JPanel {
 
 	private static int FPS = 60;
-	private static final HashMap<Destination, List<IRoute>> ROUTES= GraphHelper.ROUTE_LOOKUP;
+	private static final HashMap<Destination, List<IRoute>> ROUTES = GraphHelper.ROUTE_LOOKUP;
 	private static final HashMap<String, DrawableDestination> DESTS = GraphHelper.DEST_LOC_LOOKUP;
 	private final List<IDrawable> drawables = new ArrayList<IDrawable>();
 	private final List<DrawableRoute> drawableRoutes = new ArrayList<DrawableRoute>();
@@ -39,14 +39,11 @@ public class MapPanel extends JPanel {
 	private BufferedImage bgImg;
 	private String mapName;
 	private boolean isPaused = false;
-	private HandPanel playerHandPanel;
-
-	public MapPanel(HandPanel playerHandPanel) {
-		this.playerHandPanel = playerHandPanel;
+	public MapPanel() {
 		initDrawableDestinations();
 		initDrawableRoutes();
 		this.addMouseListener(new DestinationClickListener());
-//		this.addMouseListener(new RouteClickListener());
+		// this.addMouseListener(new RouteClickListener());
 		repaintAtFPS(FPS);
 	}
 
@@ -88,8 +85,7 @@ public class MapPanel extends JPanel {
 	}
 
 	private void initDrawableDestinations() {
-		for (Iterator<String> iter = DESTS.keySet().iterator(); iter
-				.hasNext();) {
+		for (Iterator<String> iter = DESTS.keySet().iterator(); iter.hasNext();) {
 			DrawableDestination drawableDest = DESTS.get(iter.next());
 			drawables.add(drawableDest);
 		}
@@ -100,10 +96,12 @@ public class MapPanel extends JPanel {
 		while (destIter.hasNext()) {
 			Destination _start = destIter.next();
 			// String startName = _start.getName();
-			// DrawableDestination drawStart = DEST_LOC_LOOKUP.get(_start.getName());
+			// DrawableDestination drawStart =
+			// DEST_LOC_LOOKUP.get(_start.getName());
 			List<IRoute> routesFromStart = ROUTES.get(_start);
 			for (IRoute routeFromStart : routesFromStart) {
-				// DrawableDestination drawEnd = DEST_LOC_LOOKUP.get(iroute.getEnd().getName());
+				// DrawableDestination drawEnd =
+				// DEST_LOC_LOOKUP.get(iroute.getEnd().getName());
 				if (!drawableRoutes.contains(routeFromStart))
 					drawableRoutes.add(constructDrawableRoute(routeFromStart, null));
 
@@ -112,7 +110,8 @@ public class MapPanel extends JPanel {
 		}
 	}
 
-	private static DrawableRoute constructDrawableRoute(IRoute iroute, TrainColor currentPlayerColor) {
+	private static DrawableRoute constructDrawableRoute(IRoute iroute,
+			TrainColor currentPlayerColor) {
 		TrainColor color = TrainColor.RAINBOW;
 		DrawableDestination drawStart = DESTS.get(iroute.getStart().getName());
 		DrawableDestination drawEnd = DESTS.get(iroute.getEnd().getName());
@@ -127,8 +126,6 @@ public class MapPanel extends JPanel {
 		}
 	}
 
-
-
 	public boolean addDrawable(IDrawable drawable) {
 		return drawables.add(drawable);
 	}
@@ -141,8 +138,7 @@ public class MapPanel extends JPanel {
 	private synchronized BufferedImage getBackgroundImage() {
 		if (this.bgImg == null) {
 			try {
-				this.bgImg = ImageIO.read(new File("img//" + this.mapName
-						+ ".png"));
+				this.bgImg = ImageIO.read(new File("img//" + this.mapName + ".png"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -154,49 +150,49 @@ public class MapPanel extends JPanel {
 		g.drawImage(getBackgroundImage(), 0, 0, getWidth(), getHeight(), Color.BLACK, null);
 	}
 
-	public void tryToClaimRoute(Player current, SelectionHolder selectedPoints,
+	public void tryToClaimRoute(Player current, IRoute routeToClaim,
 			ArrayList<DrawableRoute> drawablesToAdd) throws UnsupportedOperationException {
-		IRoute routeToClaim = GraphHelper.getAdjecentRouteBetween(
-				(Destination) selectedPoints.get(0),
-				(Destination) selectedPoints.get(1));
 		if (routeToClaim != null) {
 			GameState.getInstance();
 			for (IPlayer player : GameState.getPlayers()) {
-				boolean playerHasRoute = player.getRoutes().contains(routeToClaim);
+				boolean playerHasRoute = player.getRoutes().contains(
+						routeToClaim);
 				if (player == current && playerHasRoute) {
 					JOptionPane.showMessageDialog(this,
 							"Unable to claim route.\nYou already own that!",
-							"Claim Error",
-							JOptionPane.ERROR_MESSAGE);
+							"Claim Error", JOptionPane.ERROR_MESSAGE);
 					throw new UnsupportedOperationException(
 							"Unable to claim route.\nYou already own that!");
 				}
 				if (!playerHasRoute) {
 					try {
 						current.claimRoute(routeToClaim);
-						playerHandPanel.setPlayer(current);
+						MainPanel.getInstance().updatePlayerDetails();
 						drawablesToAdd.add(constructDrawableRoute(routeToClaim, current.getColor()));
 					} catch (UnsupportedOperationException e) {
-						JOptionPane
-						.showMessageDialog(
-								this,
+						JOptionPane.showMessageDialog(this,
 								"Unable to claim route.\nNot enough cards for this route!",
-								"Claim Error",
-								JOptionPane.ERROR_MESSAGE);
+								"Claim Error",	JOptionPane.ERROR_MESSAGE);
 						e.printStackTrace();
 					}
 					return;
 				} else
-					JOptionPane
-					.showMessageDialog(
-							this,
+					JOptionPane.showMessageDialog(this,
 							"Unable to claim route.\nThat route has already been taken!",
-							"Claim Error",
-							JOptionPane.ERROR_MESSAGE);
+							"Claim Error", JOptionPane.ERROR_MESSAGE);
 				throw new UnsupportedOperationException(
 						"Unable to claim route.\nThat route has already been taken!");
 			}
 		}
+	}
+
+	public void tryToClaimRoute(Player current, SelectionHolder selectedPoints,
+			ArrayList<DrawableRoute> drawablesToAdd)
+					throws UnsupportedOperationException {
+		IRoute routeToClaim = GraphHelper.getAdjecentRouteBetween(
+				(Destination) selectedPoints.get(0),
+				(Destination) selectedPoints.get(1));
+		tryToClaimRoute(current, routeToClaim, drawablesToAdd);
 	}
 
 	public void tryToBuildStation(Player current, Destination dest) {
@@ -204,20 +200,14 @@ public class MapPanel extends JPanel {
 		try {
 			placed = dest.buildStation(current);
 			if (!placed) {
-				JOptionPane
-				.showMessageDialog(
-						this,
+				JOptionPane.showMessageDialog(this,
 						"Unable to build station.\nA station already exists here!",
-						"Build Station Error",
-						JOptionPane.ERROR_MESSAGE);
+						"Build Station Error", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (UnsupportedOperationException e) {
-			JOptionPane
-			.showMessageDialog(
-					this,
+			JOptionPane.showMessageDialog(this,
 					"Unable to build station.\nYou have no stations left!",
-					"Build Station Error",
-					JOptionPane.ERROR_MESSAGE);
+					"Build Station Error", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -278,8 +268,8 @@ public class MapPanel extends JPanel {
 			for (IDrawable drawnRoute : drawableRoutes) {
 				if (drawnRoute.contains(e.getPoint()) && (drawnRoute instanceof DrawableRoute)) {
 					clickedRoute = (DrawableRoute) drawnRoute;
-
 					if (SwingUtilities.isLeftMouseButton(e)) {
+						tryToClaimRoute(current, clickedRoute, drawablesToAdd);
 						System.out.println(clickedRoute);
 					} else if (SwingUtilities.isRightMouseButton(e)) {
 

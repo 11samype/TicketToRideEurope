@@ -1,13 +1,9 @@
 import gui.DrawableDestination;
 import gui.MainPanel;
 
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -23,43 +19,6 @@ import utils.TrainRouteReader;
 
 public class Main {
 
-	private static final String _cityBundleName = "Cities";
-
-	public static Locale CURRENT_LOCALE = getGameLocale();
-	public static ResourceBundle CITIES_BUNDLE = ResourceBundle.getBundle(
-			_cityBundleName, CURRENT_LOCALE);
-
-	public static Locale getGameLocale() {
-		return new Locale("game", "ORIG");
-	}
-
-	public static void useGameLocale() {
-		CURRENT_LOCALE = getGameLocale();
-		CITIES_BUNDLE = ResourceBundle.getBundle(_cityBundleName,
-				CURRENT_LOCALE);
-	}
-
-	public static String getStringFromBundle(ResourceBundle bundle, String key) {
-		try {
-			return bundle.getString(key);
-		} catch (MissingResourceException e) {
-			e.printStackTrace();
-			return '!' + key + '!';
-		}
-	}
-
-	public static String getStringFromBundle(ResourceBundle bundle, String key,
-			Object... params) {
-		try {
-			MessageFormat formatter = new MessageFormat(bundle.getString(key),
-					CURRENT_LOCALE);
-			return formatter.format(params);
-		} catch (MissingResourceException e) {
-			e.printStackTrace();
-			return '!' + key + '!';
-		}
-	}
-
 	public static void main(String[] args) {
 
 		prepareGameData(true);
@@ -70,8 +29,7 @@ public class Main {
 				final JFrame window = new JFrame("TicketToRide Europe");
 				window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-				MainPanel mainPanel = new MainPanel();
-
+				MainPanel mainPanel = MainPanel.getInstance();
 				window.getContentPane().add(mainPanel);
 				window.pack();
 				window.setVisible(true);
