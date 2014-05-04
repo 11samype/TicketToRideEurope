@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Stroke;
 import java.awt.geom.Point2D;
 
 import objects.Destination;
@@ -42,27 +43,31 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 		int x = (int) location.getX();
 		int y = (int) location.getY();
 		if (this.hasStation()) {
-			g2.setStroke(new BasicStroke(2.0f));
-			drawSquare(g2, x,  y, 2*DOT_RADIUS, this.hasStation(), stationColor);
-			drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
-
-			// spin here
-			g2.translate(x + DOT_RADIUS, y + DOT_RADIUS);
-			g2.rotate(Math.toRadians(45));
-			g2.translate(-1*(x+DOT_RADIUS), -1*(y+DOT_RADIUS));
-
-			drawSquare(g2, x,  y, 2*DOT_RADIUS, this.hasStation(), stationColor);
-			drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
-
+			drawStation(x, y, g2);
 		}
 
-		g2.setStroke(new BasicStroke(1.0f));
 		drawCircle(g2, x, y, DOT_RADIUS, isSelected, DOT_COLOR);
 		if (isSelected) {
 			drawCircle(g2, x, y, DOT_RADIUS, !isSelected, DOT_COLOR);
 			drawCircle(g2, x, y, DOT_RADIUS, !isSelected, OUTLINE_COLOR);
 		}
 		g2.dispose();
+	}
+
+	private void drawStation(int x, int y, Graphics2D g2) {
+		Stroke saveStroke = g2.getStroke();
+		g2.setStroke(new BasicStroke(2.0f));
+		drawSquare(g2, x,  y, 2*DOT_RADIUS, this.hasStation(), stationColor);
+		drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
+
+		// spin here
+		g2.translate(x + DOT_RADIUS, y + DOT_RADIUS);
+		g2.rotate(Math.toRadians(45));
+		g2.translate(-1*(x+DOT_RADIUS), -1*(y+DOT_RADIUS));
+
+		drawSquare(g2, x,  y, 2*DOT_RADIUS, this.hasStation(), stationColor);
+		drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
+		g2.setStroke(saveStroke);
 	}
 
 	@Override
