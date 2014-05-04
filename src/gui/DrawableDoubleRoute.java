@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
+import objects.interfaces.IDrawable;
+
 public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 
 	private final static double OFFSET = DrawableDestination.DOT_RADIUS / 2;

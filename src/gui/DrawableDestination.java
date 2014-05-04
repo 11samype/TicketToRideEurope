@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,6 +9,7 @@ import java.awt.geom.Point2D;
 
 import objects.Destination;
 import objects.Player;
+import objects.interfaces.IDrawable;
 import utils.SelectionHolder.Selectable;
 
 public class DrawableDestination extends Destination implements IDrawable, Selectable {
@@ -36,14 +38,31 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 
 	@Override
 	public void drawOn(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g.create();
+		int x = (int) location.getX();
+		int y = (int) location.getY();
 		if (this.hasStation()) {
-			drawSquare(g, (int) location.getX(), (int) location.getY(), 2*DOT_RADIUS, this.hasStation(), stationColor);
+			g2.setStroke(new BasicStroke(2.0f));
+			drawSquare(g2, x,  y, 2*DOT_RADIUS, this.hasStation(), stationColor);
+			drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
+
+			// spin here
+			g2.translate(x + DOT_RADIUS, y + DOT_RADIUS);
+			g2.rotate(Math.toRadians(45));
+			g2.translate(-1*(x+DOT_RADIUS), -1*(y+DOT_RADIUS));
+
+			drawSquare(g2, x,  y, 2*DOT_RADIUS, this.hasStation(), stationColor);
+			drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
+
 		}
-		drawCircle(g, (int) location.getX(), (int) location.getY(), DOT_RADIUS, isSelected, DOT_COLOR);
+
+		g2.setStroke(new BasicStroke(1.0f));
+		drawCircle(g2, x, y, DOT_RADIUS, isSelected, DOT_COLOR);
 		if (isSelected) {
-			drawCircle(g, (int) location.getX(), (int) location.getY(), DOT_RADIUS, !isSelected, DOT_COLOR);
-			drawCircle(g, (int) location.getX(), (int) location.getY(), DOT_RADIUS, !isSelected, OUTLINE_COLOR);
+			drawCircle(g2, x, y, DOT_RADIUS, !isSelected, DOT_COLOR);
+			drawCircle(g2, x, y, DOT_RADIUS, !isSelected, OUTLINE_COLOR);
 		}
+		g2.dispose();
 	}
 
 	@Override
@@ -56,25 +75,26 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 
 	private void drawCircle(Graphics g, int x, int y, int radius,
 			boolean filled, Color color) {
-		Graphics2D g2 = (Graphics2D) g;
+		Graphics2D g2 = (Graphics2D) g.create();
 		g2.setColor(color);
 		if (filled) {
 			g2.fillOval(x, y, 2 * radius, 2 * radius);
 		} else {
 			g2.drawOval(x, y, 2 * radius, 2 * radius);
 		}
-
+		g2.dispose();
 	}
 
 	private void drawSquare(Graphics g, int x, int y, int side_length,
 			boolean filled, Color color) {
-		Graphics2D g2 = (Graphics2D) g;
+		Graphics2D g2 = (Graphics2D) g.create();
 		g2.setColor(color);
 		if (filled) {
 			g2.fillRect(x, y, side_length, side_length);
 		} else {
 			g2.drawRect(x, y, side_length, side_length);
 		}
+		g2.dispose();
 	}
 
 	@Override

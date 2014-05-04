@@ -8,6 +8,7 @@ import java.awt.geom.Point2D;
 
 import objects.TrainColor;
 import objects.abstracts.AbstractColorableRoute;
+import objects.interfaces.IDrawable;
 
 public class DrawableRoute extends AbstractColorableRoute implements IDrawable {
 

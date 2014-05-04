@@ -1,4 +1,4 @@
-package gui;
+package objects.interfaces;
 
 import java.awt.Graphics;
 import java.awt.geom.Point2D;
