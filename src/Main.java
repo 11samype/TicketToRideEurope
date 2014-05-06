@@ -4,6 +4,7 @@ import gui.MainPanel;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -15,6 +16,7 @@ import objects.DestinationRoute;
 import objects.interfaces.IRoute;
 import utils.DestinationCardReader;
 import utils.DestinationLocationReader;
+import utils.MessageHelper;
 import utils.TrainRouteReader;
 
 public class Main {
@@ -22,11 +24,14 @@ public class Main {
 	public static void main(String[] args) {
 
 		prepareGameData(true);
+		MessageHelper.setLocale(Locale.US);
 
+		final String gameTitle = MessageHelper.getStringFromBundle(MessageHelper.getMessages(), "game.title");
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final JFrame window = new JFrame("TicketToRide Europe");
+
+				final JFrame window = new JFrame(gameTitle);
 				window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 				MainPanel mainPanel = MainPanel.getInstance();

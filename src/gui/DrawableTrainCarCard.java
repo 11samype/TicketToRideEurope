@@ -22,13 +22,8 @@ public class DrawableTrainCarCard extends TrainCarCard {
 
 	public BufferedImage getImage() {
 		if (this.image == null) {
-			try {
-				this.image = ImageIO.read(new File("img//"
-						+ getValue().toString().toLowerCase() + "card.png"));
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			this.image = CardImageFlyweight.getInstance().getImageForColor(
+					getValue());
 		}
 		return this.image;
 	}

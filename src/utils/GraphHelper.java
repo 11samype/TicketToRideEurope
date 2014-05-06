@@ -33,21 +33,16 @@ public final class GraphHelper {
 		}
 
 	public static boolean hasPlayerCompletedDestinationRoute(IPlayer player, DestinationRoute destRoute) {
-//		Multigraph<Destination, IRoute> playerGraph = getPlayerGraph(player);
-//		ConnectivityInspector<Destination, IRoute> connectionInspector = new ConnectivityInspector<Destination, IRoute>(playerGraph);
-//		return connectionInspector.pathExists(destRoute.getStart(), destRoute.getEnd());
 		return pathExistsFrom(getPlayerGraph(player), destRoute.getStart(), destRoute.getEnd());
 	}
 
 	public static boolean pathExistsFrom(Destination start, Destination end) {
-//		Multigraph<Destination, IRoute> graph = getFullGraph();
-//		ConnectivityInspector<Destination, IRoute> connectionInspector = new ConnectivityInspector<Destination, IRoute>(graph);
-//		return connectionInspector.pathExists(start, end);
 		return pathExistsFrom(getFullGraph(), start, end);
 	}
 
 	public static <V extends Destination, E extends IRoute> boolean pathExistsFrom(UndirectedGraph<V, E> graph, V start, V end) {
 		ConnectivityInspector<V, E> connectionInspector = new ConnectivityInspector<V, E>(graph);
+//		System.out.println("**Connection Test**\n"+start.getName() + "<->" + end.getName());
 		return connectionInspector.pathExists(start, end);
 	}
 
@@ -73,6 +68,7 @@ public final class GraphHelper {
 						_graphInstance.addEdge(start, end, routeFromStart);
 //						_graphInstance.setEdgeWeight(routeFromDest, routeFromDest.getLength());
 					} else {
+						// TODO: Handle double routes
 //						System.out.println(routeFromStart);
 					}
 				}

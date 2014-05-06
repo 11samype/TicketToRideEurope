@@ -13,6 +13,7 @@ import objects.TrainCarCard;
 import objects.TrainCarDeck;
 import objects.TrainCarHand;
 import objects.TrainColor;
+import objects.interfaces.ICard;
 import objects.interfaces.IPlayer;
 import objects.interfaces.IRoute;
 import utils.GraphHelper;
@@ -25,9 +26,8 @@ public class AbstractPlayer implements IPlayer {
 	protected final String name;
 	protected int numTrains;
 	protected int numStations;
-	private int score;
 	protected TrainCarHand hand = new TrainCarHand();
-	protected DestinationHand destinationRoutes = new DestinationHand();
+	protected DestinationHand destinationHand = new DestinationHand();
 	protected List<IRoute> routes = new ArrayList<IRoute>();
 
 	public AbstractPlayer() {
@@ -48,17 +48,15 @@ public class AbstractPlayer implements IPlayer {
 	@Override
 	public void drawCardFromDeck(DestinationDeck deck) {
 		DestinationCard drawn = deck.draw();
-		this.destinationRoutes.addCard(drawn);
-		this.score -= drawn.getScore();
+		this.destinationHand.addCard(drawn);
+		// this.score -= drawn.getScore();
 	}
 
 	@Override
 	public void drawCardFromDeal(CardManager cardManager, int index) {
-			TrainCarCard pickedCard = cardManager.drawDealCard(index);
-			System.out.printf("Drew index %d; %s\n", index, pickedCard.getColor());
-			this.hand.addCard(pickedCard);
-
-
+		TrainCarCard pickedCard = cardManager.drawDealCard(index);
+		System.out.printf("Drew index %d; %s\n", index, pickedCard.getColor());
+		this.hand.addCard(pickedCard);
 	}
 
 	public void claimRoute(IRoute route) throws UnsupportedOperationException {
@@ -70,9 +68,9 @@ public class AbstractPlayer implements IPlayer {
 		int routeLength = route.getLength();
 		if (numberOfColorInHand >= routeLength) {
 			discardCardsOfColor(routeLength, routeColor);
-			this.routes.add(route);
+			addRoute(route);
 			placeTrains(routeLength);
-			addScoreForRoute(route);
+			// addScoreForRoute(route);
 		} else {
 			throw new UnsupportedOperationException(
 					"Not enough cards for route!\nYou have "
@@ -81,21 +79,20 @@ public class AbstractPlayer implements IPlayer {
 		}
 	}
 
-	private void placeTrains(int numTrains) {
-		this.numTrains -= numTrains;
-	}
+	private void addRoute(IRoute route) {
+		this.routes.add(route);
 
-	private void addScoreForRoute(IRoute route) {
-		// add score for any type other than destination
-		if (!(route instanceof DestinationRoute))
-			this.score += route.getScore();
-
-		// check to see if adding this route completed a destination card
-		for (DestinationCard destCard : this.destinationRoutes.getCards()) {
-			if (GraphHelper.hasPlayerCompletedDestinationRoute(this, destCard.getRoute())) {
-				this.score += destCard.getScore();
+		for (DestinationCard destCard : this.destinationHand.getCards()) {
+			if (GraphHelper.hasPlayerCompletedDestinationRoute(this,
+					destCard.getRoute())) {
+				if (!this.routes.contains(destCard.getRoute()))
+					this.routes.add(destCard.getRoute());
 			}
 		}
+	}
+
+	private void placeTrains(int numTrains) {
+		this.numTrains -= numTrains;
 	}
 
 	public void discardCardsOfColor(int num, TrainColor color) {
@@ -120,20 +117,17 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public int getScore() {
-		// int score = 0;
-		//
-		// for (DestinationCard destinationCard: destinationRoutes.hand) {
-		// DestinationRoute route = destinationCard.getRoute();
-		// if (this.hasCompleted(route)) {
-		// score += route.getScore();
-		// } else {
-		// score -= route.getScore();
-		// }
-		// }
-		//
-		// for (IRoute claimedRoute : this.routes) {
-		// score += claimedRoute.getScore();
-		// }
+		int score = 0;
+		for (IRoute claimedRoute : this.routes) {
+			score += claimedRoute.getScore();
+		}
+
+		for (DestinationCard destCard : this.destinationHand.getCards()) {
+			if (!this.routes.contains(destCard.getRoute())) {
+				score -= destCard.getScore();
+			}
+		}
+
 		return score;
 	}
 
@@ -143,8 +137,16 @@ public class AbstractPlayer implements IPlayer {
 	}
 
 	@Override
+	public ICard getLastCardDrawn() {
+		int sizeOfHand = getHand().size();
+		if (sizeOfHand == 0)
+			return null;
+		return getHand().getCard(getHand().size() - 1);
+	}
+
+	@Override
 	public List<DestinationCard> getDestinationHand() {
-		return this.destinationRoutes.hand;
+		return this.destinationHand.hand;
 	}
 
 	@Override

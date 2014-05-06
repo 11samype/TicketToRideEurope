@@ -8,9 +8,9 @@ import java.util.ResourceBundle;
 
 public class MessageHelper {
 	private static final String _cityBundleName = "Cities";
+	private static final String _messagesBundleName = "Messages";
 
-	public static Locale CURRENT_LOCALE = getGameLocale();
-	public static ResourceBundle CITIES_BUNDLE = ResourceBundle.getBundle(_cityBundleName, CURRENT_LOCALE);
+	private static Locale CURRENT_LOCALE = getGameLocale();
 
 	public static Locale getGameLocale() {
 		return new Locale("game", "ORIG");
@@ -20,9 +20,20 @@ public class MessageHelper {
 		return ResourceBundle.getBundle(_cityBundleName, getGameLocale());
 	}
 
+	public static ResourceBundle getCityNames() {
+		return ResourceBundle.getBundle(_cityBundleName, getCurrentLocale());
+	}
+
+	public static ResourceBundle getMessages(){
+		return ResourceBundle.getBundle(_messagesBundleName, getCurrentLocale());
+	}
+
 	public static void setLocale(Locale locale) {
 		CURRENT_LOCALE = locale;
-		CITIES_BUNDLE = ResourceBundle.getBundle(_cityBundleName, CURRENT_LOCALE);
+	}
+
+	public static Locale getCurrentLocale() {
+		return CURRENT_LOCALE;
 	}
 
 	public static void useGameLocale() {
@@ -30,10 +41,14 @@ public class MessageHelper {
 	}
 
 	public static String getDefaultCityNameFor(String cityNameInOtherLocale) {
-		for (Iterator<String> iterator = CITIES_BUNDLE.keySet().iterator(); iterator.hasNext();) {
+		if (CURRENT_LOCALE.equals(getGameLocale()))
+			return cityNameInOtherLocale;
+		ResourceBundle defaultNames = getCityNames();
+		for (Iterator<String> iterator = defaultNames.keySet().iterator(); iterator.hasNext();) {
 			String originalName = iterator.next();
-			if (cityNameInOtherLocale.equals(getStringFromBundle(CITIES_BUNDLE, originalName)))
-					return originalName;
+			String translated = getStringFromBundle(defaultNames, originalName);
+			if (cityNameInOtherLocale.equals(translated))
+				return originalName;
 		}
 		return null;
 	}

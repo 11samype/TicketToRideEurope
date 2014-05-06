@@ -29,4 +29,6 @@ public interface IPlayer {
 	public List<IRoute> getRoutes();
 
 	public void claimRoute(IRoute route);
+
+	public ICard getLastCardDrawn();
 }

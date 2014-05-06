@@ -6,7 +6,9 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-public class DealtCardPanel extends JPanel {
+import utils.SelectionHolder.Selectable;
+
+public class DealtCardPanel extends JPanel implements Selectable {
 
 	private DrawableTrainCarCard card;
 
@@ -33,5 +35,17 @@ public class DealtCardPanel extends JPanel {
 			g.drawImage(cardImage, 0, 0, getWidth(), getHeight(), Color.BLACK,
 					null);
 		}
+	}
+
+	@Override
+	public void select() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deselect() {
+		// TODO Auto-generated method stub
+
 	}
 }

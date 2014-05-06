@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -11,13 +12,13 @@ import objects.Destination;
 import objects.DestinationCard;
 import objects.DestinationRoute;
 import objects.interfaces.IPlayer;
+import utils.MessageHelper;
 
-public class DestinationTable extends JTable {
+public class DestinationTable extends JTable implements PlayerInfoListener {
 
 	private TableModel dataModel;
 
-	private static final Object[] columnNames = { "Destination Start",
-			"Destination End", "Points" };
+	private static final Object[] columnNames = getColumnNames();
 
 	public DestinationTable() {
 		super();
@@ -30,22 +31,37 @@ public class DestinationTable extends JTable {
 		return false;
 	}
 
+	public static Object[] getColumnNames() {
+		ResourceBundle messages = MessageHelper.getMessages();
+		String destStart = MessageHelper.getStringFromBundle(messages, "dest.start");
+		String destEnd = MessageHelper.getStringFromBundle(messages, "dest.end");
+		String destScore = MessageHelper.getStringFromBundle(messages, "dest.score");
+		return new Object[] { destStart, destEnd, destScore };
+	}
+
 	public void addDestination(DestinationRoute destRoute) {
 		this.getModel().addRow(destinationToTableRow(destRoute));
 	}
 
 	private Object[] destinationToTableRow(DestinationRoute destRoute) {
-		return new Object[] { destRoute.getStart(), destRoute.getEnd(),
-				destRoute.getScore() };
+		ResourceBundle cities = MessageHelper.getCityNames();
+		String startName = MessageHelper.getStringFromBundle(cities, destRoute.getStart().getName());
+		String endName = MessageHelper.getStringFromBundle(cities, destRoute.getEnd().getName());
+		return new Object[] { startName, endName, destRoute.getScore() };
 	}
 
 	public DestinationRoute getRouteInRow(int row) {
 		Destination start, end;
 		int score = 0;
-		start = new Destination(getModel().getValueAt(row, 0).toString());
-		end = new Destination(getModel().getValueAt(row, 1).toString());
+		String startName = getModel().getValueAt(row, 0).toString();
+		String endName = getModel().getValueAt(row, 1).toString();
+		start = new Destination(MessageHelper.getDefaultCityNameFor(startName));
+		end = new Destination(MessageHelper.getDefaultCityNameFor(endName));
 		score = Integer.parseInt(getModel().getValueAt(row, 2).toString());
-		return new DestinationRoute(start, end, score);
+
+		DestinationRoute route = new DestinationRoute(start, end, score);
+
+		return route;
 	}
 
 	@Override
@@ -60,11 +76,12 @@ public class DestinationTable extends JTable {
 	}
 
 	private void reset() {
-		setModel(new DefaultTableModel(columnNames, 0));
+		setModel(new DefaultTableModel(getColumnNames(), 0));
 		repaint();
 		revalidate();
 	}
 
+	@Override
 	public void setPlayer(IPlayer player) {
 		this.reset();
 		List<DestinationCard> playerDestCards = player.getDestinationHand();

@@ -11,10 +11,10 @@ import objects.TrainCarHand;
 import objects.TrainColor;
 import objects.interfaces.IPlayer;
 
-public class HandPanel extends JPanel {
+public class HandPanel extends JPanel implements PlayerInfoListener {
 
 	private List<TrainColor> colors = TrainColor.getAllColors();
-	private List<HandCardPanel> handPanels = new ArrayList<HandCardPanel>();
+	private List<HandCardPanel> handCardPanels = new ArrayList<HandCardPanel>();
 
 	public HandPanel() {
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -25,18 +25,19 @@ public class HandPanel extends JPanel {
 	private void addCardPanels() {
 		for (TrainColor color : colors) {
 			HandCardPanel panel = new HandCardPanel(color);
-			handPanels.add(panel);
+			handCardPanels.add(panel);
 			add(panel);
 		}
 
 	}
 
+	@Override
 	public void setPlayer(IPlayer p) {
 		TrainCarHand hand = (TrainCarHand) p.getHand();
-		for (int i = 0; i < this.handPanels.size(); i++) {
+		for (int i = 0; i < this.handCardPanels.size(); i++) {
 			TrainColor color = colors.get(i);
 			int numCardsForColor = hand.numInHand(color);
-			this.handPanels.get(i).setNumCards(numCardsForColor);
+			this.handCardPanels.get(i).setNumCards(numCardsForColor);
 		}
 		repaint();
 		revalidate();
@@ -45,7 +46,7 @@ public class HandPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for (HandCardPanel panel : handPanels) {
+		for (HandCardPanel panel : handCardPanels) {
 			panel.repaint();
 			panel.revalidate();
 		}

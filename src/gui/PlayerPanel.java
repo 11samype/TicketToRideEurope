@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.ResourceBundle;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -9,8 +10,9 @@ import javax.swing.JPanel;
 
 import objects.Player;
 import objects.interfaces.IPlayer;
+import utils.MessageHelper;
 
-public class PlayerPanel extends JPanel {
+public class PlayerPanel extends JPanel implements PlayerInfoListener {
 	private JLabel lblName;
 	private JLabel lblStations;
 	private JLabel lblTrainCars;
@@ -58,11 +60,21 @@ public class PlayerPanel extends JPanel {
 	private void initGUI() {
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(layout);
-
 		this.lblName = createJLabel(this.player.getName());
-		this.lblStations = createJLabel(String.format(fmtStations, this.player.getNumStations()));
-		this.lblTrainCars = createJLabel(String.format(fmtTrainCars, this.player.getNumTrains()));
-		this.lblPoints = createJLabel(String.format(fmtPoints, 0)); // TODO: Calculate Points
+
+		ResourceBundle messages = MessageHelper.getMessages();
+		String stations = MessageHelper.getStringFromBundle(messages, "player.numStations", player.getNumStations());
+		String trains = MessageHelper.getStringFromBundle(messages, "player.numTrains", player.getNumTrains());
+		String score = MessageHelper.getStringFromBundle(messages, "player.score", player.getScore());
+
+		this.lblStations = createJLabel(stations);
+		this.lblTrainCars = createJLabel(trains);
+		this.lblPoints = createJLabel(score);
+
+
+//		this.lblStations = createJLabel(String.format(fmtStations, this.player.getNumStations()));
+//		this.lblTrainCars = createJLabel(String.format(fmtTrainCars, this.player.getNumTrains()));
+//		this.lblPoints = createJLabel(String.format(fmtPoints, this.player.getScore()));
 
 		add(this.lblName);
 		add(this.lblStations);
@@ -70,14 +82,23 @@ public class PlayerPanel extends JPanel {
 		add(this.lblPoints);
 	}
 
+	@Override
 	public void setPlayer(IPlayer player) {
 		this.player = (Player) player;
 		this.lblName.setText(player.getName());
-		this.lblStations.setText(String.format(fmtStations,
-				player.getNumStations()));
-		this.lblTrainCars.setText(String.format(fmtTrainCars,
-				player.getNumTrains()));
-		this.lblPoints.setText(String.format(fmtPoints, player.getScore()));
+
+		ResourceBundle messages = MessageHelper.getMessages();
+		String stations = MessageHelper.getStringFromBundle(messages, "player.numStations", player.getNumStations());
+		String trains = MessageHelper.getStringFromBundle(messages, "player.numTrains", player.getNumTrains());
+		String score = MessageHelper.getStringFromBundle(messages, "player.score", player.getScore());
+
+		this.lblStations.setText(stations);
+		this.lblTrainCars.setText(trains);
+		this.lblPoints.setText(score);
+
+		//		this.lblStations.setText(String.format(fmtStations, player.getNumStations()));
+//		this.lblTrainCars.setText(String.format(fmtTrainCars, player.getNumTrains()));
+//		this.lblPoints.setText(String.format(fmtPoints, player.getScore()));
 		this.repaint();
 		this.revalidate();
 	}

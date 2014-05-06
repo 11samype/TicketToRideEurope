@@ -25,6 +25,7 @@ import objects.Player;
 import objects.TrainCarCard;
 import objects.TrainCarDeck;
 import objects.interfaces.IPlayer;
+import utils.SelectionHolder;
 
 public class MainPanel extends JPanel {
 	private final GameState gameState;
@@ -49,6 +50,7 @@ public class MainPanel extends JPanel {
 	private JPanel playerInfoPanel;
 
 	private JPanel dealtCardsPanel;
+	private List<PlayerInfoListener> playerInfoListeners = new ArrayList<PlayerInfoListener>();
 
 	private static MainPanel sInstance;
 
@@ -81,6 +83,7 @@ public class MainPanel extends JPanel {
 		Player currentPlayer = getCurrentPlayer();
 		this.currentPlayerPanel = new PlayerPanel(currentPlayer);
 		add(this.currentPlayerPanel, "cell 1 2,grow");
+		this.playerInfoListeners.add(currentPlayerPanel);
 	}
 
 	private void addPlayersPanel() {
@@ -107,12 +110,17 @@ public class MainPanel extends JPanel {
 		add(destCardDeckPanel, "cell 1 0,grow");
 		destCardDeckPanel.setLayout(new CardLayout());
 
-		lblDestinationCardCount = new JLabel(Integer.toString(destDeck.size()));
-		lblDestinationCardCount.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblDestinationCardCount.setBounds(10, 11, 27, 20);
+		lblDestinationCardCount = createJLabel(Integer.toString(destDeck.size()), 10, 11, 27, 20);
 		destCardDeckPanel.add(lblDestinationCardCount);
 		destCardDeckPanel
 				.addMouseListener(new DestinationDeckListener(destDeck));
+	}
+
+	private static JLabel createJLabel(String str, int x, int y, int w, int h) {
+		JLabel lbl = new JLabel(str);
+		lbl.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lbl.setBounds(x, y, w, h);
+		return lbl;
 	}
 
 	private void addMapPanel() {
@@ -137,8 +145,7 @@ public class MainPanel extends JPanel {
 		add(dealPanel, "cell 1 1,grow");
 
 		this.dealtCardsPanel = new JPanel();
-		dealtCardsPanel.setLayout(new BoxLayout(dealtCardsPanel,
-				BoxLayout.Y_AXIS));
+		dealtCardsPanel.setLayout(new BoxLayout(dealtCardsPanel, BoxLayout.Y_AXIS));
 		dealPanel.add(dealtCardsPanel, "cell 0 0,grow");
 
 		addTrainCarDeckPanel();
@@ -152,9 +159,7 @@ public class MainPanel extends JPanel {
 		JPanel trainCardDeckPanel = new JPanel();
 		trainCardDeckPanel.setBackground(new Color(30, 144, 255));
 
-		lblTrainCardCount = new JLabel(Integer.toString(carDeck.size()));
-		lblTrainCardCount.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblTrainCardCount.setBounds(10, 11, 27, 20);
+		lblTrainCardCount = createJLabel(Integer.toString(carDeck.size()),10, 11, 27, 20);
 		trainCardDeckPanel.add(lblTrainCardCount);
 		trainCardDeckPanel.addMouseListener(new TrainCarDeckListener(carDeck));
 		dealPanel.add(trainCardDeckPanel, "cell 0 1,grow");
@@ -163,8 +168,7 @@ public class MainPanel extends JPanel {
 
 	private void dealCardsToDealPanel() {
 		for (int i = 0; i < 5; i++) {
-			DrawableTrainCarCard card = new DrawableTrainCarCard(cardManager
-					.getDealCard(i).getColor());
+			DrawableTrainCarCard card = new DrawableTrainCarCard(cardManager.getDealCard(i).getColor());
 			DealtCardPanel cardPanel = new DealtCardPanel(card);
 			cardPanel.addMouseListener(new DealCardListener(i, cardPanel, cardManager.getTrainCarDeck()));
 			dealtCardsPanel.add(cardPanel);
@@ -189,14 +193,17 @@ public class MainPanel extends JPanel {
 		destScrollPane
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		this.destinationTable.setFillsViewportHeight(true);
+		this.playerInfoListeners.add(destinationTable);
+
 		this.playerInfoPanel.add(destScrollPane, "cell 0 0,grow");
 
 	}
 
 	private void addHandPanel() {
 		this.playerHandPanel = new HandPanel();
+		playerHandPanel.setPlayer(getCurrentPlayer());
 		this.playerInfoPanel.add(this.playerHandPanel, "cell 1 0,grow");
-		this.playerHandPanel.setPlayer(getCurrentPlayer());
+		this.playerInfoListeners.add(playerHandPanel);
 	}
 
 	private class DestinationDeckListener extends MouseAdapter {
@@ -231,6 +238,7 @@ public class MainPanel extends JPanel {
 		private int cardInt;
 		private final DealtCardPanel cardPanel;
 		private TrainCarDeck deck;
+		private SelectionHolder drawnCards = new SelectionHolder(2);
 
 		public DealCardListener(int cardInt, DealtCardPanel panel,
 				TrainCarDeck deck) {
@@ -240,37 +248,47 @@ public class MainPanel extends JPanel {
 
 		}
 
-		private void simulateDrawCard(int cardPos) {
+		private void simulateDrawCard(int cardPos, TrainCarCard cardAtPos) {
 			getCurrentPlayer().drawCardFromDeal(cardManager, cardPos);
+			TrainCarCard drawn = (TrainCarCard) getCurrentPlayer().getLastCardDrawn();
+
+			final DrawableTrainCarCard newCard = new DrawableTrainCarCard(cardAtPos);
+			if (!deck.isEmpty()) {
+				new DrawSimulator(newCard).start();
+			} else {
+				cardPanel.setCard(null);
+			}
+
 			playerHandPanel.setPlayer(getCurrentPlayer());
 			lblTrainCardCount.setText(Integer.toString(deck.size()));
+		}
 
+		private class DrawSimulator extends Thread {
+			private DrawableTrainCarCard newCard;
+			public DrawSimulator(DrawableTrainCarCard card) {
+				this.newCard = card;
+			}
+
+			@Override
+			public void run() {
+				cardPanel.setCard(null);
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} finally {
+					cardPanel.setCard(this.newCard);
+				}
+			}
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
 
+			// peek at deal card
 			TrainCarCard cardAtPos = cardManager.getDealCard(cardInt);
 			if (cardAtPos != null) {
-				simulateDrawCard(cardInt);
-				final DrawableTrainCarCard newCard = new DrawableTrainCarCard(cardAtPos);
-				if (!deck.isEmpty()) {
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							cardPanel.setCard(null);
-							try {
-								Thread.sleep(300);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							} finally {
-								cardPanel.setCard(newCard);
-							}
-						}
-					}).start();
-				} else {
-					cardPanel.setCard(null);
-				}
+				simulateDrawCard(cardInt, cardAtPos);
 			}
 		}
 	}
@@ -318,9 +336,12 @@ public class MainPanel extends JPanel {
 	}
 
 	public void updatePlayerDetails() {
-		destinationTable.setPlayer(getCurrentPlayer());
-		playerHandPanel.setPlayer(getCurrentPlayer());
-		currentPlayerPanel.setPlayer(getCurrentPlayer());
+		for (PlayerInfoListener listener : this.playerInfoListeners ) {
+			listener.setPlayer(getCurrentPlayer());
+		}
+//		destinationTable.setPlayer(getCurrentPlayer());
+//		playerHandPanel.setPlayer(getCurrentPlayer());
+//		currentPlayerPanel.setPlayer(getCurrentPlayer());
 	}
 
 	// TODO: Get the players rather than hard-code them

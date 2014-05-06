@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -26,6 +27,7 @@ import objects.interfaces.IDrawable;
 import objects.interfaces.IPlayer;
 import objects.interfaces.IRoute;
 import utils.GraphHelper;
+import utils.MessageHelper;
 import utils.SelectionHolder;
 
 public class MapPanel extends JPanel {
@@ -154,16 +156,22 @@ public class MapPanel extends JPanel {
 	public void tryToClaimRoute(Player current, IRoute routeToClaim,
 			ArrayList<DrawableRoute> drawablesToAdd) throws UnsupportedOperationException {
 		if (routeToClaim != null) {
-			GameState.getInstance();
+			final ResourceBundle messages = MessageHelper.getMessages();
+			final String claimError = MessageHelper.getStringFromBundle(messages, "claim.error.tilte");
+			final String alreadyOwn = MessageHelper.getStringFromBundle(messages, "claim.error.unable.message") +
+					MessageHelper.getStringFromBundle(messages, "claim.error.alreadyOwn.message");
+			final String notEnoughCards = MessageHelper.getStringFromBundle(messages, "claim.error.unable.message") +
+					MessageHelper.getStringFromBundle(messages, "claim.error.notEnoughCards.message");
+			final String alreadyTaken = MessageHelper.getStringFromBundle(messages, "claim.error.unable.message") +
+					MessageHelper.getStringFromBundle(messages, "claim.error.alreadyTaken.message");
+
 			for (IPlayer player : GameState.getPlayers()) {
-				boolean playerHasRoute = player.getRoutes().contains(
-						routeToClaim);
+				boolean playerHasRoute = player.getRoutes().contains(routeToClaim);
 				if (player == current && playerHasRoute) {
 					JOptionPane.showMessageDialog(this,
-							"Unable to claim route.\nYou already own that!",
-							"Claim Error", JOptionPane.ERROR_MESSAGE);
-					throw new UnsupportedOperationException(
-							"Unable to claim route.\nYou already own that!");
+							alreadyOwn,
+							claimError, JOptionPane.ERROR_MESSAGE);
+					throw new UnsupportedOperationException(alreadyOwn);
 				}
 				if (!playerHasRoute) {
 					try {
@@ -172,17 +180,16 @@ public class MapPanel extends JPanel {
 						drawablesToAdd.add(constructDrawableRoute(routeToClaim, current.getColor()));
 					} catch (UnsupportedOperationException e) {
 						JOptionPane.showMessageDialog(this,
-								"Unable to claim route.\nNot enough cards for this route!",
-								"Claim Error",	JOptionPane.ERROR_MESSAGE);
+								notEnoughCards,
+								claimError,	JOptionPane.ERROR_MESSAGE);
 						e.printStackTrace();
 					}
 					return;
 				} else
 					JOptionPane.showMessageDialog(this,
-							"Unable to claim route.\nThat route has already been taken!",
+							alreadyTaken,
 							"Claim Error", JOptionPane.ERROR_MESSAGE);
-				throw new UnsupportedOperationException(
-						"Unable to claim route.\nThat route has already been taken!");
+				throw new UnsupportedOperationException(alreadyTaken);
 			}
 		}
 	}
@@ -198,17 +205,25 @@ public class MapPanel extends JPanel {
 
 	public void tryToBuildStation(Player current, Destination dest) {
 		boolean placed = false;
+
+		final ResourceBundle messages = MessageHelper.getMessages();
+		final String buildError = MessageHelper.getStringFromBundle(messages, "build.error.title");
+		final String noStations = MessageHelper.getStringFromBundle(messages, "build.error.unable.message") +
+				MessageHelper.getStringFromBundle(messages, "build.error.noStations.message");
+		final String alreadyTaken = MessageHelper.getStringFromBundle(messages, "build.error.unable.message") +
+				MessageHelper.getStringFromBundle(messages, "build.error.alreadyTaken.message");
+
 		try {
 			placed = dest.buildStation(current);
 			if (!placed) {
 				JOptionPane.showMessageDialog(this,
-						"Unable to build station.\nA station already exists here!",
-						"Build Station Error", JOptionPane.ERROR_MESSAGE);
+						alreadyTaken,
+						buildError, JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (UnsupportedOperationException e) {
 			JOptionPane.showMessageDialog(this,
-					"Unable to build station.\nYou have no stations left!",
-					"Build Station Error", JOptionPane.ERROR_MESSAGE);
+					noStations,
+					buildError, JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
