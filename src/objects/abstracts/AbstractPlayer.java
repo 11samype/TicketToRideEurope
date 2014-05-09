@@ -87,8 +87,8 @@ public class AbstractPlayer implements IPlayer {
 			// this.score -= drawn.getScore();
 		} else {
 			
-			throw new UnsupportedOperationException();
-			// can't draw destinations after choosing a card
+			throw new UnsupportedOperationException("Can't draw destination card after drawing a train card");
+			
 		}
 	}
 

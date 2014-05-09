@@ -219,6 +219,9 @@ public class MapPanel extends JPanel {
 				JOptionPane.showMessageDialog(this,
 						alreadyTaken,
 						buildError, JOptionPane.ERROR_MESSAGE);
+			} else {
+				MainPanel panel = MainPanel.getInstance();
+				panel.nextTurn();
 			}
 		} catch (UnsupportedOperationException e) {
 			JOptionPane.showMessageDialog(this,
