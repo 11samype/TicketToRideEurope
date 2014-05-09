@@ -142,11 +142,14 @@ public class AbstractPlayer implements IPlayer {
 	}
 
 	public boolean placeStationOnDestination(Destination dest) {
+		boolean retVal = false;
+		
 		if (this.numStations != 0) {
 			this.numStations--;
-			return true;
+			retVal = true;
 		}
-		return false;
+		
+		return retVal;
 
 	}
 
