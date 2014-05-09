@@ -108,8 +108,8 @@ public class HandCardPanel extends JPanel {
 			g2.translate(maxImageHeight / 2, 0);
 
 		g2.setColor(Color.BLACK);
-		// g2.drawString(Integer.toString(this.numCards), (int)
-		// ((radius*Math.sqrt(2))/2), 15);
+		g2.drawString(Integer.toString(this.numCards), (int)
+		((radius*Math.sqrt(2))/2), 15);
 
 		g2.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 		g2.drawLine(0, 0, getWidth(), getHeight());

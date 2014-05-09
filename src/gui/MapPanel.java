@@ -40,7 +40,7 @@ public class MapPanel extends JPanel {
 
 	private Repainter repainterThread;
 	private BufferedImage bgImg;
-	private String mapName;
+	private final String mapName = "Europe";
 	private boolean isPaused = false;
 	public MapPanel() {
 		initDrawableDestinations();
@@ -59,17 +59,11 @@ public class MapPanel extends JPanel {
 		}
 	}
 
+	/* Never used
 	public boolean isPaused() {
 		return this.isPaused;
 	}
-
-	public void setMapName(String name) {
-		this.mapName = name;
-	}
-
-	public String getMapName() {
-		return this.mapName;
-	}
+	*/
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -129,9 +123,11 @@ public class MapPanel extends JPanel {
 		}
 	}
 
+	/* Never used
 	public boolean addDrawable(IDrawable drawable) {
 		return drawables.add(drawable);
 	}
+	*/
 
 	/**
 	 * Gets a singleton background image
@@ -149,9 +145,11 @@ public class MapPanel extends JPanel {
 		return this.bgImg;
 	}
 
+	/* Never used
 	private synchronized void drawBackground(Graphics g) {
 		g.drawImage(getBackgroundImage(), 0, 0, getWidth(), getHeight(), Color.BLACK, null);
 	}
+	*/
 
 	public void tryToClaimRoute(Player current, IRoute routeToClaim,
 			ArrayList<DrawableRoute> drawablesToAdd) throws UnsupportedOperationException {
@@ -219,6 +217,9 @@ public class MapPanel extends JPanel {
 				JOptionPane.showMessageDialog(this,
 						alreadyTaken,
 						buildError, JOptionPane.ERROR_MESSAGE);
+			} else {
+				MainPanel panel = MainPanel.getInstance();
+				panel.nextTurn();
 			}
 		} catch (UnsupportedOperationException e) {
 			JOptionPane.showMessageDialog(this,

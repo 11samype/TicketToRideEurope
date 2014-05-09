@@ -1,16 +1,13 @@
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Queue;
 
 import objects.Destination;
+import objects.DestinationCard;
 import objects.DestinationDeck;
+import objects.DestinationRoute;
 import objects.GameState;
 import objects.GameState.CardManager;
 import objects.Player;
@@ -130,8 +127,10 @@ public class PlayerTest {
 			p.drawCardFromDeck(d);
 		}
 
+	
 		TrainRoute routeToClaim = new TrainRoute(new Destination("here"), new Destination("there"), TrainColor.BLACK, 6);
 		p.claimRoute(routeToClaim);
+
 
 	}
 
@@ -200,6 +199,69 @@ public class PlayerTest {
 		assertTrue(dest.hasStation());
 		assertFalse(dest.buildStation(player));
 
+	}
+	
+	@Test(expected = UnsupportedOperationException.class)
+	public void testCantDrawDestAfterTrain() {
+		DestinationDeck d = new DestinationDeck();
+		ArrayList<DestinationCard> destList = new ArrayList<DestinationCard>();
+		
+		DestinationRoute route = new DestinationRoute(new Destination("start"), new Destination("end"));
+		DestinationCard card = new DestinationCard(route);
+		
+		destList.add(card);
+		
+		d.populate(destList);
+		
+		TrainCarDeck c = new TrainCarDeck();
+		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
+		
+		TrainCarCard trainCard = new TrainCarCard(TrainColor.BLACK);
+		cardList.add(trainCard);
+
+		c.populate(cardList);
+		
+		Player p = new Player();
+		
+		p.drawCardFromDeck(c);
+		p.drawCardFromDeck(d);
+		
+	}
+	
+	@Test
+	public void testCanDrawTrainCar() {
+		
+		Player player = new Player();
+		
+		assertTrue(player.canDrawTrainCard());
+		
+		TrainCarDeck deck = new TrainCarDeck();
+		
+		player.drawCardFromDeck(deck);
+		player.drawCardFromDeck(deck);
+		
+		assertFalse(player.canDrawTrainCard());
+		
+	}
+	
+	@Test
+	public void testgetLastCardDrawn() {
+		TrainCarDeck d = new TrainCarDeck();
+		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
+
+		Player p = new Player();
+
+		TrainCarCard card = new TrainCarCard(TrainColor.BLACK);
+		cardList.add(card);
+
+		d.populate(cardList);
+		
+		assertNull(p.getLastCardDrawn());
+		
+		p.drawCardFromDeck(d);
+		
+		assertEquals(p.getLastCardDrawn(), card);
+		
 	}
 
 

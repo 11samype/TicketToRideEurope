@@ -134,7 +134,7 @@ public class MainPanel extends JPanel {
 		this.mapPanelRoot.setLayout(overlay);
 		add(this.mapPanelRoot, "cell 0 1,grow");
 
-		this.mapPanelRoot.add(getMapPanel("Europe"));
+		this.mapPanelRoot.add(getMapPanel());
 
 	}
 
@@ -227,8 +227,14 @@ public class MainPanel extends JPanel {
 			// SWITCH PLAYER WHENEVER DEST CARD CHOSEN
 
 			if (!this.deck.isEmpty()) {
-				simulateDrawCard();
-				nextTurn();
+				try {
+					simulateDrawCard();
+					nextTurn();
+				} catch (Exception e) {
+					//Cannot "draw" card
+				}
+				
+				
 			}
 		}
 	}
@@ -289,6 +295,13 @@ public class MainPanel extends JPanel {
 			TrainCarCard cardAtPos = cardManager.getDealCard(cardInt);
 			if (cardAtPos != null) {
 				simulateDrawCard(cardInt, cardAtPos);
+				
+				//end turn if collected 2 trains (or one rainbow)
+				Player currentPlayer = (Player)GameState.getCurrentPlayer();
+				if (!currentPlayer.canDrawTrainCard()) {
+					nextTurn();
+				}
+				
 			}
 		}
 	}
@@ -312,13 +325,17 @@ public class MainPanel extends JPanel {
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
+			//end turn if collected 2 trains (or one rainbow)
+			Player currentPlayer = (Player)GameState.getCurrentPlayer();
 			simulateDrawCard();
+			if (!currentPlayer.canDrawTrainCard()) {
+				nextTurn();
+			}
 		}
 	}
 
-	private MapPanel getMapPanel(String mapName) {
+	private MapPanel getMapPanel() {
 		MapPanel mapPanel = new MapPanel();
-		mapPanel.setMapName(mapName);
 		return mapPanel;
 	}
 

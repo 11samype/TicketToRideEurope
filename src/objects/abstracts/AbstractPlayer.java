@@ -1,6 +1,7 @@
 package objects.abstracts;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import objects.Destination;
@@ -22,6 +23,9 @@ public class AbstractPlayer implements IPlayer {
 
 	public static final int MAX_NUM_STATIONS = 3;
 	public static final int MAX_NUM_TRAINS = 45;
+	
+	protected int prevTurnCardSum = 0;
+	protected int prevTurnNumCards = 0;
 
 	protected final String name;
 	protected int numTrains;
@@ -39,7 +43,52 @@ public class AbstractPlayer implements IPlayer {
 		this.numTrains = MAX_NUM_TRAINS;
 		this.numStations = MAX_NUM_STATIONS;
 	}
+	
+	public boolean canDrawTrainCard() {
+		
+		int numberOfRainbowInHand = 0;
+		int numberOfRegularTrainsInHand = 0;
+		
+		List<TrainColor> trainColors = TrainColor.getAllColors();
+		
+		for (TrainColor color : trainColors) {
+			if (color == TrainColor.RAINBOW) {
+				numberOfRainbowInHand = this.hand.numInHand(color);
+			} else {
+				numberOfRegularTrainsInHand += this.hand.numInHand(color);
+			}
+		}
+		
+		int sum = ((2 * numberOfRainbowInHand) + numberOfRegularTrainsInHand) - this.prevTurnCardSum;
+		
+		this.prevTurnNumCards = numberOfRainbowInHand + numberOfRegularTrainsInHand;
+		
+		if (sum < 2) {
+			return true;
+		} else {
+			this.prevTurnCardSum = this.prevTurnCardSum + sum;
+			
+			return false;
+		}
 
+	}
+	
+	public boolean canDrawDestination() {
+		
+		int numberOfCards = 0;
+		
+		List<TrainColor> trainColors = TrainColor.getAllColors();
+		
+		for (TrainColor color : trainColors) {
+			numberOfCards += this.hand.numInHand(color);
+		}
+		
+		numberOfCards -= this.prevTurnNumCards;
+		
+		return numberOfCards == 0;
+
+	}
+	
 	@Override
 	public void drawCardFromDeck(TrainCarDeck deck) {
 		this.hand.addCard(deck.draw());
@@ -47,15 +96,21 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public void drawCardFromDeck(DestinationDeck deck) {
-		DestinationCard drawn = deck.draw();
-		this.destinationHand.addCard(drawn);
-		// this.score -= drawn.getScore();
+		if (canDrawDestination()) {
+			DestinationCard drawn = deck.draw();
+			this.destinationHand.addCard(drawn);
+			// this.score -= drawn.getScore();
+		} else {
+			
+			throw new UnsupportedOperationException("Can't draw destination card after drawing a train card");
+			
+		}
 	}
 
 	@Override
 	public void drawCardFromDeal(CardManager cardManager, int index) {
 		TrainCarCard pickedCard = cardManager.drawDealCard(index);
-		System.out.printf("Drew index %d; %s\n", index, pickedCard.getColor());
+		System.out.printf("Player %s Drew index %d; %s\n", this.toString(), index, pickedCard.getColor());
 		this.hand.addCard(pickedCard);
 	}
 
@@ -102,11 +157,14 @@ public class AbstractPlayer implements IPlayer {
 	}
 
 	public boolean placeStationOnDestination(Destination dest) {
+		boolean retVal = false;
+		
 		if (this.numStations != 0) {
 			this.numStations--;
-			return true;
+			retVal = true;
 		}
-		return false;
+		
+		return retVal;
 
 	}
 
