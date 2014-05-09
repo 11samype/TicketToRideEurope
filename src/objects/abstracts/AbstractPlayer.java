@@ -1,6 +1,7 @@
 package objects.abstracts;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import objects.Destination;
@@ -39,7 +40,40 @@ public class AbstractPlayer implements IPlayer {
 		this.numTrains = MAX_NUM_TRAINS;
 		this.numStations = MAX_NUM_STATIONS;
 	}
-
+	
+	public boolean canDrawTrainCard() {
+		
+		int numberOfRainbowInHand = 0;
+		int numberOfRegularTrainsInHand = 0;
+		
+		List<TrainColor> trainColors = TrainColor.getAllColors();
+		
+		for (TrainColor color : trainColors) {
+			if (color == TrainColor.RAINBOW) {
+				numberOfRainbowInHand = this.hand.numInHand(color);
+			} else {
+				numberOfRegularTrainsInHand += this.hand.numInHand(color);
+			}
+		}
+		
+		int sum = (2 * numberOfRainbowInHand) + numberOfRegularTrainsInHand;
+		
+		return sum < 2;
+	}
+	
+	public boolean canDrawDestination() {
+		
+		int numberOfCards = 0;
+		
+		List<TrainColor> trainColors = TrainColor.getAllColors();
+		
+		for (TrainColor color : trainColors) {
+			numberOfCards += this.hand.numInHand(color);
+		}
+		
+		return numberOfCards == 0;
+	}
+	
 	@Override
 	public void drawCardFromDeck(TrainCarDeck deck) {
 		this.hand.addCard(deck.draw());
@@ -47,15 +81,21 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public void drawCardFromDeck(DestinationDeck deck) {
-		DestinationCard drawn = deck.draw();
-		this.destinationHand.addCard(drawn);
-		// this.score -= drawn.getScore();
+		if (canDrawDestination()) {
+			DestinationCard drawn = deck.draw();
+			this.destinationHand.addCard(drawn);
+			// this.score -= drawn.getScore();
+		} else {
+			
+			throw new UnsupportedOperationException();
+			// can't draw destinations after choosing a card
+		}
 	}
 
 	@Override
 	public void drawCardFromDeal(CardManager cardManager, int index) {
 		TrainCarCard pickedCard = cardManager.drawDealCard(index);
-		System.out.printf("Drew index %d; %s\n", index, pickedCard.getColor());
+		System.out.printf("Player %s Drew index %d; %s\n", this.toString(), index, pickedCard.getColor());
 		this.hand.addCard(pickedCard);
 	}
 

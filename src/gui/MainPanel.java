@@ -227,8 +227,14 @@ public class MainPanel extends JPanel {
 			// SWITCH PLAYER WHENEVER DEST CARD CHOSEN
 
 			if (!this.deck.isEmpty()) {
-				simulateDrawCard();
-				nextTurn();
+				try {
+					simulateDrawCard();
+					nextTurn();
+				} catch (Exception e) {
+					//Cannot draw card
+				}
+				
+				
 			}
 		}
 	}
@@ -289,6 +295,13 @@ public class MainPanel extends JPanel {
 			TrainCarCard cardAtPos = cardManager.getDealCard(cardInt);
 			if (cardAtPos != null) {
 				simulateDrawCard(cardInt, cardAtPos);
+				
+				//end turn if collected 2 trains (or one rainbow)
+				Player currentPlayer = (Player)gameState.getCurrentPlayer();
+				if (!currentPlayer.canDrawTrainCard()) {
+					nextTurn();
+				}
+				
 			}
 		}
 	}
