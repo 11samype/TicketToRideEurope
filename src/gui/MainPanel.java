@@ -134,7 +134,7 @@ public class MainPanel extends JPanel {
 		this.mapPanelRoot.setLayout(overlay);
 		add(this.mapPanelRoot, "cell 0 1,grow");
 
-		this.mapPanelRoot.add(getMapPanel("Europe"));
+		this.mapPanelRoot.add(getMapPanel());
 
 	}
 
@@ -231,7 +231,7 @@ public class MainPanel extends JPanel {
 					simulateDrawCard();
 					nextTurn();
 				} catch (Exception e) {
-					//Cannot draw card
+					//Cannot "draw" card
 				}
 				
 				
@@ -334,9 +334,8 @@ public class MainPanel extends JPanel {
 		}
 	}
 
-	private MapPanel getMapPanel(String mapName) {
+	private MapPanel getMapPanel() {
 		MapPanel mapPanel = new MapPanel();
-		mapPanel.setMapName(mapName);
 		return mapPanel;
 	}
 
