@@ -297,7 +297,7 @@ public class MainPanel extends JPanel {
 				simulateDrawCard(cardInt, cardAtPos);
 				
 				//end turn if collected 2 trains (or one rainbow)
-				Player currentPlayer = (Player)gameState.getCurrentPlayer();
+				Player currentPlayer = (Player)GameState.getCurrentPlayer();
 				if (!currentPlayer.canDrawTrainCard()) {
 					nextTurn();
 				}
@@ -325,7 +325,12 @@ public class MainPanel extends JPanel {
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
+			//end turn if collected 2 trains (or one rainbow)
+			Player currentPlayer = (Player)GameState.getCurrentPlayer();
 			simulateDrawCard();
+			if (!currentPlayer.canDrawTrainCard()) {
+				nextTurn();
+			}
 		}
 	}
 

@@ -23,6 +23,9 @@ public class AbstractPlayer implements IPlayer {
 
 	public static final int MAX_NUM_STATIONS = 3;
 	public static final int MAX_NUM_TRAINS = 45;
+	
+	protected int prevTurnCardSum = 0;
+	protected int prevTurnNumCards = 0;
 
 	protected final String name;
 	protected int numTrains;
@@ -56,9 +59,18 @@ public class AbstractPlayer implements IPlayer {
 			}
 		}
 		
-		int sum = (2 * numberOfRainbowInHand) + numberOfRegularTrainsInHand;
+		int sum = ((2 * numberOfRainbowInHand) + numberOfRegularTrainsInHand) - this.prevTurnCardSum;
 		
-		return sum < 2;
+		this.prevTurnNumCards = numberOfRainbowInHand + numberOfRegularTrainsInHand;
+		
+		if (sum < 2) {
+			return true;
+		} else {
+			this.prevTurnCardSum = this.prevTurnCardSum + sum;
+			
+			return false;
+		}
+
 	}
 	
 	public boolean canDrawDestination() {
@@ -71,7 +83,10 @@ public class AbstractPlayer implements IPlayer {
 			numberOfCards += this.hand.numInHand(color);
 		}
 		
+		numberOfCards -= this.prevTurnNumCards;
+		
 		return numberOfCards == 0;
+
 	}
 	
 	@Override
