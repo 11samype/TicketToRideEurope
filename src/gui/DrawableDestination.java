@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -11,6 +12,7 @@ import java.awt.geom.Point2D;
 import objects.Destination;
 import objects.Player;
 import objects.interfaces.IDrawable;
+import utils.MessageHelper;
 import utils.SelectionHolder.Selectable;
 
 public class DrawableDestination extends Destination implements IDrawable, Selectable {
@@ -51,11 +53,15 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 			drawCircle(g2, x, y, DOT_RADIUS, !isSelected, DOT_COLOR);
 			drawCircle(g2, x, y, DOT_RADIUS, !isSelected, OUTLINE_COLOR);
 		}
+		
+		g2.setFont(new Font("default", Font.BOLD, 12));
+		String translatedName = MessageHelper.getStringFromBundle(MessageHelper.getCityNames(), getName());
+		g2.drawString(translatedName, x + 2*DOT_RADIUS, y+ 2*DOT_RADIUS);
 		g2.dispose();
 	}
 
-	private void drawStation(Graphics2D g2, int x, int y) {
-		Stroke saveStroke = g2.getStroke();
+	private void drawStation(Graphics g, int x, int y) {
+		Graphics2D g2 = (Graphics2D) g.create();
 		g2.setStroke(new BasicStroke(2.0f));
 		drawSquare(g2, x,  y, 2*DOT_RADIUS, this.hasStation(), stationColor);
 		drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
@@ -67,7 +73,7 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 
 		drawSquare(g2, x,  y, 2*DOT_RADIUS, this.hasStation(), stationColor);
 		drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
-		g2.setStroke(saveStroke);
+		g2.dispose();
 	}
 
 	@Override
