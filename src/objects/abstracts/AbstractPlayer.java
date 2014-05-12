@@ -44,6 +44,24 @@ public class AbstractPlayer implements IPlayer {
 		this.numStations = MAX_NUM_STATIONS;
 	}
 	
+	public List<DestinationRoute> getCompletedDestinations() {
+		
+		List<DestinationRoute> destList = new ArrayList<DestinationRoute>();
+		
+		for (IRoute route : this.routes) {
+			if (route instanceof DestinationRoute) {
+				destList.add((DestinationRoute)route);
+			}
+		}
+		
+		return destList;
+	}
+	
+	public void setPrevTurnCardNum() {
+		this.prevTurnNumCards = getHand().size();
+		
+	}
+	
 	public boolean canDrawTrainCard() {
 		
 		int numberOfRainbowInHand = 0;
@@ -52,7 +70,7 @@ public class AbstractPlayer implements IPlayer {
 		List<TrainColor> trainColors = TrainColor.getAllColors();
 		
 		for (TrainColor color : trainColors) {
-			if (color == TrainColor.RAINBOW) {
+			if (color.equals(TrainColor.RAINBOW)) {
 				numberOfRainbowInHand = this.hand.numInHand(color);
 			} else {
 				numberOfRegularTrainsInHand += this.hand.numInHand(color);
@@ -60,8 +78,6 @@ public class AbstractPlayer implements IPlayer {
 		}
 		
 		int sum = ((2 * numberOfRainbowInHand) + numberOfRegularTrainsInHand) - this.prevTurnCardSum;
-		
-		this.prevTurnNumCards = numberOfRainbowInHand + numberOfRegularTrainsInHand;
 		
 		if (sum < 2) {
 			return true;
@@ -75,15 +91,11 @@ public class AbstractPlayer implements IPlayer {
 	
 	public boolean canDrawDestination() {
 		
-		int numberOfCards = 0;
-		
-		List<TrainColor> trainColors = TrainColor.getAllColors();
-		
-		for (TrainColor color : trainColors) {
-			numberOfCards += this.hand.numInHand(color);
-		}
+		int numberOfCards = getHand().size();
 		
 		numberOfCards -= this.prevTurnNumCards;
+		
+		this.prevTurnNumCards = numberOfCards + this.prevTurnNumCards;
 		
 		return numberOfCards == 0;
 

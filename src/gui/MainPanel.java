@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.OverlayLayout;
@@ -231,7 +232,7 @@ public class MainPanel extends JPanel {
 					simulateDrawCard();
 					nextTurn();
 				} catch (Exception e) {
-					//Cannot "draw" card
+					JOptionPane.showMessageDialog(MainPanel.this, "Can't draw Destination Card after Train Card");
 				}
 				
 				
