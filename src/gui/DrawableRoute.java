@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
@@ -10,11 +11,12 @@ import objects.TrainColor;
 import objects.abstracts.AbstractColorableRoute;
 import objects.interfaces.IDrawable;
 
-public class DrawableRoute extends AbstractColorableRoute implements IDrawable {
+public class DrawableRoute extends AbstractColorableRoute implements IDrawable, Highlightable {
 
 	// Width and height of rectangular region around mouse
 	// pointer to use for hit detection on lines
-	private static final int HIT_BOX_SIZE = 4;
+	private static final int HIT_BOX_SIZE = 8;
+	private boolean highlighted;
 
 	public DrawableRoute(DrawableDestination start, DrawableDestination end,
 			int length) {
@@ -49,9 +51,12 @@ public class DrawableRoute extends AbstractColorableRoute implements IDrawable {
 		totalLineDist -= gapSize * (length - 1);
 		double singleTrainLineLength = totalLineDist / length;
 
-
-		if (this.color != null)
+		if (this.highlighted) {
+			g2.setColor(Color.CYAN);
+		}
+		else if (this.color != null) {
 			g2.setColor(this.color.getAwtColor());
+		}
 
 
 		BasicStroke dashed = new BasicStroke(
@@ -82,5 +87,17 @@ public class DrawableRoute extends AbstractColorableRoute implements IDrawable {
 		int boxY = (int) (p.getY() - HIT_BOX_SIZE / 2);
 		return getLine().intersects(boxX, boxY, HIT_BOX_SIZE, HIT_BOX_SIZE);
 	}
+	
+	@Override
+	public void highlight() {
+		this.highlighted = true;
+		
+	}
+	
+	public void unhighlight() {
+		this.highlighted = false;
+		
+	}
+
 
 }
