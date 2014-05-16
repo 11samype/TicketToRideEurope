@@ -32,7 +32,6 @@ public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 			}
 		}
 
-
 	}
 
 	@Override
@@ -41,13 +40,17 @@ public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 	}
 
 	@Override
-	public K getCardAtPosition(int index) {
-		return this.deal.get(index);
+	public K getCardAtPosition(int index) throws NullPointerException {
+		K card = this.deal.get(index);
+		if (card == null) {
+			throw new NullPointerException();
+		}
+		return card;
 	}
 
 	@Override
 	public K removeCardAtPosition(int index) {
-		K getCard = this.deal.get(index);
+		K getCard = getCardAtPosition(index);
 		this.deal.set(index, null);
 		this.size--;
 		return getCard;
@@ -58,8 +61,7 @@ public abstract class AbstractDeal<K extends ICard> implements IDeal<K> {
 		int index = this.deal.indexOf(card);
 		if (index != -1) {
 			return removeCardAtPosition(index);
-		}
-		else
+		} else
 			return null;
 	}
 

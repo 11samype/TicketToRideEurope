@@ -1,4 +1,3 @@
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -9,6 +8,9 @@ import objects.Destination;
 import objects.Player;
 
 import org.junit.Test;
+
+import utils.exceptions.DestinationHasStationException;
+import utils.exceptions.OutOfStationsException;
 
 public class DestinationTest {
 
@@ -54,18 +56,30 @@ public class DestinationTest {
 		Destination d = new Destination("place");
 		Player builder = new Player("Bob");
 		assertFalse(d.hasStation());
-		d.buildStation(builder);
-		assertTrue(d.hasStation());
+		try {
+			d.buildStation(builder);
+			assertTrue(d.hasStation());
+		} catch (OutOfStationsException e) {
+			// nothing
+		} catch (DestinationHasStationException e) {
+			// nothing
+		}
 	}
 
-	@Test
-	public void testBuildStationOnDestinationWithStation() {
+	@Test(expected=DestinationHasStationException.class)
+	public void testBuildStationOnDestinationWithStation() throws DestinationHasStationException {
 		Destination d = new Destination("place");
 		Player builder = new Player("Bob");
-		boolean tryBuild = d.buildStation(builder);
-		assertTrue(tryBuild);
-		tryBuild = d.buildStation(builder);
-		assertFalse(tryBuild);
+		
+		try {
+			boolean tryBuild = d.buildStation(builder);
+			assertTrue(tryBuild);
+			tryBuild = d.buildStation(builder);
+			assertFalse(tryBuild); // throws
+		} catch (OutOfStationsException e) {
+			// nothing
+		} catch (DestinationHasStationException e) {
+			throw e;
+		}
 	}
-
 }

@@ -1,75 +1,67 @@
 import static org.junit.Assert.*;
 
 import java.util.Locale;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.junit.Test;
 
 import utils.MessageHelper;
 
-
 public class MessageHelperTest {
 
 	@Test
 	public void testGetGameLocale() {
-		fail("Not yet implemented");
+		assertEquals(new Locale("game", "ORIG"), MessageHelper.getGameLocale());
 	}
 
 	@Test
 	public void testGetDefaultCityNames() {
 		ResourceBundle bundle = MessageHelper.getDefaultCityNames();
-		
-		assertEquals("Cadiz", MessageHelper.getStringFromBundle(bundle, "Cadiz"));
-		
+
+		MessageHelper.setLocale(Locale.US);
+		assertEquals("Roma", MessageHelper.getDefaultCityNameFor("Rome"));
+
 		assertEquals(47, bundle.keySet().size());
 	}
 
 	@Test
 	public void testGetCityNames() {
 		ResourceBundle bundle = MessageHelper.getCityNames();
-		
+
 		assertEquals(47, bundle.keySet().size());
 	}
 
 	@Test
-	public void testGetMessages() {
-		fail("Not yet implemented");
-		
-	}
-
-	@Test
 	public void testSetLocale() {
-		
+
 		MessageHelper.setLocale(Locale.US);
-		
+
 		assertEquals(Locale.US, MessageHelper.getCurrentLocale());
-		
+
 		MessageHelper.setLocale(Locale.FRENCH);
-		
+
 		assertEquals(Locale.FRENCH, MessageHelper.getCurrentLocale());
 	}
 
 	@Test
-	public void testGetCurrentLocale() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	public void testUseGameLocale() {
+		Locale game = new Locale("game", "ORIG");
+		MessageHelper.setLocale(Locale.FRENCH);
+		assertNotEquals(game, MessageHelper.getCurrentLocale());
+		
 		MessageHelper.useGameLocale();
-		assertEquals(new Locale("game", "ORIG"), MessageHelper.getCurrentLocale());
+		assertEquals(game, MessageHelper.getCurrentLocale());
+		
+		MessageHelper.setLocale(Locale.US);
+		assertNotEquals(game, MessageHelper.getCurrentLocale());
 	}
 
 	@Test
-	public void testGetDefaultCityNameFor() {
-		fail("Not yet implemented");
-	}
-
-	@Test(expected = MissingResourceException.class)
 	public void testGetStringFromBundleResourceBundleString() {
 		ResourceBundle bundle = MessageHelper.getDefaultCityNames();
-		MessageHelper.getStringFromBundle(bundle, "IDONTEXIST");
+		String key = "IDONTEXIST";
+		assertEquals('!' + key + '!',
+				MessageHelper.getStringFromBundle(bundle, key));
 	}
 
 	@Test

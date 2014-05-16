@@ -22,16 +22,18 @@ import utils.TrainRouteReader;
 public class Main {
 
 	public static void main(String[] args) {
-
 		prepareGameData(true);
 		MessageHelper.setLocale(Locale.US);
-
 		final String gameTitle = MessageHelper.getStringFromBundle(MessageHelper.getMessages(), "game.title");
+		runGame(gameTitle);
+	}
+	
+	public static void runGame(final String title) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 
-				final JFrame window = new JFrame(gameTitle);
+				final JFrame window = new JFrame(title);
 				window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 				MainPanel mainPanel = MainPanel.getInstance();

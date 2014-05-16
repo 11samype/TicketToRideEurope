@@ -1,11 +1,6 @@
 package gui;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import objects.TrainCarCard;
 import objects.TrainColor;
 
@@ -17,7 +12,7 @@ public class DrawableTrainCarCard extends TrainCarCard {
 	}
 
 	public DrawableTrainCarCard(TrainCarCard card) {
-		super(card.getColor());
+		this(card == null ? null : card.getColor());
 	}
 
 	public BufferedImage getImage() {

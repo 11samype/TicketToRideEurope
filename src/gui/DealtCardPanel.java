@@ -2,13 +2,10 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
+import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
-import utils.SelectionHolder.Selectable;
-
-public class DealtCardPanel extends JPanel implements Selectable {
+public class DealtCardPanel extends JPanel implements IRefreshable {
 
 	private DrawableTrainCarCard card;
 
@@ -16,36 +13,34 @@ public class DealtCardPanel extends JPanel implements Selectable {
 		this.setCard(card);
 	}
 
+	public DrawableTrainCarCard getCard() {
+		return this.card;
+	}
+
 	public void setCard(DrawableTrainCarCard card) {
 		this.card = card;
-		this.repaint();
-		this.revalidate();
+		this.refresh();
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g.create();
 		if (this.card == null) {
-			g.setColor(Color.black);
-			g.drawRect(0, 0, getWidth() - 2, getHeight() - 2);
-			g.setColor(Color.LIGHT_GRAY);
-			g.fillRect(0, 0, getWidth() - 2, getHeight() - 2);
+			g2.setColor(Color.black);
+			g2.drawRect(0, 0, getWidth() - 2, getHeight() - 2);
+			g2.setColor(Color.LIGHT_GRAY);
+			g2.fillRect(0, 0, getWidth() - 2, getHeight() - 2);
 		} else {
-			BufferedImage cardImage = card.getImage();
-			g.drawImage(cardImage, 0, 0, getWidth(), getHeight(), Color.BLACK,
+			g2.drawImage(card.getImage(), 0, 0, getWidth(), getHeight(), Color.BLACK,
 					null);
 		}
+		g2.dispose();
 	}
 
 	@Override
-	public void select() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void deselect() {
-		// TODO Auto-generated method stub
-
+	public void refresh() {
+		this.repaint();
+		this.revalidate();
 	}
 }

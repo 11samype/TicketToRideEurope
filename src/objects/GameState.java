@@ -1,5 +1,7 @@
 package objects;
 
+import gui.IRefreshable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -13,8 +15,11 @@ import objects.interfaces.IPlayer;
 
 public class GameState {
 	private static GameState sInstance;
+	public static int MAX_PLAYERS = 5;
 	private CardManager cardManager;
 	private TurnManager turnManager;
+	private IRefreshable gameGUI;
+	
 	public static final Queue<TrainColor> availableColors = new LinkedList<TrainColor>(
 			Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
 					TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW));
@@ -39,6 +44,11 @@ public class GameState {
 		sInstance = new GameState(players);
 		return getInstance();
 	}
+	
+	public static GameState withGUI(IRefreshable gui) {
+		getInstance().gameGUI = gui;
+		return sInstance;
+	}
 
 	public static CardManager getCardManager() {
 		return GameState.getInstance().cardManager;
@@ -50,6 +60,8 @@ public class GameState {
 
 	public static void takeTurn() {
 		GameState.getTurnManager().rotatePlayers();
+		if (getInstance().gameGUI != null)
+			getInstance().gameGUI.refresh();
 	}
 
 	public static List<IPlayer> getPlayers() {
@@ -76,7 +88,7 @@ public class GameState {
 		}
 
 		public void fillDealFromDeck() {
-			while (!this.deal.isFull() && !trainCarDeck.isEmpty()) {
+			while (!(this.deal.isFull() || trainCarDeck.isEmpty())) {
 				this.deal.addCard(trainCarDeck.draw());
 			}
 		}

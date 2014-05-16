@@ -4,9 +4,9 @@ import java.awt.Component;
 
 public class Repainter extends Thread {
 	private int fps;
-	private final Component comp;
+	private final IRefreshable comp;
 
-	public Repainter(Component comp, int fps) {
+	public Repainter(IRefreshable comp, int fps) {
 		this.comp = comp;
 		this.fps = fps;
 	}
@@ -16,7 +16,7 @@ public class Repainter extends Thread {
 		try {
 			while (true) {
 					Thread.sleep(1000 / this.fps);
-					this.comp.repaint();
+					this.comp.refresh();
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

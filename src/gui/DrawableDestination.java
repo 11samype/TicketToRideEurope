@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Stroke;
 import java.awt.geom.Point2D;
 
 import objects.Destination;
@@ -14,6 +13,8 @@ import objects.Player;
 import objects.interfaces.IDrawable;
 import utils.MessageHelper;
 import utils.SelectionHolder.Selectable;
+import utils.exceptions.DestinationHasStationException;
+import utils.exceptions.OutOfStationsException;
 
 public class DrawableDestination extends Destination implements IDrawable, Selectable {
 
@@ -77,10 +78,17 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 	}
 
 	@Override
-	public boolean buildStation(Player player) {
-		boolean built = super.buildStation(player);
-		if (built)
-			this.stationColor = player.getColor().getAwtColor();
+	public boolean buildStation(Player player) throws OutOfStationsException, DestinationHasStationException {
+		boolean built = false;
+		
+		try {
+			built = super.buildStation(player);
+		} catch (DestinationHasStationException e) {
+			throw e;
+		} finally {
+			if (built)
+				this.stationColor = player.getColor().getAwtColor();
+		}
 		return built;
 	}
 

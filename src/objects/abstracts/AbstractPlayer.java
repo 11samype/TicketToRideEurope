@@ -1,7 +1,6 @@
 package objects.abstracts;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import objects.Destination;
@@ -9,6 +8,7 @@ import objects.DestinationCard;
 import objects.DestinationDeck;
 import objects.DestinationHand;
 import objects.DestinationRoute;
+import objects.GameState;
 import objects.GameState.CardManager;
 import objects.TrainCarCard;
 import objects.TrainCarDeck;
@@ -18,12 +18,15 @@ import objects.interfaces.ICard;
 import objects.interfaces.IPlayer;
 import objects.interfaces.IRoute;
 import utils.GraphHelper;
+import utils.exceptions.DestinationAfterTrainException;
+import utils.exceptions.NotEnoughCardsForRouteException;
+import utils.exceptions.OutOfStationsException;
 
 public class AbstractPlayer implements IPlayer {
 
 	public static final int MAX_NUM_STATIONS = 3;
 	public static final int MAX_NUM_TRAINS = 45;
-	
+
 	protected int prevTurnCardSum = 0;
 	protected int prevTurnNumCards = 0;
 
@@ -43,32 +46,31 @@ public class AbstractPlayer implements IPlayer {
 		this.numTrains = MAX_NUM_TRAINS;
 		this.numStations = MAX_NUM_STATIONS;
 	}
-	
+
 	public List<DestinationRoute> getCompletedDestinations() {
-		
+
 		List<DestinationRoute> destList = new ArrayList<DestinationRoute>();
-		
+
 		for (IRoute route : this.routes) {
 			if (route instanceof DestinationRoute) {
-				destList.add((DestinationRoute)route);
+				destList.add((DestinationRoute) route);
 			}
 		}
-		
+
 		return destList;
 	}
-	
+
 	public void setPrevTurnCardNum() {
 		this.prevTurnNumCards = getHand().size();
-		
 	}
-	
+
 	public boolean canDrawTrainCard() {
-		
+
 		int numberOfRainbowInHand = 0;
 		int numberOfRegularTrainsInHand = 0;
-		
+
 		List<TrainColor> trainColors = TrainColor.getAllColors();
-		
+
 		for (TrainColor color : trainColors) {
 			if (color.equals(TrainColor.RAINBOW)) {
 				numberOfRainbowInHand = this.hand.numInHand(color);
@@ -76,57 +78,67 @@ public class AbstractPlayer implements IPlayer {
 				numberOfRegularTrainsInHand += this.hand.numInHand(color);
 			}
 		}
-		
-		int sum = ((2 * numberOfRainbowInHand) + numberOfRegularTrainsInHand) - this.prevTurnCardSum;
-		
+
+		int sum = ((2 * numberOfRainbowInHand) + numberOfRegularTrainsInHand)
+				- this.prevTurnCardSum;
+
 		if (sum < 2) {
 			return true;
 		} else {
 			this.prevTurnCardSum = this.prevTurnCardSum + sum;
-			
+
 			return false;
 		}
 
 	}
-	
+
 	public boolean canDrawDestination() {
-		
-		int numberOfCards = getHand().size();
-		
-		numberOfCards -= this.prevTurnNumCards;
-		
+
+		int numberOfCards = getHand().size() - this.prevTurnNumCards;
+
 		this.prevTurnNumCards = numberOfCards + this.prevTurnNumCards;
-		
+
 		return numberOfCards == 0;
 
 	}
-	
+
 	@Override
 	public void drawCardFromDeck(TrainCarDeck deck) {
 		this.hand.addCard(deck.draw());
+
+		// end turn if collected 2 trains (or one rainbow)
+		if (!this.canDrawTrainCard()) {
+			GameState.takeTurn();
+		}
 	}
 
 	@Override
-	public void drawCardFromDeck(DestinationDeck deck) {
+	public void drawCardFromDeck(DestinationDeck deck) throws DestinationAfterTrainException {
 		if (canDrawDestination()) {
 			DestinationCard drawn = deck.draw();
 			this.destinationHand.addCard(drawn);
+			
+			// end turn when drawing destination
+			GameState.takeTurn();
 			// this.score -= drawn.getScore();
 		} else {
-			
-			throw new UnsupportedOperationException("Can't draw destination card after drawing a train card");
-			
+			throw new DestinationAfterTrainException();
+
 		}
 	}
 
 	@Override
 	public void drawCardFromDeal(CardManager cardManager, int index) {
 		TrainCarCard pickedCard = cardManager.drawDealCard(index);
-		System.out.printf("Player %s Drew index %d; %s\n", this.toString(), index, pickedCard.getColor());
 		this.hand.addCard(pickedCard);
+
+		// end turn if collected 2 trains (or one rainbow)
+		if (!this.canDrawTrainCard()) {
+			GameState.takeTurn();
+		}
 	}
 
-	public void claimRoute(IRoute route) throws UnsupportedOperationException {
+	public void claimRoute(IRoute route) throws NotEnoughCardsForRouteException {
 		TrainColor routeColor = (route instanceof AbstractColorableRoute) ? ((AbstractColorableRoute) route)
 				.getColor() : TrainColor.RAINBOW;
 
@@ -136,13 +148,14 @@ public class AbstractPlayer implements IPlayer {
 		if (numberOfColorInHand >= routeLength) {
 			discardCardsOfColor(routeLength, routeColor);
 			addRoute(route);
-			placeTrains(routeLength);
+			this.numTrains -= routeLength;
 			// addScoreForRoute(route);
 		} else {
-			throw new UnsupportedOperationException(
+			System.err.println(
 					"Not enough cards for route!\nYou have "
 							+ numberOfColorInHand + " " + routeColor
 							+ " but the route is worth " + routeLength);
+			throw new NotEnoughCardsForRouteException();
 		}
 	}
 
@@ -158,25 +171,19 @@ public class AbstractPlayer implements IPlayer {
 		}
 	}
 
-	private void placeTrains(int numTrains) {
-		this.numTrains -= numTrains;
-	}
-
 	public void discardCardsOfColor(int num, TrainColor color) {
 		for (int i = 0; i < num; i++) {
 			this.hand.removeCard(color);
 		}
 	}
 
-	public boolean placeStationOnDestination(Destination dest) {
-		boolean retVal = false;
-		
-		if (this.numStations != 0) {
-			this.numStations--;
-			retVal = true;
+	public boolean placeStationOnDestination(Destination dest) throws OutOfStationsException {
+		if (this.numStations <= 0) {
+			throw new OutOfStationsException();
 		}
-		
-		return retVal;
+
+		this.numStations--;
+		return true;
 
 	}
 
@@ -211,7 +218,7 @@ public class AbstractPlayer implements IPlayer {
 		int sizeOfHand = getHand().size();
 		if (sizeOfHand == 0)
 			return null;
-		return getHand().getCard(getHand().size() - 1);
+		return getHand().getCard(sizeOfHand - 1);
 	}
 
 	@Override

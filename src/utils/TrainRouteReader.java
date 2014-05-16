@@ -20,7 +20,7 @@ public class TrainRouteReader {
 
 	private HashMap<Destination, List<IRoute>> graph = new HashMap<Destination, List<IRoute>>();
 	private File f;
-	private String fileFmt = "TrainRoutes-%s.txt";
+	private String fileName = "trainroutes.txt";
 
 	private static TrainRouteReader sInstance;
 
@@ -35,24 +35,10 @@ public class TrainRouteReader {
 		return sInstance;
 	}
 
-	public static TrainRouteReader getLanguageInstance(String lang) {
-		try {
-			sInstance = new TrainRouteReader(lang);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return sInstance;
-	}
-
 	private TrainRouteReader() throws FileNotFoundException {
-		this("orig");
-	}
-
-	private TrainRouteReader(String lang) throws FileNotFoundException {
-		this.f = new File(String.format(fileFmt, lang));
+		this.f = new File(fileName);
 		if (!this.f.exists()) {
-			throw new FileNotFoundException("Could not find the " + lang
-					+ "language file for the TrainRoutes.");
+			throw new FileNotFoundException("Could not find trainroutes file");
 		}
 	}
 

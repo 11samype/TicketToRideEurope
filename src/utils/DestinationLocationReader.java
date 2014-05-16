@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public class DestinationLocationReader {
 	private HashMap<String, DrawableDestination> destMap = new HashMap<String, DrawableDestination>();
 	private File f;
-	private String fileName = "Cities.txt";
+	private String fileName = "city-locations.txt";
 	
 	private static DestinationLocationReader sInstance;
 

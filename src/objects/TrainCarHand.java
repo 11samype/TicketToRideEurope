@@ -1,5 +1,7 @@
 package objects;
 
+import java.util.Iterator;
+
 import objects.abstracts.AbstractHand;
 
 public class TrainCarHand extends AbstractHand<TrainCarCard> {
@@ -15,8 +17,8 @@ public class TrainCarHand extends AbstractHand<TrainCarCard> {
 	public int numInHand(TrainColor color) {
 		int count = 0;
 
-		for (int i = 0; i < this.hand.size(); i++) {
-			if (this.hand.get(i).getColor().equals(color)) {
+		for (TrainCarCard card : this.hand) {
+			if (card != null && card.getColor().equals(color)) {
 				count++;
 			}
 		}
@@ -25,11 +27,13 @@ public class TrainCarHand extends AbstractHand<TrainCarCard> {
 	}
 
 	public void removeCard(TrainColor color) {
-		for (int i = 0; i < this.hand.size(); i++) {
-			if (this.hand.get(i).getColor().equals(color)) {
-				GameState.getCardManager().discard(this.hand.get(i));
-				this.hand.remove(i);
-				return;
+		for (Iterator<TrainCarCard> iter = this.hand.iterator(); iter.hasNext(); )
+		 {
+			TrainCarCard card = iter.next();
+			if (card.getColor().equals(color)) {
+				GameState.getCardManager().discard(card);
+				iter.remove();
+				break;
 			}
 		}
 	}

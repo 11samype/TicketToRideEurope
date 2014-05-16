@@ -32,8 +32,7 @@ public enum TrainColor {
 	}
 
 	public static List<TrainColor> getAllColors() {
-		return Arrays.asList(BLUE, RED, GREEN, YELLOW, PINK, WHITE, ORANGE,
-				BLACK, RAINBOW);
+		return Arrays.asList(values());
 	}
 
 	public static TrainColor fromString(String colorString) {

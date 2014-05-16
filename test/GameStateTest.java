@@ -1,7 +1,5 @@
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import gui.IRefreshable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +16,31 @@ import utils.DestinationLocationReader;
 import utils.TrainRouteReader;
 
 public class GameStateTest {
+	
+	private class RefreshableObj implements IRefreshable {
 
+		public boolean refreshed = false;
+		
+		public void reset() {
+			this.refreshed = false;
+
+		}
+
+		@Override
+		public void refresh() {
+			this.refreshed = true;
+			
+		}
+	}
+	
+	private RefreshableObj fakeRefresh = new RefreshableObj();
+	
 	@Test
 	public void testInitGame() {
-		GameState game = GameState.getInstance();
+		
+		GameState game = GameState.getInstance().withPlayers(new ArrayList<IPlayer>());
 		assertNotNull(game);
+		assertTrue(GameState.getPlayers().isEmpty());
 
 	}
 
@@ -57,16 +75,22 @@ public class GameStateTest {
 			players.add(new Player());
 		}
 
-		GameState.withPlayers(players);
+		GameState.getInstance().withPlayers(players).withGUI(fakeRefresh);
 
+		assertFalse(fakeRefresh.refreshed);
 		assertSame(GameState.getCurrentPlayer(), players.get(0));
-
+		
 		for (int i = 1; i < players.size(); i++) {
 			GameState.takeTurn();
+			assertTrue(fakeRefresh.refreshed);
+			fakeRefresh.reset();
 			assertSame(GameState.getCurrentPlayer(), players.get(i));
 		}
 
+		assertFalse(fakeRefresh.refreshed);
 		GameState.takeTurn();
+		assertTrue(fakeRefresh.refreshed);
+		
 		assertSame(GameState.getCurrentPlayer(), players.get(0));
 	}
 

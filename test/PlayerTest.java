@@ -1,4 +1,3 @@
-
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -20,6 +19,11 @@ import objects.abstracts.AbstractPlayer;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import utils.exceptions.DestinationAfterTrainException;
+import utils.exceptions.DestinationHasStationException;
+import utils.exceptions.NotEnoughCardsForRouteException;
+import utils.exceptions.OutOfStationsException;
 
 public class PlayerTest {
 
@@ -82,7 +86,6 @@ public class PlayerTest {
 		assertEquals(2, p.getHand().size());
 	}
 
-
 	@Test
 	public void testClaimRoute() {
 		TrainCarDeck d = new TrainCarDeck();
@@ -102,16 +105,21 @@ public class PlayerTest {
 
 		assertEquals(p.getHand().size(), 9);
 
-		TrainRoute routeToClaim = new TrainRoute(new Destination("here"), new Destination("there"), TrainColor.BLACK, 6);
-		p.claimRoute(routeToClaim);
+		TrainRoute routeToClaim = new TrainRoute(new Destination("here"),
+				new Destination("there"), TrainColor.BLACK, 6);
+		try {
+			p.claimRoute(routeToClaim);
+		} catch (NotEnoughCardsForRouteException e) {
+			// nothing
+		}
 
 		assertEquals(p.getHand().size(), 3);
 		assertSame(p.getRoutes().get(0), routeToClaim);
 
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
-	public void testClaimRouteFail() {
+	@Test(expected = NotEnoughCardsForRouteException.class)
+	public void testClaimRouteFail() throws NotEnoughCardsForRouteException {
 		TrainCarDeck d = new TrainCarDeck();
 		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
 
@@ -127,10 +135,13 @@ public class PlayerTest {
 			p.drawCardFromDeck(d);
 		}
 
-	
-		TrainRoute routeToClaim = new TrainRoute(new Destination("here"), new Destination("there"), TrainColor.BLACK, 6);
-		p.claimRoute(routeToClaim);
-
+		TrainRoute routeToClaim = new TrainRoute(new Destination("here"),
+				new Destination("there"), TrainColor.BLACK, 6);
+		try {
+			p.claimRoute(routeToClaim); // throws
+		} catch (NotEnoughCardsForRouteException e) {
+			throw e;
+		}
 
 	}
 
@@ -171,15 +182,19 @@ public class PlayerTest {
 
 		Player player = new Player();
 
-		player.drawCardFromDeck(destDeck);
+		try {
+			player.drawCardFromDeck(destDeck);
+			assertEquals(initialSize - 1, destDeck.size());
 
-		assertEquals(initialSize - 1, destDeck.size());
+			assertEquals(1, player.getDestinationHand().size());
 
-		assertEquals(1, player.getDestinationHand().size());
+			player.drawCardFromDeck(destDeck);
+			player.drawCardFromDeck(destDeck);
+			player.drawCardFromDeck(destDeck);
 
-		player.drawCardFromDeck(destDeck);
-		player.drawCardFromDeck(destDeck);
-		player.drawCardFromDeck(destDeck);
+		} catch (DestinationAfterTrainException e) {
+			// shouldn't be caught in this test
+		}
 
 		assertEquals(initialSize - 4, destDeck.size());
 
@@ -187,63 +202,73 @@ public class PlayerTest {
 
 	}
 
-	@Test
-	public void testPlaceStationOnDestination() {
+	@Test(expected=DestinationHasStationException.class)
+	public void testPlaceStationOnDestination() throws DestinationHasStationException {
 
 		Destination dest = new Destination("here");
 
 		Player player = new Player();
 
-		dest.buildStation(player);
-
-		assertTrue(dest.hasStation());
-		assertFalse(dest.buildStation(player));
-
+		try {
+			assertTrue(dest.buildStation(player));
+			assertTrue(dest.hasStation());
+			assertFalse(dest.buildStation(player)); // throws
+		} catch (OutOfStationsException e) {
+			// nothing
+		} catch (DestinationHasStationException e) {
+			throw e;
+		}
 	}
-	
-	@Test(expected = UnsupportedOperationException.class)
-	public void testCantDrawDestAfterTrain() {
+
+	@Test(expected = DestinationAfterTrainException.class)
+	public void testCantDrawDestAfterTrain() throws DestinationAfterTrainException {
 		DestinationDeck d = new DestinationDeck();
 		ArrayList<DestinationCard> destList = new ArrayList<DestinationCard>();
-		
-		DestinationRoute route = new DestinationRoute(new Destination("start"), new Destination("end"));
+
+		DestinationRoute route = new DestinationRoute(new Destination("start"),
+				new Destination("end"));
 		DestinationCard card = new DestinationCard(route);
-		
+
 		destList.add(card);
-		
+
 		d.populate(destList);
-		
+
 		TrainCarDeck c = new TrainCarDeck();
 		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
-		
+
 		TrainCarCard trainCard = new TrainCarCard(TrainColor.BLACK);
 		cardList.add(trainCard);
 
 		c.populate(cardList);
-		
+
 		Player p = new Player();
-		
+
 		p.drawCardFromDeck(c);
-		p.drawCardFromDeck(d);
 		
+		try {
+			p.drawCardFromDeck(d); // throws
+		} catch (DestinationAfterTrainException e) {
+			throw e;
+		}
+
 	}
-	
+
 	@Test
 	public void testCanDrawTrainCar() {
-		
+
 		Player player = new Player();
-		
+
 		assertTrue(player.canDrawTrainCard());
-		
+
 		TrainCarDeck deck = new TrainCarDeck();
-		
+
 		player.drawCardFromDeck(deck);
 		player.drawCardFromDeck(deck);
-		
+
 		assertFalse(player.canDrawTrainCard());
-		
+
 	}
-	
+
 	@Test
 	public void testgetLastCardDrawn() {
 		TrainCarDeck d = new TrainCarDeck();
@@ -255,14 +280,13 @@ public class PlayerTest {
 		cardList.add(card);
 
 		d.populate(cardList);
-		
-		assertNull(p.getLastCardDrawn());
-		
-		p.drawCardFromDeck(d);
-		
-		assertEquals(p.getLastCardDrawn(), card);
-		
-	}
 
+		assertNull(p.getLastCardDrawn());
+
+		p.drawCardFromDeck(d);
+
+		assertEquals(p.getLastCardDrawn(), card);
+
+	}
 
 }

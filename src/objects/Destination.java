@@ -1,5 +1,8 @@
 package objects;
 
+import utils.exceptions.DestinationHasStationException;
+import utils.exceptions.OutOfStationsException;
+
 public class Destination {
 	protected String name;
 	protected Player ownedBy;
@@ -21,16 +24,17 @@ public class Destination {
 		return ownedBy != null;
 	}
 
-	public boolean buildStation(Player player) {
-		if (!this.hasStation()) {
-			boolean built = player.placeStationOnDestination(this);
-			if (built) {
-				ownedBy = player;
-				return true;
-			}
-			else
-				throw new UnsupportedOperationException("Player has no stations left!");
+	public boolean buildStation(Player player) throws DestinationHasStationException, OutOfStationsException {
+		if (this.hasStation())
+			throw new DestinationHasStationException();
+
+		//			boolean built = player.placeStationOnDestination(this);
+		if (player.placeStationOnDestination(this)) {
+			ownedBy = player;
+			return true;
 		}
+//		else
+//			throw new OutOfStationsException();
 		return false;
 	}
 

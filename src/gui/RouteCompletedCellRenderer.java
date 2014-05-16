@@ -11,10 +11,9 @@ import objects.interfaces.IPlayer;
 import utils.GraphHelper;
 
 public class RouteCompletedCellRenderer extends DefaultTableCellRenderer {
-	IPlayer player;
+	private IPlayer player;
 
 	public RouteCompletedCellRenderer(IPlayer player) {
-
 		this.player = player;
 	}
 
@@ -29,11 +28,8 @@ public class RouteCompletedCellRenderer extends DefaultTableCellRenderer {
 
 		if (GraphHelper.hasPlayerCompletedDestinationRoute(player, routeInTable)) {
 			cell.setBackground(Color.green);
-			System.out.println("Coloring row: " + row);
-			System.out.println("[Route] " + routeInTable);
 		} else {
 			cell.setBackground(Color.white);
-			System.out.println("Clearing row: " + row);
 		}
 
 		return cell;

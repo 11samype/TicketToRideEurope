@@ -57,7 +57,6 @@ public class MessageHelper {
 		try {
 			return bundle.getString(key);
 		} catch (MissingResourceException e) {
-			e.printStackTrace();
 			return '!' + key + '!';
 		}
 	}
@@ -69,7 +68,6 @@ public class MessageHelper {
 					CURRENT_LOCALE);
 			return formatter.format(params);
 		} catch (MissingResourceException e) {
-			e.printStackTrace();
 			return '!' + key + '!';
 		}
 	}
