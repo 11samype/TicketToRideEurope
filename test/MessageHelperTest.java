@@ -76,5 +76,18 @@ public class MessageHelperTest {
 		assertEquals("Points: 7",
 				MessageHelper.getStringFromBundle(bundle, key, messageArguments));
 	}
+	
+	@Test
+	public void testGetStringFromBundleResourceBundleStringObjectArrayMiss() {
+		Object[] messageArguments = {
+			    new Integer(7)
+		};
+		
+		ResourceBundle bundle = MessageHelper.getMessages();
+		String key = "IDONTEXIST";
+		assertEquals('!' + key + '!',
+				MessageHelper.getStringFromBundle(bundle, key, messageArguments));
+	}
+
 
 }
