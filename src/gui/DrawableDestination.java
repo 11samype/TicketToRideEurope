@@ -68,12 +68,12 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 		drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
 
 		// spin here
-		g2.translate(x + DOT_RADIUS, y + DOT_RADIUS);
-		g2.rotate(Math.toRadians(45));
-		g2.translate(-1*(x+DOT_RADIUS), -1*(y+DOT_RADIUS));
-
-		drawSquare(g2, x,  y, 2*DOT_RADIUS, this.hasStation(), stationColor);
-		drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
+//		g2.translate(x + DOT_RADIUS, y + DOT_RADIUS);
+//		g2.rotate(Math.toRadians(45));
+//		g2.translate(-1*(x+DOT_RADIUS), -1*(y+DOT_RADIUS));
+//
+//		drawSquare(g2, x,  y, 2*DOT_RADIUS, this.hasStation(), stationColor);
+//		drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
 		g2.dispose();
 	}
 

@@ -59,6 +59,12 @@ public class AbstractPlayer implements IPlayer {
 
 		return destList;
 	}
+	
+	public void setRoutes(List<IRoute> routes) {
+		// for testing
+		
+		this.routes = routes;
+	}
 
 	public void setPrevTurnCardNum() {
 		this.prevTurnNumCards = getHand().size();
@@ -159,6 +165,15 @@ public class AbstractPlayer implements IPlayer {
 		}
 	}
 
+	public void populateHand(List<TrainCarCard> cardList) {
+		//helper for tests
+		TrainCarHand newHand = new TrainCarHand();
+		for (int i = 0; i < cardList.size(); i++) {
+			newHand.addCard(cardList.get(i));
+		}
+		this.hand = newHand;
+	}
+	
 	private void addRoute(IRoute route) {
 		this.routes.add(route);
 

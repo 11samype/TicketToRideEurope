@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 import objects.Destination;
@@ -16,6 +17,7 @@ import objects.TrainCarDeck;
 import objects.TrainColor;
 import objects.TrainRoute;
 import objects.abstracts.AbstractPlayer;
+import objects.interfaces.IRoute;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -71,20 +73,20 @@ public class PlayerTest {
 		assertEquals(1, p.getHand().size());
 	}
 
-	@Test
-	public void testDrawTwoFromTrainCarDeck() {
-		TrainCarDeck d = new TrainCarDeck();
-		int numberOfCards = d.size();
-
-		Player p = new Player();
-		for (int i = 0; i < 2; i++) {
-			p.drawCardFromDeck(d);
-		}
-
-		assertNotEquals(0, p.getHand().size());
-		assertEquals(numberOfCards - 2, d.size());
-		assertEquals(2, p.getHand().size());
-	}
+//	@Test
+//	public void testDrawTwoFromTrainCarDeck() {
+//		TrainCarDeck d = new TrainCarDeck();
+//		int numberOfCards = d.size();
+//
+//		Player p = new Player();
+//		for (int i = 0; i < 2; i++) {
+//			p.drawCardFromDeck(d);
+//		}
+//
+//		assertNotEquals(0, p.getHand().size());
+//		assertEquals(numberOfCards - 2, d.size());
+//		assertEquals(2, p.getHand().size());
+//	}
 
 	@Test
 	public void testClaimRoute() {
@@ -93,16 +95,18 @@ public class PlayerTest {
 
 		Player p = new Player();
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 9; i++) {
 			cardList.add(new TrainCarCard(TrainColor.BLACK));
 		}
 
 		d.populate(cardList);
 
-		for (int i = 0; i < 9; i++) {
-			p.drawCardFromDeck(d);
-		}
+//		for (int i = 0; i < 9; i++) {
+//			p.drawCardFromDeck(d);
+//		}
 
+		p.populateHand(cardList);
+		
 		assertEquals(p.getHand().size(), 9);
 
 		TrainRoute routeToClaim = new TrainRoute(new Destination("here"),
@@ -125,15 +129,17 @@ public class PlayerTest {
 
 		Player p = new Player();
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 3; i++) {
 			cardList.add(new TrainCarCard(TrainColor.BLACK));
 		}
 
 		d.populate(cardList);
 
-		for (int i = 0; i < 3; i++) {
-			p.drawCardFromDeck(d);
-		}
+//		for (int i = 0; i < 3; i++) {
+//			p.drawCardFromDeck(d);
+//		}
+		
+		p.populateHand(cardList);
 
 		TrainRoute routeToClaim = new TrainRoute(new Destination("here"),
 				new Destination("there"), TrainColor.BLACK, 6);
@@ -159,18 +165,18 @@ public class PlayerTest {
 			System.out.printf("%d %s\n", i, d.getCardAtPosition(i).getColor());
 		}
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 1; i++) {
 			p.drawCardFromDeal(m, i);
 		}
 
 		for (int i = 0; i < p.getHand().size(); i++) {
-			System.out.println(p.getHand().getCard(i).getColor());
+			p.getHand().getCard(i).getColor();
 		}
 
-		assertEquals(3, p.getHand().size());
+		assertEquals(1, p.getHand().size());
 		assertEquals(cardList.get(0), p.getHand().getCard(0));
-		assertEquals(cardList.get(1), p.getHand().getCard(1));
-		assertEquals(cardList.get(2), p.getHand().getCard(2));
+		//assertEquals(cardList.get(1), p.getHand().getCard(1));
+		//assertEquals(cardList.get(2), p.getHand().getCard(2));
 	}
 
 	@Test
@@ -287,6 +293,32 @@ public class PlayerTest {
 
 		assertEquals(p.getLastCardDrawn(), card);
 
+	}
+	
+	@Test
+	public void testGetCompletedDestinations() {
+		Player p = new Player();
+		
+		List<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
+		
+		for (int i = 0; i < 10; i++) {
+			cardList.add(new TrainCarCard(TrainColor.BLACK));
+		}
+		
+		p.populateHand(cardList);
+
+		DestinationRoute route = new DestinationRoute(new Destination("start"),
+				new Destination("end"));
+		
+		List<IRoute> routes = new ArrayList<IRoute>();
+		routes.add(route);
+
+		p.setRoutes(routes);
+		
+		List<DestinationRoute> destinations = p.getCompletedDestinations();
+		
+		assertEquals(1, destinations.size());
+		
 	}
 
 }

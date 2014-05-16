@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -57,7 +58,7 @@ public class MessageHelperTest {
 	}
 
 	@Test
-	public void testGetStringFromBundleResourceBundleString() {
+	public void testGetStringFromBundleResourceBundleString1() {
 		ResourceBundle bundle = MessageHelper.getDefaultCityNames();
 		String key = "IDONTEXIST";
 		assertEquals('!' + key + '!',
@@ -66,7 +67,27 @@ public class MessageHelperTest {
 
 	@Test
 	public void testGetStringFromBundleResourceBundleStringObjectArray() {
-		fail("Not yet implemented");
+		Object[] messageArguments = {
+			    new Integer(7)
+		};
+		
+		ResourceBundle bundle = MessageHelper.getMessages();
+		String key = "player.score";
+		assertEquals("Points: 7",
+				MessageHelper.getStringFromBundle(bundle, key, messageArguments));
 	}
+	
+	@Test
+	public void testGetStringFromBundleResourceBundleStringObjectArrayMiss() {
+		Object[] messageArguments = {
+			    new Integer(7)
+		};
+		
+		ResourceBundle bundle = MessageHelper.getMessages();
+		String key = "IDONTEXIST";
+		assertEquals('!' + key + '!',
+				MessageHelper.getStringFromBundle(bundle, key, messageArguments));
+	}
+
 
 }
