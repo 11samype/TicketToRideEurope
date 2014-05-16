@@ -1,5 +1,4 @@
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import objects.Destination;
 import objects.DestinationCard;
 import objects.DestinationRoute;
@@ -55,9 +54,16 @@ public class DestinationCardTest {
 		DestinationCard destCard1 = new DestinationCard(dRoute);
 		DestinationCard destCard2 = new DestinationCard(null);
 		
-		assertFalse(destCard1.equals(null));
-		assertFalse(destCard1.equals(new TrainCarDeck()));
-		assertFalse(destCard2.equals(destCard1));
+		assertNotNull(destCard1);
+		assertNotEquals(destCard1, new TrainCarDeck()); // not same object
+		assertNotEquals(destCard2, destCard1); // this.value == null, other.value != null
+		assertSame(destCard1, destCard1); // this == other
+		
+		DestinationCard destCard3 = new DestinationCard(dRoute);
+		assertEquals(destCard1, destCard3); // this.value == other.value
+		
+		assertEquals(destCard2, new DestinationCard(null)); 
+	
 	}
 
 }

@@ -25,7 +25,9 @@ public class MessageHelper {
 	}
 
 	public static ResourceBundle getMessages(){
-		return ResourceBundle.getBundle(_messagesBundleName, getCurrentLocale());
+		// default to English messages
+		return ResourceBundle.getBundle(_messagesBundleName,
+				getCurrentLocale().equals(getGameLocale()) ? Locale.ENGLISH : getCurrentLocale());
 	}
 
 	public static void setLocale(Locale locale) {

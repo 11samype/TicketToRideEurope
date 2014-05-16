@@ -52,36 +52,8 @@ public class PlayerPanel extends JPanel implements PlayerInfoListener, LocaleCha
 		add(this.lblStations);
 		add(this.lblTrainCars);
 		add(this.lblPoints);
-
-//		ResourceBundle messages = MessageHelper.getMessages();
-//		String stations = MessageHelper.getStringFromBundle(messages, "player.numStations", player.getNumStations());
-//		String trains = MessageHelper.getStringFromBundle(messages, "player.numTrains", player.getNumTrains());
-//		String score = MessageHelper.getStringFromBundle(messages, "player.score", player.getScore());
-		
-//		HashMap<String, String> lblMap = updateLabels(player);
-//		this.lblName.setText(this.player.getName());
-//		this.lblStations.setText(lblMap.get("stations"));
-//		this.lblTrainCars.setText(lblMap.get("trains"));
-//		this.lblPoints.setText(lblMap.get("score"));
-
-
-//		this.lblStations = createJLabel(String.format(fmtStations, this.player.getNumStations()));
-//		this.lblTrainCars = createJLabel(String.format(fmtTrainCars, this.player.getNumTrains()));
-//		this.lblPoints = createJLabel(String.format(fmtPoints, this.player.getScore()));
-
 	}
 	
-//	private HashMap<String, String> _lblMap;
-	
-//	private HashMap<String, String> updateLabels(Player player) {
-//		HashMap<String, String> _lblMap = new HashMap<String, String>();
-//		ResourceBundle messages = MessageHelper.getMessages();
-//		_lblMap.put("stations", MessageHelper.getStringFromBundle(messages, "player.numStations", player.getNumStations()));
-//		_lblMap.put("trains", MessageHelper.getStringFromBundle(messages, "player.numTrains", player.getNumTrains()));
-//		_lblMap.put("score", MessageHelper.getStringFromBundle(messages, "player.score", player.getScore()));
-//		return _lblMap;
-//	}
-
 	@Override
 	public void setPlayer(IPlayer player) {
 		this.player = (Player) player;
@@ -90,21 +62,12 @@ public class PlayerPanel extends JPanel implements PlayerInfoListener, LocaleCha
 		String stations = MessageHelper.getStringFromBundle(messages, "player.numStations", player.getNumStations());
 		String trains = MessageHelper.getStringFromBundle(messages, "player.numTrains", player.getNumTrains());
 		String score = MessageHelper.getStringFromBundle(messages, "player.score", player.getScore());
-
-//		HashMap<String, String> lblMap = updateLabels((Player) player);
-		
+	
 		this.lblName.setText(player.getName());
-//		this.lblStations.setText(lblMap.get("stations"));
-//		this.lblTrainCars.setText(lblMap.get("trains"));
-//		this.lblPoints.setText(lblMap.get("score"));
 		this.lblStations.setText(stations);
 		this.lblTrainCars.setText(trains);
 		this.lblPoints.setText(score);
 
-		//		this.lblStations.setText(String.format(fmtStations, player.getNumStations()));
-//		this.lblTrainCars.setText(String.format(fmtTrainCars, player.getNumTrains()));
-//		this.lblPoints.setText(String.format(fmtPoints, player.getScore()));
-		
 	}
 
 	@Override

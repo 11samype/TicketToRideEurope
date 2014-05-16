@@ -1,15 +1,18 @@
 package utils.exceptions;
 
-public class DestinationAfterTrainException extends LocalizedException {
+import utils.MessageHelper;
 
-	@Override
-	public String getTitle() {
-		return "Unable to take destination card";
-	}
+public class DestinationAfterTrainException extends DrawCardException {
+
 
 	@Override
 	public String getMessage() {
-		return "Can't draw Destination Card after Train Card";
+		StringBuilder sb = new StringBuilder();
+		sb.append(MessageHelper.getStringFromBundle(getMessageBundle(),
+				"draw.error.unable.message"));
+		sb.append(MessageHelper.getStringFromBundle(getMessageBundle(),
+				"draw.error.destAfterTrain.message"));
+		return sb.toString();
 	}
 
 }
