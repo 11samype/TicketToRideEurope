@@ -1,15 +1,17 @@
-package gui;
+package gui.panels;
+
+import gui.drawables.DrawableTrainCarCard;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import javax.swing.JPanel;
 
-public class DealtCardPanel extends JPanel implements IRefreshable {
+public class DealtCardPanel extends RepaintableComponent {
 
 	private DrawableTrainCarCard card;
 
 	public DealtCardPanel(DrawableTrainCarCard card) {
+		super(false);
 		this.setCard(card);
 	}
 
@@ -36,11 +38,5 @@ public class DealtCardPanel extends JPanel implements IRefreshable {
 					null);
 		}
 		g2.dispose();
-	}
-
-	@Override
-	public void refresh() {
-		this.repaint();
-		this.revalidate();
 	}
 }

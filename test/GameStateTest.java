@@ -1,11 +1,9 @@
 import static org.junit.Assert.*;
-import gui.IRefreshable;
+import gui.interfaces.IRefreshable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import objects.GameState;
-import objects.GameState.CardManager;
 import objects.Player;
 import objects.TrainCarCard;
 import objects.interfaces.IPlayer;
@@ -13,7 +11,9 @@ import objects.interfaces.IPlayer;
 import org.junit.Test;
 
 import utils.DestinationLocationReader;
+import utils.GameState;
 import utils.TrainRouteReader;
+import utils.GameState.CardManager;
 
 public class GameStateTest {
 	
@@ -38,7 +38,8 @@ public class GameStateTest {
 	@Test
 	public void testInitGame() {
 		
-		GameState game = GameState.getInstance().withPlayers(new ArrayList<IPlayer>());
+		GameState.getInstance();
+		GameState game = GameState.withPlayers(new ArrayList<IPlayer>());
 		assertNotNull(game);
 		assertTrue(GameState.getPlayers().isEmpty());
 
@@ -75,7 +76,8 @@ public class GameStateTest {
 			players.add(new Player());
 		}
 
-		GameState.getInstance().withPlayers(players).withGUI(fakeRefresh);
+		GameState.withPlayers(players);
+		GameState.withGUI(fakeRefresh);
 
 		assertFalse(fakeRefresh.refreshed);
 		assertSame(GameState.getCurrentPlayer(), players.get(0));

@@ -1,7 +1,6 @@
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import utils.MessageHelper;
@@ -58,7 +57,7 @@ public class LocalizedExceptionTest {
 		RouteOwnedException e = new RouteOwnedException();
 		StringBuilder sb = new StringBuilder();
 		sb.append(getString("claim.error.unable.message"));
-		sb.append(getString("claim.error.alreadyOwned.message"));
+		sb.append(getString("claim.error.alreadyOwn.message"));
 
 		assertEquals(sb.toString(), e.getMessage());
 

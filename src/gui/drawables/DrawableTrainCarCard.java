@@ -1,6 +1,9 @@
-package gui;
+package gui.drawables;
+
+import gui.CardImageFlyweight;
 
 import java.awt.image.BufferedImage;
+
 import objects.TrainCarCard;
 import objects.TrainColor;
 

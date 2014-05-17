@@ -37,6 +37,7 @@ public abstract class AbstractRoute implements IRoute {
 		return this.length;
 	}
 
+	@Override
 	public int getScore() {
 		switch (this.length) {
 		case 1:
@@ -67,6 +68,19 @@ public abstract class AbstractRoute implements IRoute {
 		return result;
 	}
 
+	public boolean isSameAs(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof AbstractRoute))
+			return false;
+		AbstractRoute other = (AbstractRoute) obj;
+		return (this.length == other.length)
+				&& (this.start != null && this.start.equals(other.start))
+				&& (this.end != null && this.end.equals(other.end));
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -81,10 +95,11 @@ public abstract class AbstractRoute implements IRoute {
 		if (this.start == null) {
 			if (other.start != null)
 				return false;
-		} else if (!(this.start.equals(other.start) || this.start.equals(other.end)))
+		} else if (!(this.start.equals(other.start) || this.start
+				.equals(other.end)))
 			return false;
 		if (this.end == null) {
-			if (other.end != null) //need to finish in train route test
+			if (other.end != null) // need to finish in train route test
 				return false;
 		} else if (!(this.end.equals(other.end) || this.end.equals(other.start)))
 			return false;

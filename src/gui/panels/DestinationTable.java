@@ -1,4 +1,9 @@
-package gui;
+package gui.panels;
+
+import gui.RouteCompletedCellRenderer;
+import gui.interfaces.IRefreshable;
+import gui.listeners.LocaleChangeListener;
+import gui.listeners.PlayerUpdater;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +12,13 @@ import java.util.ResourceBundle;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
 import objects.DestinationCard;
 import objects.DestinationRoute;
 import objects.interfaces.IPlayer;
 import utils.MessageHelper;
 
-public class DestinationTable extends JTable implements PlayerInfoListener, LocaleChangeListener, IRefreshable {
+public class DestinationTable extends JTable implements PlayerUpdater, LocaleChangeListener, IRefreshable {
 
 //	private TableModel dataModel;
 	private List<DestinationRoute> routes = new ArrayList<DestinationRoute>();
@@ -90,7 +96,7 @@ public class DestinationTable extends JTable implements PlayerInfoListener, Loca
 	}
 
 	@Override
-	public void changeLocale() {
+	public void notifyLocaleChange() {
 		getModel().setColumnIdentifiers(getColumnNames());
 	}
 }

@@ -1,4 +1,6 @@
-package gui;
+package gui.panels;
+
+import gui.CardImageFlyweight;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -7,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JPanel;
 
 import objects.TrainCarCard;
@@ -15,14 +18,12 @@ import objects.TrainColor;
 public class HandCardPanel extends JPanel {
 
 	private BufferedImage cardImage;
-
 	private TrainCarCard card;
-
 	private int numCards = 0;
 
 	public HandCardPanel(TrainColor trainColor) {
 		this.card = new TrainCarCard(trainColor);
-		this.setLayout(new CardLayout(5, 0));
+		this.setLayout(new CardLayout(5,0));
 	}
 
 	public void setNumCards(int num) {
@@ -62,7 +63,7 @@ public class HandCardPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g.create();
-		g2.drawImage(getRotatedCardImage(), 0, 0, getWidth(), getHeight(), Color.BLACK, null);
+		g2.drawImage(getRotatedCardImage(), 0, 0, getWidth(), getHeight(), Color.GRAY, null);
 		
 		g2.setColor(Color.WHITE);
 		int radius = 45;

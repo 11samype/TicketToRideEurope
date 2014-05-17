@@ -1,5 +1,6 @@
 package objects.interfaces;
 
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 public interface IDeck<K> {
@@ -14,5 +15,7 @@ public interface IDeck<K> {
 	public int size();
 
 	public boolean isEmpty();
+	
+	public void addChangeListener(PropertyChangeListener listener);
 
 }

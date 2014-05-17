@@ -1,6 +1,7 @@
 package objects;
 
 import objects.abstracts.AbstractPlayer;
+import utils.GameState;
 
 public class Player extends AbstractPlayer {
 

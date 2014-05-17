@@ -9,7 +9,7 @@ public class SelectionHolder extends ArrayList<SelectionHolder.Selectable> {
 	public SelectionHolder(int max_size) {
 		MAX_SIZE = max_size;
 	}
-	
+	 
 	public void allowDuplicates(boolean dups) {
 		this.allowDuplicates = dups;
 	}

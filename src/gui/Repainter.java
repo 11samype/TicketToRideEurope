@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.Component;
+import gui.interfaces.IRefreshable;
 
 public class Repainter extends Thread {
 	private int fps;

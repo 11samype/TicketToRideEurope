@@ -11,15 +11,13 @@ public abstract class AbstractColorableRoute extends AbstractRoute implements
 
 	protected final TrainColor color;
 
-	public AbstractColorableRoute(Destination start, Destination end, int length) {
-		super(start, end, length);
-		this.color = TrainColor.RAINBOW;
-	}
-
-	public AbstractColorableRoute(Destination start, Destination end,
-			TrainColor color, int length) {
+	public AbstractColorableRoute(Destination start, Destination end, TrainColor color, int length) {
 		super(start, end, length);
 		this.color = color;
+	}
+	
+	public AbstractColorableRoute(Destination start, Destination end, int length) {
+		this(start, end, TrainColor.RAINBOW, length);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 import static org.junit.Assert.assertEquals;
-import gui.HandCardPanel;
+import gui.panels.HandCardPanel;
 import objects.TrainColor;
 
 import org.junit.Test;

@@ -8,8 +8,6 @@ import objects.DestinationCard;
 import objects.DestinationDeck;
 import objects.DestinationHand;
 import objects.DestinationRoute;
-import objects.GameState;
-import objects.GameState.CardManager;
 import objects.TrainCarCard;
 import objects.TrainCarDeck;
 import objects.TrainCarHand;
@@ -17,10 +15,14 @@ import objects.TrainColor;
 import objects.interfaces.ICard;
 import objects.interfaces.IPlayer;
 import objects.interfaces.IRoute;
+import utils.GameState;
 import utils.GraphHelper;
+import utils.GameState.CardManager;
 import utils.exceptions.DestinationAfterTrainException;
+import utils.exceptions.DestinationHasStationException;
 import utils.exceptions.NotEnoughCardsForRouteException;
 import utils.exceptions.OutOfStationsException;
+import utils.exceptions.RouteOwnedException;
 
 public class AbstractPlayer implements IPlayer {
 
@@ -144,7 +146,11 @@ public class AbstractPlayer implements IPlayer {
 		}
 	}
 
-	public void claimRoute(IRoute route) throws NotEnoughCardsForRouteException {
+	@Override
+	public void claimRoute(IRoute route) throws NotEnoughCardsForRouteException, RouteOwnedException {
+		if (this.routes.contains(route))
+			throw new RouteOwnedException();
+		
 		TrainColor routeColor = (route instanceof AbstractColorableRoute) ? ((AbstractColorableRoute) route)
 				.getColor() : TrainColor.RAINBOW;
 
@@ -192,9 +198,12 @@ public class AbstractPlayer implements IPlayer {
 		}
 	}
 
-	public boolean placeStationOnDestination(Destination dest) throws OutOfStationsException {
+	public boolean placeStationOnDestination(Destination dest) throws OutOfStationsException, DestinationHasStationException {
 		if (this.numStations <= 0) {
 			throw new OutOfStationsException();
+		}
+		if (dest.hasStation()) {
+			throw new DestinationHasStationException();
 		}
 
 		this.numStations--;

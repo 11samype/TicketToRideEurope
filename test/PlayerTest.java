@@ -8,8 +8,6 @@ import objects.Destination;
 import objects.DestinationCard;
 import objects.DestinationDeck;
 import objects.DestinationRoute;
-import objects.GameState;
-import objects.GameState.CardManager;
 import objects.Player;
 import objects.TrainCarCard;
 import objects.TrainCarDeal;
@@ -22,10 +20,13 @@ import objects.interfaces.IRoute;
 import org.junit.Before;
 import org.junit.Test;
 
+import utils.GameState;
+import utils.GameState.CardManager;
 import utils.exceptions.DestinationAfterTrainException;
 import utils.exceptions.DestinationHasStationException;
 import utils.exceptions.NotEnoughCardsForRouteException;
 import utils.exceptions.OutOfStationsException;
+import utils.exceptions.RouteOwnedException;
 
 public class PlayerTest {
 
@@ -89,7 +90,7 @@ public class PlayerTest {
 //	}
 
 	@Test
-	public void testClaimRoute() {
+	public void testClaimRouteSuccess() {
 		TrainCarDeck d = new TrainCarDeck();
 		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
 
@@ -104,7 +105,7 @@ public class PlayerTest {
 //		for (int i = 0; i < 9; i++) {
 //			p.drawCardFromDeck(d);
 //		}
-
+ 
 		p.populateHand(cardList);
 		
 		assertEquals(p.getHand().size(), 9);
@@ -113,17 +114,18 @@ public class PlayerTest {
 				new Destination("there"), TrainColor.BLACK, 6);
 		try {
 			p.claimRoute(routeToClaim);
+			assertEquals(p.getHand().size(), 3);
+			assertSame(p.getRoutes().get(0), routeToClaim);
 		} catch (NotEnoughCardsForRouteException e) {
 			// nothing
+		} catch (RouteOwnedException e) {
+			// nothing
 		}
-
-		assertEquals(p.getHand().size(), 3);
-		assertSame(p.getRoutes().get(0), routeToClaim);
 
 	}
 
 	@Test(expected = NotEnoughCardsForRouteException.class)
-	public void testClaimRouteFail() throws NotEnoughCardsForRouteException {
+	public void testNotEnoughCardsForRoute() throws NotEnoughCardsForRouteException {
 		TrainCarDeck d = new TrainCarDeck();
 		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();
 
@@ -147,6 +149,8 @@ public class PlayerTest {
 			p.claimRoute(routeToClaim); // throws
 		} catch (NotEnoughCardsForRouteException e) {
 			throw e;
+		} catch (RouteOwnedException e) {
+			// nothing
 		}
 
 	}
@@ -155,7 +159,7 @@ public class PlayerTest {
 	public void testDealToPlayer() {
 		Player p = new Player();
 
-		CardManager m = GameState.getInstance().getCardManager();
+		CardManager m = GameState.getCardManager();
 		TrainCarDeal d = m.getDealCards();
 
 		ArrayList<TrainCarCard> cardList = new ArrayList<TrainCarCard>();

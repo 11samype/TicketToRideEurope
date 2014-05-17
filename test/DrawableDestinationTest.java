@@ -1,5 +1,5 @@
 import static org.junit.Assert.assertEquals;
-import gui.DrawableDestination;
+import gui.drawables.DrawableDestination;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;

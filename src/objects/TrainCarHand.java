@@ -3,6 +3,7 @@ package objects;
 import java.util.Iterator;
 
 import objects.abstracts.AbstractHand;
+import utils.GameState;
 
 public class TrainCarHand extends AbstractHand<TrainCarCard> {
 

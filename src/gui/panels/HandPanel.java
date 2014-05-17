@@ -1,4 +1,6 @@
-package gui;
+package gui.panels;
+
+import gui.listeners.PlayerUpdater;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ import objects.TrainCarHand;
 import objects.TrainColor;
 import objects.interfaces.IPlayer;
 
-public class HandPanel extends JPanel implements PlayerInfoListener {
+public class HandPanel extends JPanel implements PlayerUpdater {
 
 	private List<TrainColor> colors = TrainColor.getAllColors();
 	private List<HandCardPanel> handCardPanels = new ArrayList<HandCardPanel>();

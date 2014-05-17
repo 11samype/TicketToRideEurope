@@ -1,25 +1,28 @@
-package gui;
+package gui.panels;
 
+import gui.interfaces.IRefreshable;
+import gui.listeners.LocaleChangeListener;
+import gui.listeners.PlayerUpdater;
+
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ResourceBundle;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import objects.Player;
 import objects.interfaces.IPlayer;
 import utils.MessageHelper;
 
-public class PlayerPanel extends JPanel implements PlayerInfoListener, LocaleChangeListener, IRefreshable{
+public class PlayerPanel extends RepaintableComponent implements PlayerUpdater, LocaleChangeListener, IRefreshable{
 	private JLabel lblName = createJLabel("");
 	private JLabel lblStations = createJLabel("");
 	private JLabel lblTrainCars = createJLabel("");
 	private JLabel lblPoints = createJLabel("");
 	private Player player;
-	private Repainter repainterThread;
-	private static final int FPS = 60;
+	private Color bg;
 
 //	private static final String fmtStations = "Stations: %d";
 //	private static final String fmtTrainCars = "Train Cars: %d";
@@ -31,19 +34,11 @@ public class PlayerPanel extends JPanel implements PlayerInfoListener, LocaleCha
 	 * @param player
 	 */
 	public PlayerPanel(Player player) {
-		this.player = player;
+		super();
 		initGUI();
-		repaintAtFPS(FPS);
-	}
-
-	private void repaintAtFPS(int fps) {
-		if (this.repainterThread == null) {
-			this.repainterThread = new Repainter(this, fps);
-			this.repainterThread.start();
-		} else {
-			this.repainterThread.setFPS(fps);
+		setPlayer(player);
+	
 		}
-	}
 
 	private void initGUI() {
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -57,6 +52,7 @@ public class PlayerPanel extends JPanel implements PlayerInfoListener, LocaleCha
 	@Override
 	public void setPlayer(IPlayer player) {
 		this.player = (Player) player;
+		this.bg = this.player.getColor().getAwtColor();
 
 		ResourceBundle messages = MessageHelper.getMessages();
 		String stations = MessageHelper.getStringFromBundle(messages, "player.numStations", player.getNumStations());
@@ -73,8 +69,10 @@ public class PlayerPanel extends JPanel implements PlayerInfoListener, LocaleCha
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		if (this.player != null && this.player.getColor() != null)
-			setBackground(this.player.getColor().getAwtColor());
+		g.setColor(bg);
+		g.fillRect(0, 0, getWidth(), getHeight());
+//		if (this.player != null && this.player.getColor() != null)
+			
 	}
 
 	private JLabel createJLabel(String lbl) {
@@ -84,7 +82,7 @@ public class PlayerPanel extends JPanel implements PlayerInfoListener, LocaleCha
 	}
 	
 	@Override
-	public void changeLocale() {
+	public void notifyLocaleChange() {
 		this.refresh();
 	}
 
@@ -93,7 +91,6 @@ public class PlayerPanel extends JPanel implements PlayerInfoListener, LocaleCha
 		setPlayer(this.player);
 		this.repaint();
 		this.revalidate();
-		
 	}
 
 

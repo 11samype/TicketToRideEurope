@@ -1,7 +1,6 @@
 package utils;
 
 import java.text.MessageFormat;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -46,8 +45,7 @@ public class MessageHelper {
 		if (CURRENT_LOCALE.equals(getGameLocale()))
 			return cityNameInOtherLocale;
 		ResourceBundle defaultNames = getCityNames();
-		for (Iterator<String> iterator = defaultNames.keySet().iterator(); iterator.hasNext();) {
-			String originalName = iterator.next();
+		for (String originalName : defaultNames.keySet()) {
 			String translated = getStringFromBundle(defaultNames, originalName);
 			if (cityNameInOtherLocale.equals(translated))
 				return originalName;

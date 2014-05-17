@@ -4,10 +4,11 @@ import java.util.List;
 
 import objects.DestinationCard;
 import objects.DestinationDeck;
-import objects.GameState.CardManager;
 import objects.TrainCarDeck;
+import utils.GameState.CardManager;
 import utils.exceptions.DestinationAfterTrainException;
 import utils.exceptions.NotEnoughCardsForRouteException;
+import utils.exceptions.RouteOwnedException;
 
 public interface IPlayer {
 	public String getName();
@@ -30,7 +31,7 @@ public interface IPlayer {
 
 	public List<IRoute> getRoutes();
 
-	public void claimRoute(IRoute route) throws NotEnoughCardsForRouteException;
+	public void claimRoute(IRoute route) throws NotEnoughCardsForRouteException, RouteOwnedException;
 
 	public ICard getLastCardDrawn();
 }

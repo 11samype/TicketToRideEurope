@@ -100,8 +100,7 @@ public class TrainRouteReader {
 						color = TrainColor.fromString(matcher.group());
 						builder.withColor(color);
 					} else {
-						ferryLocomotiveCount = Integer
-								.parseInt(matcher.group());
+						ferryLocomotiveCount = Integer.parseInt(matcher.group());
 						builder.withLocomotiveCount(ferryLocomotiveCount);
 					}
 				}

@@ -1,5 +1,7 @@
 package gui;
 
+import gui.panels.DestinationTable;
+
 import java.awt.Color;
 import java.awt.Component;
 

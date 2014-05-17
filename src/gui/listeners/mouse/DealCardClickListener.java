@@ -1,20 +1,24 @@
-package gui;
+package gui.listeners.mouse;
+
+import gui.drawables.DrawableTrainCarCard;
+import gui.interfaces.IRefreshable;
+import gui.panels.DealtCardPanel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import objects.GameState;
-import objects.GameState.CardManager;
 import objects.Player;
+import utils.GameState;
+import utils.GameState.CardManager;
 
-public class DealCardListener extends MouseAdapter implements IRefreshable {
+public class DealCardClickListener extends MouseAdapter implements IRefreshable {
 
 	private int index;
 	private DealtCardPanel panel;
 	private final CardManager cardManager;
 	private final IRefreshable listener;
 
-	public DealCardListener(int cardInt, CardManager cardManager, IRefreshable component) {
+	public DealCardClickListener(int cardInt, CardManager cardManager, IRefreshable component) {
 		this.index = cardInt;
 		this.cardManager = cardManager;
 		this.listener = component;
@@ -34,7 +38,7 @@ public class DealCardListener extends MouseAdapter implements IRefreshable {
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		this.panel = (DealtCardPanel) arg0.getSource();
-		Player current = (Player) GameState.getCurrentPlayer();
+		Player current = GameState.getCurrentPlayer();
 		
 		// peek at deal card to check if it is null
 		// TrainCarCard cardAtPos = cardManager.getDealCard(index);

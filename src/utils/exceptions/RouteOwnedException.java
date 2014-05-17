@@ -10,7 +10,7 @@ public class RouteOwnedException extends ClaimRouteException {
 		sb.append(MessageHelper.getStringFromBundle(getMessageBundle(),
 				"claim.error.unable.message"));
 		sb.append(MessageHelper.getStringFromBundle(getMessageBundle(),
-				"claim.error.alreadyOwned.message"));
+				"claim.error.alreadyOwn.message"));
 		return sb.toString();
 	};
 }

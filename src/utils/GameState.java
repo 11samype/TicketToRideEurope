@@ -1,6 +1,7 @@
-package objects;
+package utils;
 
-import gui.IRefreshable;
+import gui.drawables.DrawableRoute;
+import gui.interfaces.IRefreshable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,10 +9,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import objects.Destination;
+import objects.DestinationCard;
+import objects.DestinationDeck;
+import objects.DiscardPile;
+import objects.Player;
+import objects.TrainCarCard;
+import objects.TrainCarDeal;
+import objects.TrainCarDeck;
+import objects.TrainColor;
 import objects.abstracts.AbstractDeal;
 import objects.interfaces.IDeal;
 import objects.interfaces.IDeck;
 import objects.interfaces.IPlayer;
+import objects.interfaces.IRoute;
+import utils.exceptions.NotEnoughCardsForRouteException;
+import utils.exceptions.RouteOwnedException;
+import utils.exceptions.RouteTakenException;
 
 public class GameState {
 	private static GameState sInstance;
@@ -19,7 +33,7 @@ public class GameState {
 	private CardManager cardManager;
 	private TurnManager turnManager;
 	private IRefreshable gameGUI;
-	
+
 	public static final Queue<TrainColor> availableColors = new LinkedList<TrainColor>(
 			Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
 					TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW));
@@ -44,7 +58,7 @@ public class GameState {
 		sInstance = new GameState(players);
 		return getInstance();
 	}
-	
+
 	public static GameState withGUI(IRefreshable gui) {
 		getInstance().gameGUI = gui;
 		return sInstance;
@@ -60,6 +74,10 @@ public class GameState {
 
 	public static void takeTurn() {
 		GameState.getTurnManager().rotatePlayers();
+		refreshGUI();
+	}
+	
+	public static void refreshGUI() {
 		if (getInstance().gameGUI != null)
 			getInstance().gameGUI.refresh();
 	}
@@ -68,8 +86,36 @@ public class GameState {
 		return GameState.getTurnManager().getPlayers();
 	}
 
-	public static IPlayer getCurrentPlayer() {
-		return GameState.getTurnManager().getCurrentPlayer();
+	public static Player getCurrentPlayer() {
+		return (Player) GameState.getTurnManager().getCurrentPlayer();
+	}
+
+	public void claimRoute(Player claimer, IRoute routeToClaim, ArrayList<DrawableRoute> drawablesToAdd)
+			throws RouteOwnedException, RouteTakenException, NotEnoughCardsForRouteException {
+		if (routeToClaim != null) {
+			for (IPlayer player : getPlayers()) {
+				if (player == claimer) {
+					claimer.claimRoute(routeToClaim);
+					if (drawablesToAdd != null) {
+						drawablesToAdd.add(DrawableRoute.constructFromRoute(routeToClaim, claimer.getColor(), GraphHelper.DEST_LOC_LOOKUP));
+					}
+				} else {
+					if (player.getRoutes().contains(routeToClaim)) {
+						throw new RouteTakenException();
+					}
+				}
+			}
+			
+			refreshGUI();
+		}
+	}
+
+
+	public void claimRouteBewteenPoints(Player current, SelectionHolder selectedPoints,
+			ArrayList<DrawableRoute> drawablesToAdd) throws RouteOwnedException, RouteTakenException, NotEnoughCardsForRouteException {
+		IRoute routeToClaim = GraphHelper.getAdjecentRouteBetween((Destination) selectedPoints.get(0),
+				(Destination) selectedPoints.get(1));
+		this.claimRoute(current, routeToClaim, drawablesToAdd);
 	}
 
 	public class CardManager {

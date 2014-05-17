@@ -1,6 +1,6 @@
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gui.DrawableDestination;
+import gui.drawables.DrawableDestination;
 
 import java.awt.Point;
 

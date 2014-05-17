@@ -25,16 +25,10 @@ public class Destination {
 	}
 
 	public boolean buildStation(Player player) throws DestinationHasStationException, OutOfStationsException {
-		if (this.hasStation())
-			throw new DestinationHasStationException();
-
-		//			boolean built = player.placeStationOnDestination(this);
 		if (player.placeStationOnDestination(this)) {
 			ownedBy = player;
 			return true;
 		}
-//		else
-//			throw new OutOfStationsException();
 		return false;
 	}
 

@@ -1,7 +1,7 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import gui.DrawableDestination;
-import gui.DrawableRoute;
+import gui.drawables.DrawableDestination;
+import gui.drawables.DrawableRoute;
 
 import java.awt.Point;
 

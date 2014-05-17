@@ -1,4 +1,4 @@
-package gui;
+package gui.drawables;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -57,7 +57,7 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 		
 		g2.setFont(new Font("default", Font.BOLD, 12));
 		String translatedName = MessageHelper.getStringFromBundle(MessageHelper.getCityNames(), getName());
-		g2.drawString(translatedName, x + 2*DOT_RADIUS, y+ 2*DOT_RADIUS);
+		g2.drawString(translatedName, x + 2*(DOT_RADIUS + 2), y+ 1*DOT_RADIUS);
 		g2.dispose();
 	}
 
@@ -68,28 +68,20 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 		drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
 
 		// spin here
-//		g2.translate(x + DOT_RADIUS, y + DOT_RADIUS);
-//		g2.rotate(Math.toRadians(45));
-//		g2.translate(-1*(x+DOT_RADIUS), -1*(y+DOT_RADIUS));
-//
-//		drawSquare(g2, x,  y, 2*DOT_RADIUS, this.hasStation(), stationColor);
-//		drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
+		g2.translate(x + DOT_RADIUS, y + DOT_RADIUS);
+		g2.rotate(Math.toRadians(45));
+		g2.translate(-1*(x+DOT_RADIUS), -1*(y+DOT_RADIUS));
+
+		drawSquare(g2, x,  y, 2*DOT_RADIUS, this.hasStation(), stationColor);
+		drawSquare(g2, x, y, 2*DOT_RADIUS, !this.hasStation(), OUTLINE_COLOR);
 		g2.dispose();
 	}
 
 	@Override
 	public boolean buildStation(Player player) throws OutOfStationsException, DestinationHasStationException {
-		boolean built = false;
-		
-		try {
-			built = super.buildStation(player);
-		} catch (DestinationHasStationException e) {
-			throw e;
-		} finally {
-			if (built)
-				this.stationColor = player.getColor().getAwtColor();
-		}
-		return built;
+		if (super.buildStation(player))
+			this.stationColor = player.getColor().getAwtColor();
+		return true;
 	}
 
 	private void drawCircle(Graphics g, int x, int y, int radius,
@@ -122,10 +114,12 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 		return DOT_RADIUS + 0.5 >= dist;
 	}
 
+	@Override
 	public void select() {
 		this.isSelected = true;
 	}
 
+	@Override
 	public void deselect() {
 		this.isSelected = false;
 	}

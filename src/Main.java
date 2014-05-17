@@ -1,5 +1,5 @@
-import gui.DrawableDestination;
-import gui.MainPanel;
+import gui.drawables.DrawableDestination;
+import gui.panels.MainPanel;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,7 +22,7 @@ import utils.TrainRouteReader;
 public class Main {
 
 	public static void main(String[] args) {
-		prepareGameData(true);
+		prepareGameData(false);
 		MessageHelper.setLocale(Locale.US);
 		final String gameTitle = MessageHelper.getStringFromBundle(MessageHelper.getMessages(), "game.title");
 		runGame(gameTitle);
@@ -36,7 +36,7 @@ public class Main {
 				final JFrame window = new JFrame(title);
 				window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-				MainPanel mainPanel = MainPanel.getInstance();
+				MainPanel mainPanel = new MainPanel();
 				window.getContentPane().add(mainPanel);
 				window.pack();
 				window.setVisible(true);

@@ -1,6 +1,6 @@
 package utils;
 
-import gui.DrawableDestination;
+import gui.drawables.DrawableDestination;
 
 import java.util.HashMap;
 import java.util.Iterator;

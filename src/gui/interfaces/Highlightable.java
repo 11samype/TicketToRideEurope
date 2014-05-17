@@ -1,4 +1,4 @@
-package gui;
+package gui.interfaces;
 
 public interface Highlightable {
 	public void highlight();
