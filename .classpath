@@ -6,11 +6,15 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/jgraph-5.13.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/jgrapht-core-0.9.0.jar"/>
-	<classpathentry kind="lib" path="lib/jgrapht-demo-0.9.0.jar"/>
 	<classpathentry kind="lib" path="lib/jgrapht-ext-0.9.0-uber.jar"/>
 	<classpathentry kind="lib" path="lib/jgrapht-ext-0.9.0.jar"/>
 	<classpathentry kind="lib" path="lib/jgraphx-2.0.0.1.jar"/>
 	<classpathentry kind="lib" path="forms-1.3.0.jar"/>
 	<classpathentry kind="lib" path="miglayout15-swing.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.3.2.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/TicketToRideEurope/lib/commons-lang3-3.3.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

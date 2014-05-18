@@ -1,101 +1,101 @@
-Lisboa-Cadiz				(2)	train	blue
-Lisboa-Madrid				(3)	train	pink
-Cadiz-Madrid				(3)	train	orange
-Madrid-Barcelona			(2)	train	yellow
-Madrid-Pamplona				(3)	tunnel	white
-Madrid-Pamplona				(3)	tunnel	black
-Barcelona-Pamplona			(2)	tunnel	gray
-Barcelona-Marseille			(4)	train	gray
-Pamplona-Marseille			(4)	train	red
-Pamplona-Paris				(4)	train	blue
-Pamplona-Paris				(4)	train	green
-Pamplona-Brest				(4)	train	pink
-Brest-Paris					(3)	train	black
-Brest-Dieppe				(2)	train	orange
-Dieppe-Paris				(1)	train	pink
-Dieppe-London				(2)	ferry		1
-Dieppe-London				(2)	ferry		1
-Dieppe-Bruxelles			(2)	train	green
-Bruxelles-Paris				(2)	train	yellow
-Bruxelles-Paris				(2)	train	red
-Bruxelles-Amsterdam			(1)	train	black
-Amsterdam-London			(2)	ferry		2
-London-Edinburgh			(4)	train	black
-London-Edinburgh			(4)	train	orange
-Erzurum-Angora				(3)	train	black
-Erzurum-Sevastopol			(4)	ferry		2
-Erzurum-Sochi				(3)	train	red
-Angora-Smyrna				(3)	tunnel	orange
-Angora-Constantinople		(2)	tunnel	gray
-Sochi-Sevastopol			(2)	ferry		1
-Sochi-Rostov				(2)	train	gray
-Sevastopol-Constantinople	(4)	ferry		2
-Sevastopol-Bucuresti		(4)	train	white
-Rostov-Sevastopol			(4)	tunnel	gray
-Rostov-Kharkov				(2)	train	green
-Kharkov-Moskva				(4)	train	gray
-Kharkov-Kyiv				(4)	train	gray
-Moskva-Smolensk 			(2)	train	orange
-Moskva-Petrograd			(4)	train	white
-Kyiv-Smolensk				(3)	train	red
-Kyiv-Wilno					(2)	train	gray
-Kyiv-Warszawa				(4)	train	gray
-Kyiv-Budapest				(6)	tunnel	gray
-Wilno-Smolensk				(3)	train	yellow
-Wilno-Warszawa				(3)	train	red
-Wilno-Riga					(4)	train	green
-Wilno-Petrograd				(4)	train	blue
-Riga-Petrograd				(4)	train	gray
-Stockholm-Petrograd			(8)	tunnel	gray
-Smyrna-Constantinople		(2)	tunnel	gray
-Smyrna-Palermo				(6)	ferry		2
-Smyrna-Athina				(2)	ferry		1
-Constantinople-Sofia		(3)	train	blue
-Constantinople-Bucuresti	(3)	train	yellow
-Bucuresti-Sofia				(2)	tunnel	gray
-Bucuresti-Budapest			(4)	tunnel	gray
-Bucuresti-Kyiv				(4)	train	gray
-Riga-Danzig					(3)	train	black
-Stockholm-Kobenhavn			(3)	train	yellow
-Stockholm-Kobenhavn			(3)	train	white
-Kobenhavn-Essen				(3)	ferry		1
-Kobenhavn-Essen				(3)	ferry		1
-Danzig-Berlin				(4)	train	gray
-Danzig-Warszawa				(2)	train	gray
-Warszawa-Berlin				(4)	train	pink
-Warszawa-Berlin				(4)	train	yellow
-Warszawa-Wien				(4)	train	blue
-Wien-Budapest				(1)	train	red
-Wien-Budapest				(1)	train	white
-Budapest-Zagrab				(2)	train	orange
-Budapest-Sarajevo			(3)	train	pink
-Sarajevo-Sofia				(2)	tunnel	gray
-Sofia-Athina				(3)	train	pink
-Sarajevo-Zagrab				(3)	train	red
-Sarajevo-Athina				(4)	train	green
-Athina-Brindisi				(4)	ferry		1
-Palermo-Brindisi			(3)	ferry		1
-Roma-Brindisi				(2)	train	white
-Roma-Venezia				(2)	train	black
-Roma-Marseille				(4)	tunnel	gray
-Roma-Palermo				(4)	ferry		1
-Berlin-Essen				(2)	train	blue
-Berlin-Frankfurt			(3)	train	black
-Berlin-Frankfurt			(3)	train	red
-Berlin-Wien					(3)	train	green
-Essen-Amsterdam				(3)	train	yellow
-Essen-Frankfurt				(2)	train	green
-Amsterdam-Frankfurt			(2)	train	white
-Frankfurt-Bruxelles			(2)	train	blue
-Frankfurt-Paris				(3)	train	white
-Frankfurt-Paris				(3)	train	orange
-Frankfurt-Munchen			(2)	train	pink
-Munchen-Zurich				(2)	tunnel	yellow
-Munchen-Venezia				(2)	tunnel	blue
-Munchen-Wien				(3)	train	orange
-Zagrab-Wien					(2)	train	gray
-Zagrab-Venezia				(2)	train	gray
-Zurich-Venezia				(2)	tunnel	green
-Zurich-Marseille			(2)	tunnel	pink
-Zurich-Paris				(3)	tunnel	gray
-Paris-Marseille				(4)	train	gray
+Lisboa-Cadiz				(2)	train	blue	0
+Lisboa-Madrid				(3)	train	pink	0
+Cadiz-Madrid				(3)	train	orange	0
+Madrid-Barcelona			(2)	train	yellow	0
+Madrid-Pamplona				(3)	tunnel	white	1
+Madrid-Pamplona				(3)	tunnel	black	1
+Barcelona-Pamplona			(2)	tunnel	gray	0
+Barcelona-Marseille			(4)	train	gray	0
+Pamplona-Marseille			(4)	train	red		0
+Pamplona-Paris				(4)	train	blue	1
+Pamplona-Paris				(4)	train	green	1
+Pamplona-Brest				(4)	train	pink	0
+Brest-Paris					(3)	train	black	0
+Brest-Dieppe				(2)	train	orange	0
+Dieppe-Paris				(1)	train	pink	0
+Dieppe-London				(2)	ferry		1	1
+Dieppe-London				(2)	ferry		1	1
+Dieppe-Bruxelles			(2)	train	green	0
+Bruxelles-Paris				(2)	train	yellow	1
+Bruxelles-Paris				(2)	train	red		1
+Bruxelles-Amsterdam			(1)	train	black	0
+Amsterdam-London			(2)	ferry		2	0
+London-Edinburgh			(4)	train	black	1
+London-Edinburgh			(4)	train	orange	1
+Erzurum-Angora				(3)	train	black	0
+Erzurum-Sevastopol			(4)	ferry		2	0
+Erzurum-Sochi				(3)	train	red		0
+Angora-Smyrna				(3)	tunnel	orange	0
+Angora-Constantinople		(2)	tunnel	gray	0
+Sochi-Sevastopol			(2)	ferry		1	0
+Sochi-Rostov				(2)	train	gray	0
+Sevastopol-Constantinople	(4)	ferry		2	0
+Sevastopol-Bucuresti		(4)	train	white	0
+Rostov-Sevastopol			(4)	tunnel	gray	0
+Rostov-Kharkov				(2)	train	green	0
+Kharkov-Moskva				(4)	train	gray	0
+Kharkov-Kyiv				(4)	train	gray	0
+Moskva-Smolensk 			(2)	train	orange	0
+Moskva-Petrograd			(4)	train	white	0
+Kyiv-Smolensk				(3)	train	red		0
+Kyiv-Wilno					(2)	train	gray	0
+Kyiv-Warszawa				(4)	train	gray	0
+Kyiv-Budapest				(6)	tunnel	gray	0
+Wilno-Smolensk				(3)	train	yellow	0
+Wilno-Warszawa				(3)	train	red		0
+Wilno-Riga					(4)	train	green	0
+Wilno-Petrograd				(4)	train	blue	0
+Riga-Petrograd				(4)	train	gray	0
+Stockholm-Petrograd			(8)	tunnel	gray	0
+Smyrna-Constantinople		(2)	tunnel	gray	0
+Smyrna-Palermo				(6)	ferry		2	0
+Smyrna-Athina				(2)	ferry		1	0
+Constantinople-Sofia		(3)	train	blue	0
+Constantinople-Bucuresti	(3)	train	yellow	0
+Bucuresti-Sofia				(2)	tunnel	gray	0
+Bucuresti-Budapest			(4)	tunnel	gray	0
+Bucuresti-Kyiv				(4)	train	gray	0
+Riga-Danzig					(3)	train	black	0
+Stockholm-Kobenhavn			(3)	train	yellow	1
+Stockholm-Kobenhavn			(3)	train	white	1
+Kobenhavn-Essen				(3)	ferry		1	1
+Kobenhavn-Essen				(3)	ferry		1	1
+Danzig-Berlin				(4)	train	gray	0
+Danzig-Warszawa				(2)	train	gray	0
+Warszawa-Berlin				(4)	train	pink	1
+Warszawa-Berlin				(4)	train	yellow	1
+Warszawa-Wien				(4)	train	blue	0
+Wien-Budapest				(1)	train	red		1
+Wien-Budapest				(1)	train	white	1
+Budapest-Zagrab				(2)	train	orange	0
+Budapest-Sarajevo			(3)	train	pink	0
+Sarajevo-Sofia				(2)	tunnel	gray	0
+Sofia-Athina				(3)	train	pink	0
+Sarajevo-Zagrab				(3)	train	red		0
+Sarajevo-Athina				(4)	train	green	0
+Athina-Brindisi				(4)	ferry		1	0
+Palermo-Brindisi			(3)	ferry		1	0
+Roma-Brindisi				(2)	train	white	0
+Roma-Venezia				(2)	train	black	0
+Roma-Marseille				(4)	tunnel	gray	0
+Roma-Palermo				(4)	ferry		1	0
+Berlin-Essen				(2)	train	blue	0
+Berlin-Frankfurt			(3)	train	black	1
+Berlin-Frankfurt			(3)	train	red		1
+Berlin-Wien					(3)	train	green	0
+Essen-Amsterdam				(3)	train	yellow	0
+Essen-Frankfurt				(2)	train	green	0
+Amsterdam-Frankfurt			(2)	train	white	0
+Frankfurt-Bruxelles			(2)	train	blue	0
+Frankfurt-Paris				(3)	train	white	1
+Frankfurt-Paris				(3)	train	orange	1
+Frankfurt-Munchen			(2)	train	pink	0
+Munchen-Zurich				(2)	tunnel	yellow	0
+Munchen-Venezia				(2)	tunnel	blue	0
+Munchen-Wien				(3)	train	orange	0
+Zagrab-Wien					(2)	train	gray	0
+Zagrab-Venezia				(2)	train	gray	0
+Zurich-Venezia				(2)	tunnel	green	0
+Zurich-Marseille			(2)	tunnel	pink	0
+Zurich-Paris				(3)	tunnel	gray	0
+Paris-Marseille				(4)	train	gray	0
