@@ -4,6 +4,7 @@ import gui.drawables.DrawableTrainCarCard;
 import gui.factory.JPanelFactory;
 import gui.interfaces.IRefreshable;
 import gui.listeners.LocaleChangeListener;
+import gui.listeners.LocaleMenuActionListener;
 import gui.listeners.PlayerUpdater;
 import gui.listeners.mouse.DealCardClickListener;
 import gui.listeners.mouse.DestinationDeckListener;
@@ -11,11 +12,19 @@ import gui.listeners.mouse.TrainCarDeckListener;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -33,6 +42,7 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 	
 	private List<PlayerUpdater> playerInfoListeners = new ArrayList<PlayerUpdater>();
 	private List<LocaleChangeListener> localeChangeListeners = new ArrayList<LocaleChangeListener>();
+	private JFrame topFrame;
 
 
 	public MainPanel() {
@@ -44,6 +54,7 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 //		this.players = getPlayers();
 		GameState.withPlayers(getPlayers());
 		GameState.withGUI(this);
+		
 
 		// top row
 		addPlayersPanel();
@@ -61,6 +72,8 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 
 		this.refresh();
 	}
+
+
 
 	private void addPlayersPanel() {
 		JPanel playersPanel = new JPanel();
@@ -146,13 +159,13 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 	// TODO: Get the players rather than hard-code them
 	private ArrayList<IPlayer> getPlayers() {
 		
-		JFrame numPlayerFrame = new JFrame("Players");
-		numPlayerFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		
-		NumPlayerPanel numPlayerPanel = new NumPlayerPanel();
-		numPlayerFrame.getContentPane().add(numPlayerPanel);
-		numPlayerFrame.pack();
-		numPlayerFrame.setVisible(true);
+//		JFrame numPlayerFrame = new JFrame("Players");
+//		numPlayerFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//		
+//		NumPlayerPanel numPlayerPanel = new NumPlayerPanel();
+//		numPlayerFrame.getContentPane().add(numPlayerPanel);
+//		numPlayerFrame.pack();
+//		numPlayerFrame.setVisible(true);
 		
 		ArrayList<IPlayer> players = new ArrayList<IPlayer>();
 		for (int i = 0; i < GameState.numPlayers; i++) {
@@ -170,7 +183,7 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 
 	@Override
 	public void notifyLocaleChange() {
-		JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		
 		topFrame.setTitle(MessageHelper.getStringFromBundle(MessageHelper.getMessages(), "game.title"));
 		for (LocaleChangeListener listener : this.localeChangeListeners) {
 			listener.notifyLocaleChange();

@@ -98,7 +98,7 @@ public class GameState {
 				if (player == claimer) {
 					claimer.claimRoute(routeToClaim);
 					if (drawablesToAdd != null) {
-						drawablesToAdd.add(DrawableRoute.constructFromRoute(routeToClaim, claimer.getColor(), GraphHelper.DEST_LOC_LOOKUP));
+						drawablesToAdd.add(DrawableRoute.construct(routeToClaim, claimer.getColor(), GraphHelper.DEST_LOC_LOOKUP));
 					}
 				} else {
 					if (player.getRoutes().contains(routeToClaim)) {

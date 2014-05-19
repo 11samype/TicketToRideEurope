@@ -46,7 +46,7 @@ public class LanguagePanel extends JPanel{
 
 	protected void okButtonPressed() {
 		setVisible(false);
-		dispose();
+//		dispose();
 		
 	}
 

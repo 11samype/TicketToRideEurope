@@ -55,7 +55,7 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 			drawCircle(g2, x, y, DOT_RADIUS, !isSelected, OUTLINE_COLOR);
 		}
 		
-		g2.setFont(new Font("default", Font.BOLD, 12));
+		g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
 		String translatedName = MessageHelper.getStringFromBundle(MessageHelper.getCityNames(), getName());
 		g2.drawString(translatedName, x + 2*(DOT_RADIUS + 2), y+ 1*DOT_RADIUS);
 		g2.dispose();
