@@ -1,6 +1,7 @@
 package gui.panels;
 
 import gui.drawables.DrawableDestination;
+import gui.drawables.DrawableDoubleRoute;
 import gui.drawables.DrawableRoute;
 import gui.interfaces.IRefreshable;
 import gui.listeners.mouse.DestinationClickListener;
@@ -10,9 +11,13 @@ import gui.listeners.mouse.RouteHoverListener;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import objects.Destination;
 import objects.interfaces.IDrawable;
@@ -21,13 +26,13 @@ import utils.GraphHelper;
 
 public class MapPanel extends RepaintableComponent implements IRefreshable {
 
-	
+
 	private static final HashMap<Destination, List<IRoute>> ROUTES = GraphHelper.ROUTE_LOOKUP;
 	private static final HashMap<String, DrawableDestination> DESTS = GraphHelper.DEST_LOC_LOOKUP;
 	private final List<IDrawable> drawables = new ArrayList<IDrawable>();
 	private final List<DrawableRoute> drawableRoutes = new ArrayList<DrawableRoute>();
 
-	
+
 	// private BufferedImage bgImg;
 	// private final String mapName = "Europe";
 	private final DestinationClickListener destClickListener = new DestinationClickListener(drawables, drawableRoutes);
@@ -36,25 +41,30 @@ public class MapPanel extends RepaintableComponent implements IRefreshable {
 	private final RouteHoverListener routeHoverListener = new RouteHoverListener(destHoverListener, drawableRoutes);
 
 	public MapPanel() {
+//		super(false);
 		initDrawableDestinations();
 		initDrawableRoutes();
 		this.addMouseListener(destClickListener);
 		this.addMouseListener(routeClickListener);
 		this.addMouseMotionListener(destHoverListener);
 		this.addMouseMotionListener(routeHoverListener);
-		
+
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		// drawBackground(g);
+//		 drawBackground(g);
 		drawDrawables(g);
 	}
 
 	private synchronized void drawDrawables(Graphics g) {
 		for (DrawableRoute route : drawableRoutes) {
-			route.drawOn(g);
+//			if (route instanceof DrawableDoubleRoute) {
+//				((DrawableDoubleRoute) route).drawOn(g);
+//			} else {
+				route.drawOn(g);
+//			}
 		}
 		for (IDrawable drawable : drawables) {
 			drawable.drawOn(g);
@@ -69,28 +79,64 @@ public class MapPanel extends RepaintableComponent implements IRefreshable {
 	}
 
 	private void initDrawableRoutes() {
-		Iterator<Destination> destIter = ROUTES.keySet().iterator();
-		while (destIter.hasNext()) {
-			Destination _start = destIter.next();
-			// String startName = _start.getName();
-			// DrawableDestination drawStart =
-			// DEST_LOC_LOOKUP.get(_start.getName());
-			List<IRoute> routesFromStart = ROUTES.get(_start);
-			for (IRoute routeFromStart : routesFromStart) {
-				// DrawableDestination drawEnd =
-				// DEST_LOC_LOOKUP.get(iroute.getEnd().getName());
-				if (!drawableRoutes.contains(routeFromStart)) {
-					DrawableRoute route = DrawableRoute.constructFromRoute(routeFromStart, null, DESTS);
-					drawableRoutes.add(route);
+		List<DrawableRoute> routesToAdd = new ArrayList<DrawableRoute>();
+		DrawableDoubleRoute doubleRoute = null;
+		DrawableRoute route = null;
+		
+		for (Destination startDest : ROUTES.keySet()) {
+			// make a copy to remove from
+			List<IRoute> routesFromStart = new ArrayList<IRoute>(ROUTES.get(startDest));
+			routesToAdd.clear();
+			
+			 // while there are routes from here
+			while (!routesFromStart.isEmpty()) {
+				// construct a drawable route
+				IRoute iroute = routesFromStart.remove(0);
+				route = DrawableRoute.construct(iroute, null, DESTS);
+				if (!drawableRoutes.contains(route)) { // if not currently drawn
+					// if there is a double route
+					int doubleIndex = -1;
+					if ((doubleIndex = routesFromStart.indexOf(iroute)) != -1) {
+						// draw the double
+						DrawableRoute bottom = DrawableRoute.construct(routesFromStart.remove(doubleIndex), null, DESTS);
+						doubleRoute = DrawableDoubleRoute.construct(route, bottom);
+						routesToAdd.add(doubleRoute);
+ 					} else { // draw the single
+ 						routesToAdd.add(route);
+ 					}
 				}
-				// else {
-				// System.out.println("Double");
-				// System.out.println(routeFromStart);
-				// }
-
+				
 			}
-
+			// add all the constructed routes
+			drawableRoutes.addAll(routesToAdd);
+			
 		}
+		System.out.println(drawableRoutes.size());
+
+
+
+		//		Iterator<Destination> destIter = ROUTES.keySet().iterator();
+		//		while (destIter.hasNext()) {
+		//			Destination _start = destIter.next();
+		//			// String startName = _start.getName();
+		//			// DrawableDestination drawStart =
+		//			// DEST_LOC_LOOKUP.get(_start.getName());
+		//			List<IRoute> routesFromStart = ROUTES.get(_start);
+		//			for (IRoute routeFromStart : routesFromStart) {
+		//				// DrawableDestination drawEnd =
+		//				// DEST_LOC_LOOKUP.get(iroute.getEnd().getName());
+		//				if (!drawableRoutes.contains(routeFromStart)) {
+		//					DrawableRoute route = DrawableRoute.constructFromRoute(routeFromStart, null, DESTS);
+		//					drawableRoutes.add(route);
+		//				}
+		//				// else {
+		//				// System.out.println("Double");
+		//				// System.out.println(routeFromStart);
+		//				// }
+		//
+		//			}
+		//
+		//		}
 	}
 
 

@@ -1,16 +1,20 @@
 package gui.drawables;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
+import objects.abstracts.AbstractColorableRoute;
 import objects.interfaces.IDrawable;
 
 public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 
-	private final static double LINE_GAP = DrawableDestination.DOT_RADIUS / 2;
+	private final static double LINE_GAP = DrawableDestination.DOT_RADIUS;
+	
 
 	private DrawableRoute topRoute;
 	private DrawableRoute bottomRoute;
@@ -26,11 +30,18 @@ public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 		this.topRoute = new DrawableRoute(start, end, score);
 		this.bottomRoute = new DrawableRoute(start, end, score);
 	}
-
-	@Override
-	public int getScore() {
-		return getTopRoute().getScore() + getBottomRoute().getScore();
+	
+	public static DrawableDoubleRoute construct(DrawableRoute top, DrawableRoute bottom) {
+		DrawableDoubleRoute route = new DrawableDoubleRoute(top.getStart(), top.getEnd(), top.getLength());
+		route.topRoute = top;
+		route.bottomRoute = bottom;
+		return route;
 	}
+
+//	@Override
+//	public int getScore() {
+//		return getTopRoute().getScore() + getBottomRoute().getScore();
+//	}
 
 	public DrawableRoute getTopRoute() {
 		return this.topRoute;
@@ -46,20 +57,29 @@ public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 	@Override
 	public void drawOn(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g.create();
-		BasicStroke dashed = new BasicStroke(DrawableDestination.DOT_RADIUS / 2);
+		
 		g2.setStroke(dashed);
 		
-		if (_topLine == null) _topLine = getTopLine();
-		if (_bottomLine == null) _bottomLine = getBottomLine();
-
-//		g2.drawLine((int) _topLine.getX1(), (int) _topLine.getY1(),
-//				(int) _topLine.getX2(), (int) _topLine.getY2());
-		g2.draw(_topLine);
+		if (_topLine == null)
+			_topLine = getTopLine();
+		if (_bottomLine == null)
+			_bottomLine = getBottomLine();
 		
-//		g2.drawLine((int) bottomRouteLine.getX1(),
-//				(int) bottomRouteLine.getY1(), (int) bottomRouteLine.getX2(),
-//				(int) bottomRouteLine.getY2());
+		Color save = g2.getColor();
+
+		if (topRoute != null) {
+			g2.setColor(topRoute.getAwtColor());
+		}
+		g2.draw(_topLine);
+		g2.setColor(save);
+		
+
+		if (bottomRoute != null) {
+			g2.setColor(bottomRoute.getAwtColor());
+		}
 		g2.draw(_bottomLine);
+		g2.setColor(save);
+		
 		g2.dispose();
 	}
 
@@ -114,18 +134,27 @@ public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 		return new Line2D.Double(startCenter, endCenter);
 	}
 
+	
+	
 	@Override
 	@Deprecated
 	public boolean contains(Point2D p) {
-		return topLineContains(p) || bottomLineContains(p) || super.getLine().contains(p);
+		
+		if (topRoute.contains(p)) {
+			return true;
+		} else if (bottomRoute.contains(p)){
+			return true;
+		}
+		this.unhighlight();
+		return false;
+	
 	}
-
-	public boolean topLineContains(Point2D p) {
-		return this.topRoute.contains(p);
-	}
-
-	public boolean bottomLineContains(Point2D p) {
-		return this.bottomRoute.contains(p);
+	
+	@Override
+	public void unhighlight() {
+		super.unhighlight();
+		getTopRoute().unhighlight();
+		getBottomRoute().unhighlight();
 	}
 
 }

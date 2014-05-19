@@ -79,12 +79,12 @@ Roma-Brindisi				(2)	train	white	0
 Roma-Venezia				(2)	train	black	0
 Roma-Marseille				(4)	tunnel	gray	0
 Roma-Palermo				(4)	ferry		1	0
-Berlin-Essen				(2)	train	blue	0
 Berlin-Frankfurt			(3)	train	black	1
 Berlin-Frankfurt			(3)	train	red		1
 Berlin-Wien					(3)	train	green	0
 Essen-Amsterdam				(3)	train	yellow	0
 Essen-Frankfurt				(2)	train	green	0
+Essen-Berlin				(2)	train	blue	0
 Amsterdam-Frankfurt			(2)	train	white	0
 Frankfurt-Bruxelles			(2)	train	blue	0
 Frankfurt-Paris				(3)	train	white	1

@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import objects.Destination;
 import objects.RouteBuilder;
 import objects.TrainColor;
@@ -52,6 +54,8 @@ public class TrainRouteReader {
 		// String filePath = String.format(fileFmt, lang);
 		BufferedReader br = null;
 		Pattern pattern = Pattern.compile("(\\w+)");
+		Pair<IRoute, IRoute> doubleRoutePair = Pair.of(null, null);
+		
 		try {
 			String line;
 			br = new BufferedReader(new FileReader(this.f));
@@ -64,10 +68,11 @@ public class TrainRouteReader {
 				String type = "train";
 				TrainColor color = null;
 				int ferryLocomotiveCount = 0;
+				boolean isPartOfDoubleRoute = false;
 
 				RouteBuilder builder = null;
 
-				// start-end (length) type [color] [ferryLocomtiveCount]
+				// start-end (length) type [color] [ferryLocomtiveCount] [isDoubleRoute]
 				// Note: ferry does not have a color, and only it has a count
 				Matcher matcher = pattern.matcher(line);
 
@@ -95,15 +100,23 @@ public class TrainRouteReader {
 					type = matcher.group();
 				}
 
+				// ferry count or color (ferry is always gray)
 				if (matcher.find()) {
-					if (!type.equalsIgnoreCase("ferry")) {
-						color = TrainColor.fromString(matcher.group());
-						builder.withColor(color);
-					} else {
+					if (type.equalsIgnoreCase("ferry")) {
 						ferryLocomotiveCount = Integer.parseInt(matcher.group());
 						builder.withLocomotiveCount(ferryLocomotiveCount);
+					} else {
+						color = TrainColor.fromString(matcher.group());
+						builder.withColor(color);
 					}
 				}
+				
+				// 0 or 1 marker for double route
+				if (matcher.find()) {
+					String val = matcher.group();
+					isPartOfDoubleRoute = (Integer.parseInt(val) != 0);
+				}
+				
 
 				IRoute startToEnd = builder.build(type);
 				IRoute endToStart = builder.reverseDirection().build(type);
