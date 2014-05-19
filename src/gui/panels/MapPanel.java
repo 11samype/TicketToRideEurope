@@ -111,32 +111,6 @@ public class MapPanel extends RepaintableComponent implements IRefreshable {
 			drawableRoutes.addAll(routesToAdd);
 			
 		}
-		System.out.println(drawableRoutes.size());
-
-
-
-		//		Iterator<Destination> destIter = ROUTES.keySet().iterator();
-		//		while (destIter.hasNext()) {
-		//			Destination _start = destIter.next();
-		//			// String startName = _start.getName();
-		//			// DrawableDestination drawStart =
-		//			// DEST_LOC_LOOKUP.get(_start.getName());
-		//			List<IRoute> routesFromStart = ROUTES.get(_start);
-		//			for (IRoute routeFromStart : routesFromStart) {
-		//				// DrawableDestination drawEnd =
-		//				// DEST_LOC_LOOKUP.get(iroute.getEnd().getName());
-		//				if (!drawableRoutes.contains(routeFromStart)) {
-		//					DrawableRoute route = DrawableRoute.constructFromRoute(routeFromStart, null, DESTS);
-		//					drawableRoutes.add(route);
-		//				}
-		//				// else {
-		//				// System.out.println("Double");
-		//				// System.out.println(routeFromStart);
-		//				// }
-		//
-		//			}
-		//
-		//		}
 	}
 
 

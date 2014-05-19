@@ -137,22 +137,20 @@ public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 	
 	
 	@Override
-	@Deprecated
 	public boolean contains(Point2D p) {
 		
-		if (topRoute.contains(p)) {
-			return true;
-		} else if (bottomRoute.contains(p)){
-			return true;
-		}
-		this.unhighlight();
-		return false;
+		System.out.println(topRoute);
+		System.out.println(bottomRoute);
+		
+		boolean high =   topRoute.contains(p) || bottomRoute.contains(p) || super.getLine().contains(p);
+		System.out.println(high);
+		return high;
+	
 	
 	}
 	
 	@Override
 	public void unhighlight() {
-		super.unhighlight();
 		getTopRoute().unhighlight();
 		getBottomRoute().unhighlight();
 	}

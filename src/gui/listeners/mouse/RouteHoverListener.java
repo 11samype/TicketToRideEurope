@@ -28,9 +28,14 @@ public class RouteHoverListener extends MouseMotionAdapter {
 			
 			if (drawnRoute instanceof DrawableDoubleRoute) {
 				DrawableDoubleRoute route = (DrawableDoubleRoute) drawnRoute;
-				boolean high = !destHoverListener.isOverDestination && route.contains(p);
-//				if (high) {
-//			
+//				if (route.contains(p)) {
+//					System.out.println("asd");
+					
+//				}
+				
+//				DrawableRoute top = route.getTopRoute();
+//				DrawableRoute bottom = route.getBottomRoute();
+		
 //				} else {
 //					route.unhighlight();
 //				}

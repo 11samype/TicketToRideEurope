@@ -143,7 +143,10 @@ Highlightable {
 
 		Rectangle2D box = new Rectangle2D.Double(boxX, boxY, HIT_BOX_SIZE, HIT_BOX_SIZE);
 
-		if (_line != null &&  _line.intersects(box)) {
+		if (_line == null)
+			_line = getLine();
+		
+		if (_line.intersects(box)) {
 			this.highlight();
 			return true;
 		} else {
