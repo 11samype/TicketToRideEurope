@@ -1,4 +1,5 @@
 import gui.drawables.DrawableDestination;
+import gui.panels.LanguagePanel;
 import gui.panels.MainPanel;
 
 import java.util.HashMap;
@@ -23,6 +24,16 @@ public class Main {
 
 	public static void main(String[] args) {
 		prepareGameData(false);
+		
+		JFrame localizeFrame = new JFrame("Language");
+		localizeFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		
+		LanguagePanel languagePanel = new LanguagePanel();
+		localizeFrame.getContentPane().add(languagePanel);
+		localizeFrame.pack();
+		localizeFrame.setVisible(true);
+
+		
 		MessageHelper.setLocale(Locale.US);
 		final String gameTitle = MessageHelper.getStringFromBundle(MessageHelper.getMessages(), "game.title");
 		runGame(gameTitle);

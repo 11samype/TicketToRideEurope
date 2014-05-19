@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import net.miginfocom.swing.MigLayout;
 import objects.Player;
@@ -144,8 +145,17 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 
 	// TODO: Get the players rather than hard-code them
 	private ArrayList<IPlayer> getPlayers() {
+		
+		JFrame numPlayerFrame = new JFrame("Players");
+		numPlayerFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		
+		NumPlayerPanel numPlayerPanel = new NumPlayerPanel();
+		numPlayerFrame.getContentPane().add(numPlayerPanel);
+		numPlayerFrame.pack();
+		numPlayerFrame.setVisible(true);
+		
 		ArrayList<IPlayer> players = new ArrayList<IPlayer>();
-		for (int i = 0; i < GameState.MAX_PLAYERS; i++) {
+		for (int i = 0; i < GameState.numPlayers; i++) {
 			players.add(new Player("Player " + (i + 1)));
 		}
 		return players;
