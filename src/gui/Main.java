@@ -1,3 +1,4 @@
+package gui;
 import gui.drawables.DrawableDestination;
 import gui.listeners.LocaleMenuActionListener;
 import gui.panels.MainPanel;
@@ -31,6 +32,8 @@ import utils.MessageHelper;
 import utils.TrainRouteReader;
 
 public class Main {
+	
+	private static MainPanel mainPanel = new MainPanel();
 
 	public static void main(String[] args) {
 		prepareGameData(false);
@@ -40,33 +43,34 @@ public class Main {
 	}
 
 	public static void runGame(final String title) {
+		final JFrame window = new JFrame(title);
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 
-				final JFrame window = new JFrame(title);
 				window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-				MainPanel mainPanel = new MainPanel();
+			
 				window.setJMenuBar(getMenuBar());
 				window.getContentPane().add(mainPanel);
 				window.pack();
 				window.setVisible(true);
 			}
 		});
+		
 	}
 
-	protected static JMenuBar getMenuBar() {
+	public static JMenuBar getMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
-		JMenu menu = new JMenu("Locale");
-		ButtonGroup group = new ButtonGroup();
+		JMenu menu = new JMenu(MessageHelper.getStringFromBundle(MessageHelper.getMessages(), "menu.locale.title"));
+//		ButtonGroup group = new ButtonGroup();
 		String [] lblNames = new String[] {"Original", "English", "French", "German"};
 		Locale[] locales = new Locale[] {MessageHelper.getGameLocale(), Locale.US, Locale.FRANCE, Locale.GERMANY};
 		for (int i = 0; i < lblNames.length ; i++ ) {
-			JRadioButtonMenuItem button = new JRadioButtonMenuItem(lblNames[i]);
-			button.addActionListener(new LocaleMenuActionListener(locales[i]));
-			group.add(button);
-			menu.add(button);
+			JMenuItem item = new JMenuItem(lblNames[i]);
+			item.addActionListener(new LocaleMenuActionListener(locales[i], mainPanel));
+//			group.add(item);
+			menu.add(item);
 		}
 
 		menuBar.add(menu);

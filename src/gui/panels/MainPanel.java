@@ -1,5 +1,6 @@
 package gui.panels;
 
+import gui.Main;
 import gui.drawables.DrawableTrainCarCard;
 import gui.factory.JPanelFactory;
 import gui.interfaces.IRefreshable;
@@ -141,6 +142,7 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 	private void addDestinationTable(JPanel playerInfoPanel) {
 		DestinationTable destinationTable = new DestinationTable();
 		this.playerInfoListeners.add(destinationTable);
+		this.localeChangeListeners.add(destinationTable);
 
 		JScrollPane destScrollPane = new JScrollPane(destinationTable);
 		destScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -173,8 +175,9 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 
 	@Override
 	public void notifyLocaleChange() {
-		
+		topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 		topFrame.setTitle(MessageHelper.getStringFromBundle(MessageHelper.getMessages(), "game.title"));
+		topFrame.setJMenuBar(Main.getMenuBar());
 		for (LocaleChangeListener listener : this.localeChangeListeners) {
 			listener.notifyLocaleChange();
 		}
