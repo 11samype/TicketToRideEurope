@@ -1,6 +1,8 @@
 package utils;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -8,6 +10,8 @@ import java.util.ResourceBundle;
 public class MessageHelper {
 	private static final String _cityBundleName = "Cities";
 	private static final String _messagesBundleName = "Messages";
+	
+	public static final List<Locale> AVAILABLE_LOCALES = Arrays.asList(Locale.US, Locale.FRANCE,  Locale.GERMANY);
 
 	private static Locale CURRENT_LOCALE = getGameLocale();
 

@@ -1,7 +1,5 @@
 package gui.listeners;
 
-import gui.interfaces.IRefreshable;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
@@ -11,17 +9,17 @@ import utils.MessageHelper;
 public class LocaleMenuActionListener implements ActionListener {
 	
 	protected Locale locale;
-	private LocaleChangeListener comp;
+	protected LocaleChangeListener listener;
 	
-	public LocaleMenuActionListener(Locale locale, LocaleChangeListener comp) {
+	public LocaleMenuActionListener(Locale locale, LocaleChangeListener listener) {
 		this.locale = locale;
-		this.comp = comp;
+		this.listener = listener;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		MessageHelper.setLocale(locale);
-		comp.notifyLocaleChange();
+		MessageHelper.setLocale(this.locale);
+		listener.notifyLocaleChange();
 	}
 
 }
