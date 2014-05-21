@@ -196,4 +196,12 @@ public class GameState {
 
 	}
 
+	public static ArrayList<IPlayer> getPlayersBasedOnNum() {
+		ArrayList<IPlayer> players = new ArrayList<IPlayer>();
+		for (int i = 0; i < numPlayers; i++) {
+			players.add(new Player("Player " + (i + 1)));
+		}
+		return players;
+	}
+
 }

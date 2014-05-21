@@ -62,7 +62,7 @@ public class Main {
 				window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 				MainPanel mainPanel = new MainPanel();
-				window.setJMenuBar(getMenuBar());
+				window.setJMenuBar(getMenuBar(mainPanel));
 				window.getContentPane().add(mainPanel);
 				window.pack();
 				window.setVisible(true);
@@ -70,7 +70,7 @@ public class Main {
 		});
 	}
 
-	protected static JMenuBar getMenuBar() {
+	protected static JMenuBar getMenuBar(MainPanel mainPanel) {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("Locale");
 		ButtonGroup group = new ButtonGroup();
@@ -89,7 +89,7 @@ public class Main {
 		
 		for (int i = 0; i < lblNumbers.length; i++) {
 			JRadioButtonMenuItem button = new JRadioButtonMenuItem(lblNumbers[i]);
-			button.addActionListener(new NumPlayerActionListener(Integer.parseInt(lblNumbers[i])));
+			button.addActionListener(new NumPlayerActionListener(Integer.parseInt(lblNumbers[i]), mainPanel));
 			numPlayerGroup.add(button);
 			numPlayerMenu.add(button);
 			if (lblNumbers[i] == "1") {

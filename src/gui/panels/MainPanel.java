@@ -44,6 +44,7 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 	private List<LocaleChangeListener> localeChangeListeners = new ArrayList<LocaleChangeListener>();
 	private JFrame topFrame;
 
+	private JPanel playersPanel = new JPanel();
 
 	public MainPanel() {
 		setLayout(new MigLayout(
@@ -76,19 +77,32 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 
 
 	private void addPlayersPanel() {
-		JPanel playersPanel = new JPanel();
-		playersPanel.setLayout(new GridLayout(1, 0, 10, 0));
+//		JPanel playersPanel = new JPanel();
+		this.playersPanel.setLayout(new GridLayout(1, 0, 10, 0));
 
 		for (IPlayer player : GameState.getPlayers()) {
 			PlayerPanel panel = new PlayerPanel((Player) player);
-			playersPanel.add(panel);
+			this.playersPanel.add(panel);
 			localeChangeListeners.add(panel);
 		}
 		for (int i = GameState.getPlayers().size(); i < GameState.MAX_PLAYERS + 1; i++) {
-			playersPanel.add(new JPanel()); // right padding
+			this.playersPanel.add(new JPanel()); // right padding
 		}
 
-		add(playersPanel, "cell 0 0,alignx left,growy");
+		add(this.playersPanel, "cell 0 0,alignx left,growy");
+	}
+	
+	private void removePlayersPanel() {
+		
+		this.playersPanel.removeAll();
+		
+	}
+	
+	public void resetPlayersPanel() {
+		
+		removePlayersPanel();
+		addPlayersPanel();
+		
 	}
 
 	private void addMapPanel() {
@@ -156,22 +170,10 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 		playerInfoPanel.add(playerHandPanel, "cell 1 0,grow");
 	}
 
-	// TODO: Get the players rather than hard-code them
 	private ArrayList<IPlayer> getPlayers() {
+
+		return GameState.getPlayersBasedOnNum();
 		
-//		JFrame numPlayerFrame = new JFrame("Players");
-//		numPlayerFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//		
-//		NumPlayerPanel numPlayerPanel = new NumPlayerPanel();
-//		numPlayerFrame.getContentPane().add(numPlayerPanel);
-//		numPlayerFrame.pack();
-//		numPlayerFrame.setVisible(true);
-		
-		ArrayList<IPlayer> players = new ArrayList<IPlayer>();
-		for (int i = 0; i < GameState.numPlayers; i++) {
-			players.add(new Player("Player " + (i + 1)));
-		}
-		return players;
 	}
 
 	@Override
