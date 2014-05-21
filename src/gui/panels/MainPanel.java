@@ -45,6 +45,8 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 	private JFrame topFrame;
 
 	private JPanel playersPanel = new JPanel();
+	private List<PlayerPanel> playerPanels = new ArrayList<PlayerPanel>();
+	private List<JPanel> paddings = new ArrayList<JPanel>();
 
 	public MainPanel() {
 		setLayout(new MigLayout(
@@ -83,16 +85,31 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 		for (IPlayer player : GameState.getPlayers()) {
 			PlayerPanel panel = new PlayerPanel((Player) player);
 			this.playersPanel.add(panel);
-			localeChangeListeners.add(panel);
+			this.playerPanels.add(panel);
+			this.localeChangeListeners.add(panel);
 		}
 		for (int i = GameState.getPlayers().size(); i < GameState.MAX_PLAYERS + 1; i++) {
-			this.playersPanel.add(new JPanel()); // right padding
+			JPanel padding = new JPanel();
+			
+			this.paddings.add(padding);
+			
+			this.playersPanel.add(padding); // right padding
 		}
 
 		add(this.playersPanel, "cell 0 0,alignx left,growy");
 	}
 	
 	private void removePlayersPanel() {
+		
+		for (PlayerPanel panel : this.playerPanels) {
+			this.localeChangeListeners.remove(panel);
+//			this.playersPanel.remove(panel);
+			
+		}
+		
+//		for (JPanel padding : this.paddings) {
+//			this.playersPanel.remove(padding);
+//		}
 		
 		this.playersPanel.removeAll();
 		
