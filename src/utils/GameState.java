@@ -41,6 +41,8 @@ public class GameState {
 	private CardManager cardManager;
 	private TurnManager turnManager;
 	private IRefreshable gameGUI;
+	private static boolean countDown = false;
+	private static int count = 100;
 
 	public static Queue<TrainColor> availableColors = new LinkedList<TrainColor>(
 			Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
@@ -65,6 +67,10 @@ public class GameState {
 		
 		this.cardManager = new CardManager();
 		this.turnManager = new TurnManager(players);
+		
+		availableColors = new LinkedList<TrainColor>(
+				Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
+						TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW));
 
 		dealTrainsToPlayers(players);
 		dealDestinationsToPlayers(players);
@@ -135,8 +141,51 @@ public class GameState {
 	}
 
 	public static void takeTurn() {
+		
+		Player current = GameState.getCurrentPlayer();
+		
+		if (!countDown && current.getNumTrains() <= 2) {
+			startCountDown();
+			
+		} else if (countDown){
+			count--;
+			
+		}
+		
+		if (count <= 0) {
+			endGame();
+		}
+		
 		GameState.getTurnManager().rotatePlayers();
 		refreshGUI();
+	}
+	
+	private static void endGame() {
+		
+		List<IPlayer> players = getPlayers();
+		
+		IPlayer winner = new Player();
+		
+		for (IPlayer player : players) {
+			
+			if (player.getScore() > winner.getScore()) {
+				winner = player;
+			}
+			
+		}
+		
+		System.out.printf("%s WINS!", winner.getName());
+		
+		//wait?
+		
+		System.exit(0);
+		
+	}
+
+	private static void startCountDown() {
+		countDown = true;
+		count = numPlayers;
+		
 	}
 
 	public static void refreshGUI() {
