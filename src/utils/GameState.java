@@ -62,6 +62,10 @@ public class GameState {
 	private GameState(List<IPlayer> players) {
 		this.cardManager = new CardManager();
 		this.turnManager = new TurnManager(players);
+		
+		availableColors = new LinkedList<TrainColor>(
+				Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
+						TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW));
 
 		dealTrainsToPlayers(players);
 		dealDestinationsToPlayers(players);
@@ -136,17 +140,14 @@ public class GameState {
 		Player current = GameState.getCurrentPlayer();
 		
 		if (!countDown && current.getNumTrains() <= 2) {
-			System.out.println("start count down");
 			startCountDown();
 			
 		} else if (countDown){
-			System.out.println(count --);
 			count--;
 			
 		}
 		
 		if (count <= 0) {
-			System.out.println("end game");
 			endGame();
 		}
 		
@@ -169,6 +170,10 @@ public class GameState {
 		}
 		
 		System.out.printf("%s WINS!", winner.getName());
+		
+		//wait?
+		
+		System.exit(0);
 		
 	}
 
