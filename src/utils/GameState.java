@@ -138,7 +138,20 @@ public class GameState {
 		}
 
 		public void fillDealFromDeck() {
-			while (!(this.deal.isFull() || trainCarDeck.isEmpty())) {
+			while (!this.deal.isFull()) {
+				
+				if (trainCarDeck.isEmpty()) {
+					DiscardPile<TrainCarCard> discard = GameState.getCardManager().getDiscardPile();
+					
+					List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
+					
+					while(!discard.isEmpty()) {
+						cards.add((TrainCarCard)discard.draw());
+					}
+					
+					trainCarDeck.populate(cards);
+				}
+				
 				this.deal.addCard(trainCarDeck.draw());
 			}
 		}
