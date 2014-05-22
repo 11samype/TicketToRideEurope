@@ -47,6 +47,7 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 	private JPanel playersPanel = new JPanel();
 	private List<PlayerPanel> playerPanels = new ArrayList<PlayerPanel>();
 	private List<JPanel> paddings = new ArrayList<JPanel>();
+	private JPanel trainCarDeckPanel;
 
 	public MainPanel() {
 		setLayout(new MigLayout(
@@ -103,13 +104,8 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 		
 		for (PlayerPanel panel : this.playerPanels) {
 			this.localeChangeListeners.remove(panel);
-//			this.playersPanel.remove(panel);
 			
 		}
-		
-//		for (JPanel padding : this.paddings) {
-//			this.playersPanel.remove(padding);
-//		}
 		
 		this.playersPanel.removeAll();
 		
@@ -154,8 +150,12 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 	}
 
 	private void addTrainCarDeckPanel(JPanel dealPanel) {
-		JPanel panel = JPanelFactory.createDeckPanel(GameState.getCardManager().getTrainCarDeck(), new Color(30, 144, 255), new TrainCarDeckListener(MainPanel.this));
-		dealPanel.add(panel, "cell 0 1,grow");
+		this.trainCarDeckPanel = JPanelFactory.createDeckPanel(GameState.getCardManager().getTrainCarDeck(), new Color(30, 144, 255), new TrainCarDeckListener(MainPanel.this));
+		dealPanel.add(this.trainCarDeckPanel, "cell 0 1,grow");
+	}
+	
+	public void resetTrainCarDeckPanel() {
+		this.trainCarDeckPanel = JPanelFactory.createDeckPanel(GameState.getCardManager().getTrainCarDeck(), new Color(30, 144, 255),new TrainCarDeckListener(MainPanel.this));
 	}
 
 	private void addDestinationDeckPanel() {

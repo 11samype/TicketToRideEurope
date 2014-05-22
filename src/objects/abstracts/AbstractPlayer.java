@@ -1,5 +1,7 @@
 package objects.abstracts;
 
+import gui.panels.MainPanel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +119,7 @@ public class AbstractPlayer implements IPlayer {
 		this.hand.addCard(deck.draw());
 		
 		if (deck.isEmpty()) {
-			DiscardPile discard = GameState.getCardManager().getDiscardPile();
+			DiscardPile<TrainCarCard> discard = GameState.getCardManager().getDiscardPile();
 			
 			List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
 			
