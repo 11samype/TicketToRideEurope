@@ -1,5 +1,7 @@
 package objects.abstracts;
 
+import gui.panels.MainPanel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import objects.DestinationCard;
 import objects.DestinationDeck;
 import objects.DestinationHand;
 import objects.DestinationRoute;
+import objects.DiscardPile;
 import objects.TrainCarCard;
 import objects.TrainCarDeck;
 import objects.TrainCarHand;
@@ -102,8 +105,21 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public void drawCardFromDeck(TrainCarDeck deck) {
+		
 		this.hand.addCard(deck.draw());
-
+		
+		if (deck.isEmpty()) {
+			DiscardPile<TrainCarCard> discard = GameState.getCardManager().getDiscardPile();
+			
+			List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
+			
+			while(!discard.isEmpty()) {
+				cards.add((TrainCarCard)discard.draw());
+			}
+			
+			deck.populate(cards);
+		}
+		
 		// end turn if collected 2 trains (or one rainbow)
 		if (!this.canDrawTrainCard()) {
 			GameState.takeTurn();

@@ -43,15 +43,6 @@ public class Main {
 	public static void main(String[] args) {
 		GameState.initializeGameData(false);
 
-		//		JFrame localizeFrame = new JFrame("Language");
-		//		localizeFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		//
-		//		LanguagePanel languagePanel = new LanguagePanel();
-		//		localizeFrame.getContentPane().add(languagePanel);
-		//		localizeFrame.pack();
-		//		localizeFrame.setVisible(true);
-
-
 		MessageHelper.setLocale(Locale.US);
 		final String gameTitle = MessageHelper.getStringFromBundle(MessageHelper.getMessages(), "game.title");
 		runGame(gameTitle);
@@ -67,6 +58,7 @@ public class Main {
 				window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 				window.setJMenuBar(getMenuBar());
+
 				window.getContentPane().add(mainPanel);
 				window.pack();
 				window.setVisible(true);
@@ -94,7 +86,7 @@ public class Main {
 
 		for (int i = 0; i < lblNumbers.length; i++) {
 			JRadioButtonMenuItem button = new JRadioButtonMenuItem(lblNumbers[i]);
-			button.addActionListener(new NumPlayerActionListener(Integer.parseInt(lblNumbers[i])));
+			button.addActionListener(new NumPlayerActionListener(Integer.parseInt(lblNumbers[i]), mainPanel));
 			numPlayerGroup.add(button);
 			numPlayerMenu.add(button);
 			if (lblNumbers[i] == "2") {

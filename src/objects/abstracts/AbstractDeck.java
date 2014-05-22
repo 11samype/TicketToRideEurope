@@ -35,8 +35,9 @@ public abstract class AbstractDeck<K extends ICard> implements IDeck<K> {
 		if (size() <= 0) {
 			throw new IndexOutOfBoundsException("The deck is empty!");
 		}
-		if (this.listener != null)
+		if (this.listener != null) {
 			this.listener.propertyChange(new PropertyChangeEvent(this, "size", this.size(), this.size() - 1));
+		}
 		return this.cards.remove(0);
 	}
 

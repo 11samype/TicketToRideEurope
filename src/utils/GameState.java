@@ -42,7 +42,7 @@ public class GameState {
 	private TurnManager turnManager;
 	private IRefreshable gameGUI;
 
-	public static final Queue<TrainColor> availableColors = new LinkedList<TrainColor>(
+	public static Queue<TrainColor> availableColors = new LinkedList<TrainColor>(
 			Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
 					TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW));
 
@@ -88,10 +88,10 @@ public class GameState {
 			Player player = (Player) iPlayer;
 			player.getDestinationHand().add(top6.remove(0));
 		}
-		
+
 		// shuffle rest of cards
 		Collections.shuffle(cardManager.getDestinationDeck().getCards());
-		
+
 		// deal 3 cards to each player
 		for (IPlayer iPlayer : players) {
 			Player player = (Player) iPlayer;
@@ -108,7 +108,6 @@ public class GameState {
 				player.getHand().addCard(cardManager.getTrainCarDeck().draw());
 			}
 		}
-
 	}
 
 	public static GameState withPlayers(List<IPlayer> players) {
@@ -253,7 +252,20 @@ public class GameState {
 		}
 
 		public void fillDealFromDeck() {
-			while (!(this.deal.isFull() || trainCarDeck.isEmpty())) {
+			while (!this.deal.isFull()) {
+
+				if (trainCarDeck.isEmpty()) {
+					DiscardPile<TrainCarCard> discard = GameState.getCardManager().getDiscardPile();
+
+					List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
+
+					while(!discard.isEmpty()) {
+						cards.add((TrainCarCard)discard.draw());
+					}
+
+					trainCarDeck.populate(cards);
+				}
+
 				this.deal.addCard(trainCarDeck.draw());
 			}
 		}
@@ -312,6 +324,14 @@ public class GameState {
 			return this.players.get(this.currentPlayerIndex);
 		}
 
+	}
+
+	public static ArrayList<IPlayer> getPlayersBasedOnNum() {
+		ArrayList<IPlayer> players = new ArrayList<IPlayer>();
+		for (int i = 0; i < numPlayers; i++) {
+			players.add(new Player("Player " + (i + 1)));
+		}
+		return players;
 	}
 
 }
