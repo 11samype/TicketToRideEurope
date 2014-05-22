@@ -88,7 +88,7 @@ public class Main {
 			button.addActionListener(new NumPlayerActionListener(Integer.parseInt(lblNumbers[i]), mainPanel));
 			numPlayerGroup.add(button);
 			numPlayerMenu.add(button);
-			if (lblNumbers[i] == "4") {
+			if (lblNumbers[i] == "1") {
 				button.setSelected(true);
 			}
 		}
