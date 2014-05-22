@@ -9,6 +9,8 @@ import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.Test;
 
+import utils.GameState;
+
 public class MainTest {
 
 	@Before
@@ -30,13 +32,7 @@ public class MainTest {
 		assertTrue(str.isEmpty());
 
 		try {
-			Class<Main> cls = Main.class;
-			Object obj = cls.newInstance();
-
-			Method log = cls.getDeclaredMethod("prepareGameData", boolean.class);
-			log.setAccessible(true);
-			
-			log.invoke(obj, new Boolean(true));
+			GameState.initializeGameData(true);
 			logStream.flush();
 			
 			printed = log_baos.toString();
@@ -44,22 +40,12 @@ public class MainTest {
 			
 			// run again without logging
 			System.setOut(blankStream);
-			log.invoke(obj, false);
+			GameState.initializeGameData(false);
 			blankStream.flush();
 			printed = empty_baos.toString();
 			assertTrue(printed.isEmpty());
 			
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			System.setOut(backUp);

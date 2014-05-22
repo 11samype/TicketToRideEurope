@@ -14,17 +14,17 @@ public class DrawableRouteTest {
 
 	@Test
 	public void testBigConstructor() {
-		DrawableDestination start = new DrawableDestination("here", new Point());
-		DrawableDestination end = new DrawableDestination("there", new Point());
-		DrawableRoute route = new DrawableRoute(start, end, 4, TrainColor.BLACK);
+		DrawableDestination start = new DrawableDestination("here", new Point(0, 0));
+		DrawableDestination end = new DrawableDestination("there", new Point(1, 1));
+		DrawableRoute route = new DrawableRoute(start, end, 1, TrainColor.BLACK);
 		assertNotNull(route);
 	}
 	
 	@Test
 	public void testGetStart() {
-		DrawableDestination start = new DrawableDestination("here", new Point());
-		DrawableDestination end = new DrawableDestination("there", new Point());
-		DrawableRoute route = new DrawableRoute(start, end, 4, TrainColor.BLACK);
+		DrawableDestination start = new DrawableDestination("here", new Point(0, 0));
+		DrawableDestination end = new DrawableDestination("there", new Point(1, 1));
+		DrawableRoute route = new DrawableRoute(start, end, 1, TrainColor.BLACK);
 		assertNotNull(route);
 		
 		assertEquals(route.getStart(), start);

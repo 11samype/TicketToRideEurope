@@ -1,9 +1,11 @@
 package gui.listeners.mouse;
 
+import gui.drawables.DrawableDoubleRoute;
 import gui.drawables.DrawableRoute;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +35,30 @@ public class RouteClickListener extends MouseAdapter {
 		drawablesToAdd.clear();
 
 		if (!destHoverListener.isOverDestination) {
+			Point2D p = e.getPoint();
 			for (IDrawable drawnRoute : drawableRoutes) {
+				if (drawnRoute instanceof DrawableDoubleRoute) {
+					DrawableDoubleRoute clicked = (DrawableDoubleRoute) drawnRoute;
+					try {
+						if (SwingUtilities.isLeftMouseButton(e) && clicked.contains(p)) {
+							if (clicked.topLineContains(p)) {
+								GameState.getInstance().claimRoute(current, clicked.getTopRoute(), drawablesToAdd);
+							} else if (clicked.bottomLineContains(p)) {
+								GameState.getInstance().claimRoute(current, clicked.getBottomRoute(), drawablesToAdd);
+							}
+							
+						}
+					} catch (LocalizedException ex) {
+						JOptionPane.showMessageDialog(e.getComponent(), ex.getMessage(), ex.getTitle(),
+								JOptionPane.ERROR_MESSAGE);
+						break;
+					}
+				}
+				
+				
+				
+				
+				
 				if (drawnRoute instanceof DrawableRoute) {
 					clickedRoute = (DrawableRoute) drawnRoute;
 					try {
@@ -43,6 +68,7 @@ public class RouteClickListener extends MouseAdapter {
 					} catch (LocalizedException ex) {
 						JOptionPane.showMessageDialog(e.getComponent(), ex.getMessage(), ex.getTitle(),
 								JOptionPane.ERROR_MESSAGE);
+						break;
 					}
 				}
 			}

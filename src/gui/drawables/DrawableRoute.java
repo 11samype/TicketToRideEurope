@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -24,7 +25,9 @@ Highlightable {
 	// pointer to use for hit detection on lines
 	protected static final int HIT_BOX_SIZE = 10;
 	protected boolean highlighted;
+	private boolean isTaken;
 	protected static final double GAP_SIZE = 10;
+	public static final float LINE_WIDTH = DrawableDestination.DOT_RADIUS / 2;
 
 	public static DrawableRoute construct(IRoute iroute,
 			TrainColor currentPlayerColor,
@@ -33,8 +36,9 @@ Highlightable {
 		DrawableDestination drawStart = destMap.get(iroute.getStart().getName());
 		DrawableDestination drawEnd = destMap.get(iroute.getEnd().getName());
 		if (currentPlayerColor != null) {
-			return new DrawableRoute(drawStart, drawEnd, iroute.getLength(),
-					currentPlayerColor);
+			DrawableRoute route = new DrawableRoute(drawStart, drawEnd, iroute.getLength(), currentPlayerColor);
+			route.isTaken = true;
+			return route;
 		} else {
 			if (iroute instanceof AbstractColorableRoute) {
 				AbstractColorableRoute route = (AbstractColorableRoute) iroute;
@@ -77,6 +81,28 @@ Highlightable {
 			return null;
 		return (endCenter.getY() - startCenter.getY()) / denom;
 	}
+	
+	protected void drawLineOutline(Graphics2D g2) {
+		double delta = LINE_WIDTH;
+		
+		Point2D start = getStart().getCenter();
+		Point2D end = getEnd().getCenter();
+		
+		Point2D.Double mid = new Point.Double((start.getX() + end.getX()) / 2, (start.getY() + end.getY()) / 2);
+		
+		double length = start.distance(end);
+		Rectangle2D.Double rect = new Rectangle2D.Double(-length / 2, -delta, length, delta * 2);
+		
+		
+		double theta = getReciprocalAngle() - Math.PI / 2;
+		g2.translate(mid.getX(), mid.getY());
+		g2.rotate(theta);
+		
+		g2.draw(rect);
+		
+		g2.rotate(-theta);
+		g2.translate(-mid.getX(), -mid.getY());
+	}
 
 	/**
 	 * Note: in radians
@@ -92,13 +118,18 @@ Highlightable {
 
 	private Line2D.Double _line;
 	protected final double singleTrainLength = getTrainLength();
-	protected final BasicStroke dashed = getDashedStoke();
 
 	@Override
 	public void drawOn(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g.create();
 
-		g2.setStroke(dashed);
+//		if (isTaken) {
+//			g2.setStroke(new BasicStroke(1.0f));
+//			g2.setColor(Color.BLACK);
+//			g2.draw(g2.getStroke().createStrokedShape(getLine()));
+//		} else {
+			g2.setStroke(getDashedStoke());
+//		}
 		
 		if (this.highlighted) {
 			g2.setColor(Color.CYAN);
@@ -110,13 +141,29 @@ Highlightable {
 		if (_line == null)
 			_line = getLine();
 		g2.draw(_line);
+		
+		if (isTaken) {
+			g2.setStroke(getTakenStoke());
+			g2.draw(_line);
+			g2.setColor(Color.BLACK);
+			g2.setStroke(new BasicStroke(2.0f));
+			drawLineOutline(g2);
+//			g2.draw(g2.getStroke().
+		}
+	
 
 		g2.dispose();
 	}
 
+	private BasicStroke getTakenStoke() {
+		BasicStroke stroke =  new BasicStroke(LINE_WIDTH + 4);
+		
+		return stroke;
+	}
+
 	protected BasicStroke getDashedStoke() {
 		BasicStroke dashed = new BasicStroke(
-				DrawableDestination.DOT_RADIUS / 2, BasicStroke.CAP_BUTT,
+				LINE_WIDTH, BasicStroke.CAP_BUTT,
 				BasicStroke.JOIN_BEVEL, 0, new float[] {
 						(float) singleTrainLength, (float) GAP_SIZE }, 0);
 		return dashed;

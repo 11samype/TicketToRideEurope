@@ -59,7 +59,7 @@ public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 	public void drawOn(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g.create();
 		
-		g2.setStroke(dashed);
+		g2.setStroke(getDashedStoke());
 		
 		if (_topLine == null)
 			_topLine = getTopLine();
@@ -145,17 +145,24 @@ public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 	
 	@Override
 	public boolean contains(Point2D p) {
-		
-		if (_topLine.intersects(getHitBox(p))) {
+		if (topLineContains(p)) {
 			topRoute.highlight();
 			return true;
 		}
-		else if (_bottomLine.intersects(getHitBox(p))) {
+		else if (bottomLineContains(p)) {
 			bottomRoute.highlight();
 			return true;
 		}
 		this.unhighlight();
 		return false;
+	}
+	
+	public boolean topLineContains(Point2D p) {
+		return _topLine.intersects(getHitBox(p));
+	}
+	
+	public boolean bottomLineContains(Point2D p) {
+		return _bottomLine.intersects(getHitBox(p));
 	}
 	
 	@Override
