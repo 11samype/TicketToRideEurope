@@ -35,9 +35,9 @@ public class GameState {
 	private TurnManager turnManager;
 	private IRefreshable gameGUI;
 	
-	public static final Queue<TrainColor> availableColors = new LinkedList<TrainColor>(
+	public static Queue<TrainColor> availableColors = new LinkedList<TrainColor>(
 			Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
-					TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW));
+					TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW)); 
 
 	public static GameState getInstance() {
 		if (sInstance == null) {
@@ -53,6 +53,9 @@ public class GameState {
 	private GameState(List<IPlayer> players) {
 		this.cardManager = new CardManager();
 		this.turnManager = new TurnManager(players);
+		availableColors = new LinkedList<TrainColor>(
+				Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
+						TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW));
 	}
 
 	public static GameState withPlayers(List<IPlayer> players) {
