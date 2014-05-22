@@ -6,6 +6,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -134,24 +135,26 @@ Highlightable {
 		return new Line2D.Double(startCenter, endCenter);
 	}
 	
-	
-	
-	@Override
-	public boolean contains(Point2D p) {
+	protected Rectangle2D.Double getHitBox(Point2D p) {
 		int boxX = (int) (p.getX() - HIT_BOX_SIZE / 2);
 		int boxY = (int) (p.getY() - HIT_BOX_SIZE / 2);
 
-		Rectangle2D box = new Rectangle2D.Double(boxX, boxY, HIT_BOX_SIZE, HIT_BOX_SIZE);
+		return new Rectangle2D.Double(boxX, boxY, HIT_BOX_SIZE, HIT_BOX_SIZE);
+	}
+
+	@Override
+	public boolean contains(Point2D p) {
+	
 
 		if (_line == null)
 			_line = getLine();
 		
-		if (_line.intersects(box)) {
+		if (_line.intersects(getHitBox(p))) {
 			this.highlight();
 			return true;
-		} else {
-			this.unhighlight();
 		}
+		
+		this.unhighlight();
 		return false;
 	}
 

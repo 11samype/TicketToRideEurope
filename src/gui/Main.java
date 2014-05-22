@@ -1,3 +1,4 @@
+package gui;
 import gui.drawables.DrawableDestination;
 import gui.panels.LanguagePanel;
 import gui.panels.NumPlayerPanel;
@@ -36,53 +37,58 @@ import utils.TrainRouteReader;
 
 public class Main {
 
+	private static MainPanel mainPanel = new MainPanel();
+
 	public static void main(String[] args) {
 		prepareGameData(false);
+
 		MessageHelper.setLocale(Locale.US);
 		final String gameTitle = MessageHelper.getStringFromBundle(MessageHelper.getMessages(), "game.title");
 		runGame(gameTitle);
 	}
 
 	public static void runGame(final String title) {
+		final JFrame window = new JFrame(title);
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 
-				final JFrame window = new JFrame(title);
 				window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-				MainPanel mainPanel = new MainPanel();
-				window.setJMenuBar(getMenuBar(mainPanel));
+				window.setJMenuBar(getMenuBar());
+
 				window.getContentPane().add(mainPanel);
 				window.pack();
 				window.setVisible(true);
 			}
 		});
+
 	}
 
-	protected static JMenuBar getMenuBar(MainPanel mainPanel) {
+	public static JMenuBar getMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
-		JMenu menu = new JMenu("Locale");
-		ButtonGroup group = new ButtonGroup();
-		String [] lblNames = new String[] {"Original", "English", "French", "German"};
-		Locale[] locales = new Locale[] {MessageHelper.getGameLocale(), Locale.US, Locale.FRANCE, Locale.GERMANY};
+		JMenu menu = new JMenu(MessageHelper.getStringFromBundle(MessageHelper.getMessages(), "menu.locale.title"));
+		//		ButtonGroup group = new ButtonGroup();
+		String [] lblNames = new String[] {"English", "French", "German", "Multi-National"};
+		Locale[] locales = new Locale[] {Locale.US, Locale.FRANCE, Locale.GERMANY, MessageHelper.getGameLocale()};
 		for (int i = 0; i < lblNames.length ; i++ ) {
-			JRadioButtonMenuItem button = new JRadioButtonMenuItem(lblNames[i]);
-			button.addActionListener(new LocaleMenuActionListener(locales[i]));
-			group.add(button);
-			menu.add(button);
+			JMenuItem item = new JMenuItem(lblNames[i]);
+			item.addActionListener(new LocaleMenuActionListener(locales[i], mainPanel));
+			//			group.add(item);
+			menu.add(item);
 		}
-		
+
 		JMenu numPlayerMenu = new JMenu("Players");
 		ButtonGroup numPlayerGroup = new ButtonGroup();
 		String[] lblNumbers = new String[] {"1", "2", "3", "4", "5"};
-		
+
 		for (int i = 0; i < lblNumbers.length; i++) {
 			JRadioButtonMenuItem button = new JRadioButtonMenuItem(lblNumbers[i]);
 			button.addActionListener(new NumPlayerActionListener(Integer.parseInt(lblNumbers[i]), mainPanel));
 			numPlayerGroup.add(button);
 			numPlayerMenu.add(button);
-			if (lblNumbers[i] == "1") {
+			if (lblNumbers[i] == "4") {
 				button.setSelected(true);
 			}
 		}

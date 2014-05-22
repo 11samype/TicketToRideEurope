@@ -1,4 +1,5 @@
 import static org.junit.Assert.*;
+import gui.Main;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import objects.DestinationDeck;
 import utils.GameState;
 import utils.exceptions.DestinationAfterTrainException;
+import utils.exceptions.LocalizedException;
 
 public class DestinationDeckListener extends MouseAdapter {
 
@@ -29,18 +30,16 @@ public class DestinationDeckListener extends MouseAdapter {
 	//		}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
+	public void mouseClicked(MouseEvent e) {
 
 		if (!this.deck.isEmpty()) {
 			try {
 				GameState.getCurrentPlayer().drawCardFromDeck(this.deck);
 
-			} catch (DestinationAfterTrainException e) {
-				JOptionPane window = new JOptionPane();
-				JDialog dialog = window.createDialog(e.getTitle());
-				dialog.setAlwaysOnTop(true);
-				dialog.setVisible(true);
-				//					JOptionPane.showMessageDialog(MainPanel.this, e.getMessage());
+			} catch (LocalizedException ex) {
+				JOptionPane.showMessageDialog(e.getComponent().getParent(),
+						ex.getMessage(), ex.getTitle(),
+						JOptionPane.ERROR_MESSAGE);
 			} finally {
 				listener.refresh();
 			}

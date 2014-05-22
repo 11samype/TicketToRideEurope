@@ -9,14 +9,17 @@ import utils.MessageHelper;
 public class LocaleMenuActionListener implements ActionListener {
 	
 	protected Locale locale;
+	protected LocaleChangeListener listener;
 	
-	public LocaleMenuActionListener(Locale locale) {
+	public LocaleMenuActionListener(Locale locale, LocaleChangeListener listener) {
 		this.locale = locale;
+		this.listener = listener;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		MessageHelper.setLocale(this.locale);
+		listener.notifyLocaleChange();
 	}
 
 }

@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -68,14 +69,20 @@ public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 		Color save = g2.getColor();
 
 		if (topRoute != null) {
-			g2.setColor(topRoute.getAwtColor());
+			if (topRoute.highlighted)
+				g2.setColor(Color.CYAN);
+			else
+				g2.setColor(topRoute.getAwtColor());
 		}
 		g2.draw(_topLine);
 		g2.setColor(save);
 		
 
 		if (bottomRoute != null) {
-			g2.setColor(bottomRoute.getAwtColor());
+			if (bottomRoute.highlighted)
+				g2.setColor(Color.CYAN);
+			else
+				g2.setColor(bottomRoute.getAwtColor());
 		}
 		g2.draw(_bottomLine);
 		g2.setColor(save);
@@ -139,20 +146,22 @@ public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 	@Override
 	public boolean contains(Point2D p) {
 		
-		System.out.println(topRoute);
-		System.out.println(bottomRoute);
-		
-		boolean high =   topRoute.contains(p) || bottomRoute.contains(p) || super.getLine().contains(p);
-		System.out.println(high);
-		return high;
-	
-	
+		if (_topLine.intersects(getHitBox(p))) {
+			topRoute.highlight();
+			return true;
+		}
+		else if (_bottomLine.intersects(getHitBox(p))) {
+			bottomRoute.highlight();
+			return true;
+		}
+		this.unhighlight();
+		return false;
 	}
 	
 	@Override
 	public void unhighlight() {
-		getTopRoute().unhighlight();
-		getBottomRoute().unhighlight();
+		super.unhighlight();
+		this.topRoute.unhighlight();
+		this.bottomRoute.unhighlight();
 	}
-
 }
