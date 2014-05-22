@@ -106,7 +106,7 @@ public class PlayerTest {
 //			p.drawCardFromDeck(d);
 //		}
  
-		p.populateHand(cardList);
+		p.getHand().getCards().addAll(cardList);
 		
 		assertEquals(p.getHand().size(), 9);
 
@@ -141,7 +141,7 @@ public class PlayerTest {
 //			p.drawCardFromDeck(d);
 //		}
 		
-		p.populateHand(cardList);
+		p.getHand().getCards().addAll(cardList);
 
 		TrainRoute routeToClaim = new TrainRoute(new Destination("here"),
 				new Destination("there"), TrainColor.BLACK, 6);
@@ -309,7 +309,7 @@ public class PlayerTest {
 			cardList.add(new TrainCarCard(TrainColor.BLACK));
 		}
 		
-		p.populateHand(cardList);
+		p.getHand().getCards().addAll(cardList);
 
 		DestinationRoute route = new DestinationRoute(new Destination("start"),
 				new Destination("end"));
@@ -317,7 +317,7 @@ public class PlayerTest {
 		List<IRoute> routes = new ArrayList<IRoute>();
 		routes.add(route);
 
-		p.setRoutes(routes);
+		p.getRoutes().addAll(routes);
 		
 		List<DestinationRoute> destinations = p.getCompletedDestinations();
 		

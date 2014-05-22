@@ -29,7 +29,7 @@ public class DrawableDoubleRouteTest {
 		DrawableDoubleRoute route = new DrawableDoubleRoute(start, end, 1);
 		assertNotNull(route);
 		assertEquals(route.getEnd(), end);
-		assertEquals(2, route.getScore());
+		assertEquals(1, route.getScore());
 	}
 
 }

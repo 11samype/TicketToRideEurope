@@ -1,17 +1,24 @@
 package utils;
 
+import gui.drawables.DrawableDestination;
 import gui.drawables.DrawableRoute;
 import gui.interfaces.IRefreshable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 import objects.Destination;
 import objects.DestinationCard;
 import objects.DestinationDeck;
+import objects.DestinationRoute;
 import objects.DiscardPile;
 import objects.Player;
 import objects.TrainCarCard;
@@ -30,11 +37,11 @@ import utils.exceptions.RouteTakenException;
 public class GameState {
 	private static GameState sInstance;
 	public static int MAX_PLAYERS = 5;
-	public static int numPlayers = 1;
+	public static int numPlayers = 4;
 	private CardManager cardManager;
 	private TurnManager turnManager;
 	private IRefreshable gameGUI;
-	
+
 	public static final Queue<TrainColor> availableColors = new LinkedList<TrainColor>(
 			Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
 					TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW));
@@ -53,10 +60,60 @@ public class GameState {
 	private GameState(List<IPlayer> players) {
 		this.cardManager = new CardManager();
 		this.turnManager = new TurnManager(players);
+
+		dealTrainsToPlayers(players);
+		dealDestinationsToPlayers(players);
+	}
+
+	private void dealDestinationsToPlayers(List<IPlayer> players) {
+		// take 6 longest destination cards
+		Collections.sort(cardManager.getDestinationDeck().getCards(), new Comparator<DestinationCard>() {
+
+			@Override
+			public int compare(DestinationCard c1, DestinationCard c2) {
+				return -1 * new Integer(c1.getScore()).compareTo(new Integer(c2.getScore()));
+			}
+
+		});
+
+		// remove and shuffle top 6
+		List<DestinationCard> top6 = new ArrayList<DestinationCard>();
+		for (int i = 0; i < 6; i++) {
+			top6.add(cardManager.getDestinationDeck().draw());
+		}
+		Collections.shuffle(top6);
+
+		// deal one to each player
+		for (IPlayer iPlayer : players) {
+			Player player = (Player) iPlayer;
+			player.getDestinationHand().add(top6.remove(0));
+		}
+		
+		// shuffle rest of cards
+		Collections.shuffle(cardManager.getDestinationDeck().getCards());
+		
+		// deal 3 cards to each player
+		for (IPlayer iPlayer : players) {
+			Player player = (Player) iPlayer;
+			for (int i = 0; i < 3; i++) {
+				player.getDestinationHand().add(cardManager.getDestinationDeck().draw());
+			}
+		}
+	}
+
+	private void dealTrainsToPlayers(List<IPlayer> players) {
+		for (IPlayer iPlayer : players) {
+			Player player = (Player) iPlayer;
+			for (int i = 0; i < 4; i++) {
+				player.getHand().addCard(cardManager.getTrainCarDeck().draw());
+			}
+		}
+
 	}
 
 	public static GameState withPlayers(List<IPlayer> players) {
 		sInstance = new GameState(players);
+		numPlayers = players.size();
 		return getInstance();
 	}
 
@@ -77,7 +134,7 @@ public class GameState {
 		GameState.getTurnManager().rotatePlayers();
 		refreshGUI();
 	}
-	
+
 	public static void refreshGUI() {
 		if (getInstance().gameGUI != null)
 			getInstance().gameGUI.refresh();
@@ -89,6 +146,65 @@ public class GameState {
 
 	public static Player getCurrentPlayer() {
 		return (Player) GameState.getTurnManager().getCurrentPlayer();
+	}
+
+
+	public static void initializeGameData(boolean log) {
+		readTrainRoutesFile(log);
+		readDestinationCardsFile(log);
+		readDestinationLocationFile(log);
+
+	}
+
+	private static void readDestinationCardsFile(boolean log) {
+		DestinationCardReader reader = DestinationCardReader.getInstance();
+		if (log) {
+			Set<DestinationRoute> routes = reader.getRoutes();
+			int k = 1;
+			for (Iterator<DestinationRoute> i = routes.iterator(); i.hasNext();) {
+				DestinationRoute d = i.next();
+				System.out.printf("[%d] %15s -- %15s (%s)\n", k++,
+						d.getStart(), d.getEnd(), d.getScore());
+			}
+			System.out
+			.println("-----------------------------------------------------");
+		}
+
+	}
+
+	private static void readDestinationLocationFile(boolean log) {
+		DestinationLocationReader reader = DestinationLocationReader
+				.getInstance();
+		if (log) {
+			HashMap<String, DrawableDestination> dests = reader
+					.getDestinations();
+			int k = 1;
+			for (Iterator<String> i = dests.keySet().iterator(); i.hasNext();) {
+				DrawableDestination d = dests.get(i.next());
+				System.out
+				.printf("[%2d] %15s (%.2f, %.2f)\n", k++, d.getName(),
+						d.getCenter().getX(), d.getCenter().getY());
+			}
+			System.out
+			.println("----------------------------------------------------");
+		}
+	}
+
+	private static void readTrainRoutesFile(boolean log) {
+		TrainRouteReader reader = TrainRouteReader.getInstance();
+		if (log) {
+			HashMap<Destination, List<IRoute>> routeGraph = reader.getGraph();
+			int k = 1;
+			for (Iterator<Destination> i = routeGraph.keySet().iterator(); i
+					.hasNext();) {
+				Destination d = i.next();
+				List<IRoute> routeLst = routeGraph.get(d);
+				System.out.printf("[%2d] %15s : %s\n", k++, d, routeLst);
+			}
+			System.out
+			.println("----------------------------------------------------");
+		}
+
 	}
 
 	public void claimRoute(Player claimer, IRoute routeToClaim, ArrayList<DrawableRoute> drawablesToAdd)
@@ -106,8 +222,10 @@ public class GameState {
 					}
 				}
 			}
-			
+
+			GameState.takeTurn();
 			refreshGUI();
+
 		}
 	}
 

@@ -29,8 +29,8 @@ public class AbstractPlayer implements IPlayer {
 	public static final int MAX_NUM_STATIONS = 3;
 	public static final int MAX_NUM_TRAINS = 45;
 
-	protected int prevTurnCardSum = 0;
-	protected int prevTurnNumCards = 0;
+	protected int prevTurnCardSum;
+	protected int prevTurnNumCards;
 
 	protected final String name;
 	protected int numTrains;
@@ -49,56 +49,46 @@ public class AbstractPlayer implements IPlayer {
 		this.numStations = MAX_NUM_STATIONS;
 	}
 
-	public List<DestinationRoute> getCompletedDestinations() {
-
-		List<DestinationRoute> destList = new ArrayList<DestinationRoute>();
-
-		for (IRoute route : this.routes) {
-			if (route instanceof DestinationRoute) {
-				destList.add((DestinationRoute) route);
-			}
-		}
-
-		return destList;
-	}
-	
-	public void setRoutes(List<IRoute> routes) {
-		// for testing
-		
-		this.routes = routes;
-	}
-
 	public void setPrevTurnCardNum() {
 		this.prevTurnNumCards = getHand().size();
 	}
 
 	public boolean canDrawTrainCard() {
 
-		int numberOfRainbowInHand = 0;
-		int numberOfRegularTrainsInHand = 0;
+		int[] cardSum = getTotalNumberOfCardsInHand();
+				
+		int numberOfRegularTrainsInHand = cardSum[0];
+		int numberOfRainbowInHand = cardSum[1];
+		
+		int weightedSum = ((2 * numberOfRainbowInHand) + numberOfRegularTrainsInHand)
+				- this.prevTurnCardSum;
+
+		if (weightedSum < 2) {
+			return true;
+		} else {
+			this.prevTurnCardSum = this.prevTurnCardSum + weightedSum;
+
+			return false;
+		}
+	}
+	
+	public int[] getTotalNumberOfCardsInHand() {
+		int[] nums = new int[2];
 
 		List<TrainColor> trainColors = TrainColor.getAllColors();
 
 		for (TrainColor color : trainColors) {
 			if (color.equals(TrainColor.RAINBOW)) {
-				numberOfRainbowInHand = this.hand.numInHand(color);
+				nums[1] = this.hand.numInHand(TrainColor.RAINBOW);
 			} else {
-				numberOfRegularTrainsInHand += this.hand.numInHand(color);
+				nums[0] += this.hand.numInHand(color);
 			}
 		}
-
-		int sum = ((2 * numberOfRainbowInHand) + numberOfRegularTrainsInHand)
-				- this.prevTurnCardSum;
-
-		if (sum < 2) {
-			return true;
-		} else {
-			this.prevTurnCardSum = this.prevTurnCardSum + sum;
-
-			return false;
-		}
-
+		return nums;
+		
 	}
+	
+	
 
 	public boolean canDrawDestination() {
 
@@ -170,15 +160,6 @@ public class AbstractPlayer implements IPlayer {
 			throw new NotEnoughCardsForRouteException();
 		}
 	}
-
-	public void populateHand(List<TrainCarCard> cardList) {
-		//helper for tests
-		TrainCarHand newHand = new TrainCarHand();
-		for (int i = 0; i < cardList.size(); i++) {
-			newHand.addCard(cardList.get(i));
-		}
-		this.hand = newHand;
-	}
 	
 	private void addRoute(IRoute route) {
 		this.routes.add(route);
@@ -218,7 +199,7 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public int getScore() {
-		int score = 0;
+		int score = numStations;
 		for (IRoute claimedRoute : this.routes) {
 			score += claimedRoute.getScore();
 		}
@@ -263,6 +244,19 @@ public class AbstractPlayer implements IPlayer {
 	@Override
 	public List<IRoute> getRoutes() {
 		return this.routes;
+	}
+
+	public List<DestinationRoute> getCompletedDestinations() {
+	
+		List<DestinationRoute> destList = new ArrayList<DestinationRoute>();
+	
+		for (IRoute route : this.routes) {
+			if (route instanceof DestinationRoute) {
+				destList.add((DestinationRoute) route);
+			}
+		}
+	
+		return destList;
 	}
 
 }

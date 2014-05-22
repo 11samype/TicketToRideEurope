@@ -28,7 +28,7 @@ public class GraphHelperTest {
 	@Before
 	public void setUp() throws Exception {
 		numDestinations = GraphHelper.DEST_LOC_LOOKUP.size();
-		numRoutes = 101;
+		numRoutes = 101 - (22 / 2);
 	}
 
 	@Test
