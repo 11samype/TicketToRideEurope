@@ -13,6 +13,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 
+import objects.FerryRoute;
 import objects.TrainColor;
 import objects.TunnelRoute;
 import objects.abstracts.AbstractColorableRoute;
@@ -42,11 +43,15 @@ public class DrawableRoute extends AbstractColorableRoute implements IDrawable,H
 			if (iroute instanceof AbstractColorableRoute) {
 				AbstractColorableRoute route = (AbstractColorableRoute) iroute;
 				if (route instanceof TunnelRoute) {
-					return new DrawableTunnelRoute(drawStart, drawEnd, route);
+					return new DrawableTunnelRoute(drawStart, drawEnd, (TunnelRoute) route);
 				}
 				return new DrawableRoute(drawStart, drawEnd, route);
-			} else
+			} else {
+				if (iroute instanceof FerryRoute) {
+					return new DrawableFerryRoute(drawStart, drawEnd, (FerryRoute) iroute);
+				}
 				return new DrawableRoute(drawStart, drawEnd, iroute);
+			}
 		}
 	}
 
