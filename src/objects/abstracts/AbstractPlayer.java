@@ -233,7 +233,7 @@ public class AbstractPlayer implements IPlayer {
 		return colorStrings;
 	}
 
-	private TrainColor[] getFerryCardChoices(int numCardsNeeded) {
+	public TrainColor[] getFerryCardChoices(int numCardsNeeded) {
 
 		List<TrainColor> cards = new ArrayList<TrainColor>();
 
@@ -313,18 +313,16 @@ public class AbstractPlayer implements IPlayer {
 			throw new NotEnoughCardsForRouteException();
 		}
 
-
-
 	}
 
-	private boolean hasEnoughCardsForTunnelRoute(IRoute route, TrainColor routeColor) {
+	public boolean hasEnoughCardsForTunnelRoute(IRoute route, TrainColor routeColor) {
 		if (route.getLength() <= this.hand.numInHand(routeColor)) {
 			return true;
 		}
 		return false;
 	}
 
-	private String[] getTunnelChoices(TrainColor routeColor, int numExtraCards) {
+	public String[] getTunnelChoices(TrainColor routeColor, int numExtraCards) {
 
 		List<String> tunnelChoices = new ArrayList<String>();
 
@@ -348,7 +346,7 @@ public class AbstractPlayer implements IPlayer {
 		return tunnelChoicesString;
 	}
 
-	private int routeColorMatched(TrainColor routeColor,
+	public int routeColorMatched(TrainColor routeColor,
 			List<TrainCarCard> topThreeCards) {
 
 		int numCardsMatched = 0;

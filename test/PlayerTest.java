@@ -361,5 +361,70 @@ public class PlayerTest {
 		
 		assertEquals(expected, trainColorStrings);
 	}
+	
+	@Test
+	public void testRouteColorMatched() {
+		
+		Player p = new Player();
+		
+		List<TrainCarCard> threeCards = new ArrayList<TrainCarCard>();
+		
+		threeCards.add(new TrainCarCard(TrainColor.BLACK));
+		threeCards.add(new TrainCarCard(TrainColor.BLUE));
+		threeCards.add(new TrainCarCard(TrainColor.RAINBOW));
+		
+		assertEquals(0, p.routeColorMatched(TrainColor.GREEN, threeCards));
+		assertEquals(1, p.routeColorMatched(TrainColor.RAINBOW, threeCards));
+	}
+	
+	@Test
+	public void testGetTunnelChoices() {
+		Player p = new Player();
+		List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
+		for (int i = 0; i < 4; i++) {
+			cards.add(new TrainCarCard(TrainColor.BLACK));
+		}
+		p.populateHand(cards);
+		
+		String[] expected = {"CANCEL", "BLACK"};
+		assertEquals(expected, p.getTunnelChoices(TrainColor.BLACK, 1));
+		
+		for (int i = 0; i < 4; i++) {
+			cards.add(new TrainCarCard(TrainColor.RAINBOW));
+		}
+		p.populateHand(cards);
+		
+		String[] expected1 = {"CANCEL", "RAINBOW", "RAINBOW"};
+		assertEquals(expected1, p.getTunnelChoices(TrainColor.RAINBOW, 1));
+	}
+	
+	@Test
+	public void testHasEnoughCardsForTunnelRoute() {
+		Player p = new Player();
+		List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
+		for (int i = 0; i < 4; i++) {
+			cards.add(new TrainCarCard(TrainColor.BLACK));
+		}
+		p.populateHand(cards);
+		
+		DestinationRoute route = new DestinationRoute(new Destination("here"), new Destination("there"));
+		
+		assertTrue(p.hasEnoughCardsForTunnelRoute(route, TrainColor.BLACK));
+		assertFalse(p.hasEnoughCardsForTunnelRoute(route, TrainColor.BLUE));
+	}
+	
+	@Test
+	public void testGetFerryCardChoices() {
+		Player p = new Player();
+		List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
+		for (int i = 0; i < 4; i++) {
+			cards.add(new TrainCarCard(TrainColor.BLACK));
+		}
+		p.populateHand(cards);
+		
+		TrainColor[] expected = {TrainColor.BLACK};
+		
+		assertEquals(expected, p.getFerryCardChoices(1));
+	}
 
 }
