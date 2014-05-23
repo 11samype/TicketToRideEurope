@@ -4,6 +4,7 @@ import java.awt.Font;
 
 import gui.DeckSizeLabel;
 import gui.factory.JLabelFactory;
+import gui.factory.JPanelFactory;
 
 import javax.swing.JLabel;
 
@@ -15,6 +16,12 @@ import org.junit.Test;
 
 
 public class JLabelFactoryTest {
+	
+	@Test
+	public void testConstructor() {
+		JLabelFactory fact = new JLabelFactory();
+		assertNotNull(fact);
+	}
 
 	@Test
 	public void testCreateJLabel() {
