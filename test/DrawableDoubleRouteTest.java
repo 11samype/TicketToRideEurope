@@ -1,5 +1,5 @@
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import gui.drawables.DrawableDestination;
 import gui.drawables.DrawableDoubleRoute;
 import gui.drawables.DrawableRoute;
@@ -22,6 +22,9 @@ public class DrawableDoubleRouteTest {
 		assertNotNull(doub_route);
 		
 		assertEquals(doub_route.getEnd(), end);
+		assertEquals(draw_route, doub_route.getRoute());
+		assertEquals(draw_route, doub_route.getTopRoute());
+		assertEquals(draw_route, doub_route.getBottomRoute());
 	}
 
 	@Test

@@ -18,6 +18,7 @@ import objects.TrainCarCard;
 import objects.TrainCarDeck;
 import objects.TrainCarHand;
 import objects.TrainColor;
+import objects.TrainRoute;
 import objects.TunnelRoute;
 import objects.interfaces.ICard;
 import objects.interfaces.IPlayer;
@@ -44,7 +45,7 @@ public class AbstractPlayer implements IPlayer {
 	protected TrainCarHand hand = new TrainCarHand();
 	protected DestinationHand destinationHand = new DestinationHand();
 	protected List<IRoute> routes = new ArrayList<IRoute>();
-	
+
 	private CardTurnEndManager cardTurnEndManager = new CardTurnEndManager();
 
 	public AbstractPlayer() {
@@ -62,21 +63,21 @@ public class AbstractPlayer implements IPlayer {
 		return cardTurnEndManager.canDrawTrainCard();
 
 	}
-	
+
 
 	public boolean canDrawDestination() {
 
 		return cardTurnEndManager.canDrawDestinationCard();
-		
+
 	}
 
 	@Override
 	public void drawCardFromDeck(TrainCarDeck deck) {
-		
+
 		if (deck.isEmpty()) {
 			deck.reFillFromDiscard();
 		}
-		
+
 		TrainCarCard card = deck.draw();
 
 		this.hand.addCard(card);
@@ -137,8 +138,8 @@ public class AbstractPlayer implements IPlayer {
 				claimFerryRoute((FerryRoute) route);
 			} else if (route instanceof TunnelRoute) {
 				claimTunnelRoute((TunnelRoute) route);
-			} else {
-				claimTrainRoute(route);
+			} else if (route instanceof TrainRoute){
+				claimTrainRoute((TrainRoute) route);
 			}
 		} else {
 			throw new RouteAfterTrainException();
@@ -147,24 +148,23 @@ public class AbstractPlayer implements IPlayer {
 
 	}
 
-	private void claimTrainRoute(IRoute route) throws NotEnoughCardsForRouteException {
-		TrainColor routeColor = (route instanceof AbstractColorableRoute) ? ((AbstractColorableRoute) route)
-				.getColor() : TrainColor.RAINBOW;
+	private void claimTrainRoute(TrainRoute route) throws NotEnoughCardsForRouteException {
+		TrainColor routeColor = route.getColor();
 
-				int numberOfColorInHand = this.hand.numInHand(routeColor);
-				int numberOfRainbowInHand = this.hand.numInHand(TrainColor.RAINBOW);
-				int routeLength = route.getLength();
-				if (numberOfColorInHand >= routeLength) {
-					discardCardsOfColor(routeLength, routeColor);
-					addRoute(route);
-					this.numTrains -= routeLength;
-				} else {
-					System.err.println(
-							"Not enough cards for route!\nYou have "
-									+ numberOfColorInHand + " " + routeColor
-									+ " but the route is worth " + routeLength);
-					throw new NotEnoughCardsForRouteException();
-				}
+		int numberOfColorInHand = this.hand.numInHand(routeColor);
+		int numberOfRainbowInHand = this.hand.numInHand(TrainColor.RAINBOW);
+		int routeLength = route.getLength();
+		if (numberOfColorInHand >= routeLength) {
+			discardCardsOfColor(routeLength, routeColor);
+			addRoute(route);
+			this.numTrains -= routeLength;
+		} else {
+			System.err.println(
+					"Not enough cards for route!\nYou have "
+							+ numberOfColorInHand + " " + routeColor
+							+ " but the route is worth " + routeLength);
+			throw new NotEnoughCardsForRouteException();
+		}
 	}
 
 	private void claimFerryRoute(FerryRoute route) throws NotEnoughCardsForRouteException {

@@ -14,10 +14,12 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 
 import objects.FerryRoute;
+import objects.Player;
 import objects.TrainColor;
 import objects.TunnelRoute;
 import objects.abstracts.AbstractColorableRoute;
 import objects.interfaces.IDrawable;
+import objects.interfaces.IPlayer;
 import objects.interfaces.IRoute;
 
 public class DrawableRoute extends AbstractColorableRoute implements IDrawable,Highlightable {
@@ -81,6 +83,11 @@ public class DrawableRoute extends AbstractColorableRoute implements IDrawable,H
 	
 	public IRoute getRoute() {
 		return route;
+	}
+	
+	public void takeBy(Player player) {
+		this.isTaken = true;
+		this.color = player.getColor();
 	}
 
 	protected Double getSlope() {

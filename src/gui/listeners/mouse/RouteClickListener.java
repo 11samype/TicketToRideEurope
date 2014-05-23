@@ -42,9 +42,11 @@ public class RouteClickListener extends MouseAdapter {
 					try {
 						if (SwingUtilities.isLeftMouseButton(e) && clicked.contains(p)) {
 							if (clicked.topLineContains(p)) {
-								GameState.getInstance().claimRoute(current, clicked.getTopRoute(), drawablesToAdd);
+								GameState.getInstance().claimRoute(current, clicked.getTopRoute(), null);
+								clicked.getTopRoute().takeBy(current);
 							} else if (clicked.bottomLineContains(p)) {
-								GameState.getInstance().claimRoute(current, clicked.getBottomRoute(), drawablesToAdd);
+								GameState.getInstance().claimRoute(current, clicked.getBottomRoute(), null);
+								clicked.getBottomRoute().takeBy(current);
 							}
 							
 						}
