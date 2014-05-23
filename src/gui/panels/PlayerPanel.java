@@ -23,11 +23,7 @@ public class PlayerPanel extends RepaintableComponent implements PlayerUpdater, 
 	private JLabel lblPoints = createJLabel("");
 	private Player player;
 	private Color bg;
-
-//	private static final String fmtStations = "Stations: %d";
-//	private static final String fmtTrainCars = "Train Cars: %d";
-//	private static final String fmtPoints = "Points: %d";
-
+	
 	/**
 	 * Create the panel.
 	 *
@@ -37,8 +33,8 @@ public class PlayerPanel extends RepaintableComponent implements PlayerUpdater, 
 		super();
 		initGUI();
 		setPlayer(player);
-	
-		}
+
+	}
 
 	private void initGUI() {
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -48,7 +44,7 @@ public class PlayerPanel extends RepaintableComponent implements PlayerUpdater, 
 		add(this.lblTrainCars);
 		add(this.lblPoints);
 	}
-	
+
 	@Override
 	public void setPlayer(IPlayer player) {
 		this.player = (Player) player;
@@ -58,7 +54,7 @@ public class PlayerPanel extends RepaintableComponent implements PlayerUpdater, 
 		String stations = MessageHelper.getStringFromBundle(messages, "player.numStations", player.getNumStations());
 		String trains = MessageHelper.getStringFromBundle(messages, "player.numTrains", player.getNumTrains());
 		String score = MessageHelper.getStringFromBundle(messages, "player.score", player.getScore());
-	
+
 		this.lblName.setText(player.getName());
 		this.lblStations.setText(stations);
 		this.lblTrainCars.setText(trains);
@@ -71,8 +67,8 @@ public class PlayerPanel extends RepaintableComponent implements PlayerUpdater, 
 		super.paintComponent(g);
 		g.setColor(bg);
 		g.fillRect(0, 0, getWidth(), getHeight());
-//		if (this.player != null && this.player.getColor() != null)
-			
+		//		if (this.player != null && this.player.getColor() != null)
+
 	}
 
 	private JLabel createJLabel(String lbl) {
@@ -80,7 +76,7 @@ public class PlayerPanel extends RepaintableComponent implements PlayerUpdater, 
 		label.setFont(new Font("Lucida Bright", Font.BOLD, 14));
 		return label;
 	}
-	
+
 	@Override
 	public void notifyLocaleChange() {
 		this.refresh();

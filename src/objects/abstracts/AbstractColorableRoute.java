@@ -9,7 +9,7 @@ import objects.interfaces.IColorable;
 public abstract class AbstractColorableRoute extends AbstractRoute implements
 		IColorable {
 
-	protected final TrainColor color;
+	protected TrainColor color;
 
 	public AbstractColorableRoute(Destination start, Destination end, TrainColor color, int length) {
 		super(start, end, length);

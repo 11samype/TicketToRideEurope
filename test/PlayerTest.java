@@ -47,6 +47,23 @@ public class PlayerTest {
 		assertNotNull(p);
 		assertEquals("New Player", p.getName());
 	}
+	
+
+	@Test
+	public void testGetScore() {
+		Player p = new Player();
+		assertEquals(p.getNumStations(), p.getScore());
+		Destination start = new Destination("Start");
+		Destination end = new Destination("End");
+		TrainRoute route = new TrainRoute(start, end, 5);
+		p.getRoutes().add(route);
+		assertEquals(p.getNumStations() + route.getScore(), p.getScore());
+		DestinationRoute destRoute = new DestinationRoute(start, end, 4);
+		p.getDestinationHand().add(new DestinationCard(destRoute));
+		assertEquals(p.getNumStations() + route.getScore() - destRoute.getScore(), p.getScore());
+		p.getRoutes().add(destRoute);
+		assertEquals(p.getNumStations() + route.getScore() + destRoute.getScore(), p.getScore());
+	}
 
 	@Test
 	public void testInitPlayerInfo() {

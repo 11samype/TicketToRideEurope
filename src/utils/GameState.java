@@ -42,8 +42,7 @@ public class GameState {
 	private CardManager cardManager;
 	private TurnManager turnManager;
 	private IRefreshable gameGUI;
-	private static boolean countDown = false;
-	private static int count = 100;
+	private static int turnCount = Integer.MAX_VALUE;
 
 	public static Queue<TrainColor> availableColors = new LinkedList<TrainColor>(
 			Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
@@ -139,19 +138,17 @@ public class GameState {
 
 	public static void takeTurn() {
 		
-		Player current = GameState.getCurrentPlayer();
-		
-		if (!countDown && current.getNumTrains() <= 2) {
-			startCountDown();
-			
-		} else if (countDown){
-			count--;
-			
-		}
-		
-		if (count <= 0) {
+		if (turnCount <= 0) {
 			endGame();
+			return;
 		}
+		turnCount--;
+		
+		Player current = GameState.getCurrentPlayer();
+		if (current.getNumTrains() <= 2) {
+			turnCount = getPlayers().size() - 1;
+		}
+		
 		
 		GameState.getTurnManager().rotatePlayers();
 		refreshGUI();
@@ -179,11 +176,11 @@ public class GameState {
 		
 	}
 
-	private static void startCountDown() {
-		countDown = true;
-		count = numPlayers;
-		
-	}
+//	private static void startCountDown() {
+//		countDown = true;
+//		count = numPlayers;
+//
+//	}
 
 	public static void refreshGUI() {
 		if (getInstance().gameGUI != null)
