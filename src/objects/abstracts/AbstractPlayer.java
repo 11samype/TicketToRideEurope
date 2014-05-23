@@ -1,5 +1,6 @@
 package objects.abstracts;
 
+import gui.drawables.DrawableRoute;
 import gui.panels.MainPanel;
 
 import java.util.ArrayList;
@@ -164,13 +165,20 @@ public class AbstractPlayer implements IPlayer {
 		}
 		
 		
-//		claimFerryRoute(route);
+		DrawableRoute drawableRoute = (DrawableRoute) route;
 		
-//		claimTunnelRoute(route);
+//		FerryRoute ferryRoute;
+//		TunnelRoute tunnelRoute;
+//		
+//		try {
+//			ferryRoute = (FerryRoute) drawableRoute.getRoute();
+//		} catch (Exception e) {
+//			System.out.println("failed");
+//		}
 		
-		if (route instanceof FerryRoute) {
+		if (drawableRoute.getRoute() instanceof FerryRoute) {
 			claimFerryRoute(route);
-		} else if (route instanceof TunnelRoute) {
+		} else if (drawableRoute.getRoute() instanceof TunnelRoute) {
 			claimTunnelRoute(route);
 		} else {
 			claimDestinationRoute(route);
