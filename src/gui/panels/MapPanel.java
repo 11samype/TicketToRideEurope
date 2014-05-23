@@ -9,13 +9,19 @@ import gui.listeners.mouse.DestinationHoverListener;
 import gui.listeners.mouse.RouteClickListener;
 import gui.listeners.mouse.RouteHoverListener;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -39,9 +45,10 @@ public class MapPanel extends RepaintableComponent implements IRefreshable {
 	private final DestinationHoverListener destHoverListener = new DestinationHoverListener(drawables);
 	private final RouteClickListener routeClickListener = new RouteClickListener(destHoverListener, drawableRoutes);
 	private final RouteHoverListener routeHoverListener = new RouteHoverListener(destHoverListener, drawableRoutes);
+	private BufferedImage bgImg;
 
 	public MapPanel() {
-//		super(false);
+		//		super(false);
 		initDrawableDestinations();
 		initDrawableRoutes();
 		this.addMouseListener(destClickListener);
@@ -54,17 +61,17 @@ public class MapPanel extends RepaintableComponent implements IRefreshable {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-//		 drawBackground(g);
+//		drawBackground(g);
 		drawDrawables(g);
 	}
 
 	private synchronized void drawDrawables(Graphics g) {
 		for (DrawableRoute route : drawableRoutes) {
-//			if (route instanceof DrawableDoubleRoute) {
-//				((DrawableDoubleRoute) route).drawOn(g);
-//			} else {
-				route.drawOn(g);
-//			}
+			//			if (route instanceof DrawableDoubleRoute) {
+			//				((DrawableDoubleRoute) route).drawOn(g);
+			//			} else {
+			route.drawOn(g);
+			//			}
 		}
 		for (IDrawable drawable : drawables) {
 			drawable.drawOn(g);
@@ -82,17 +89,17 @@ public class MapPanel extends RepaintableComponent implements IRefreshable {
 		List<DrawableRoute> routesToAdd = new ArrayList<DrawableRoute>();
 		DrawableDoubleRoute doubleRoute = null;
 		DrawableRoute route = null;
-		
+
 		for (Destination startDest : ROUTES.keySet()) {
 			// make a copy to remove from
 			List<IRoute> routesFromStart = new ArrayList<IRoute>(ROUTES.get(startDest));
 			routesToAdd.clear();
-			
-			 // while there are routes from here
+
+			// while there are routes from here
 			while (!routesFromStart.isEmpty()) {
 				// construct a drawable route
 				IRoute iroute = routesFromStart.remove(0);
-							
+
 				route = DrawableRoute.construct(iroute, null, DESTS);
 				if (!drawableRoutes.contains(route)) { // if not currently drawn
 					// if there is a double route
@@ -102,15 +109,15 @@ public class MapPanel extends RepaintableComponent implements IRefreshable {
 						DrawableRoute bottom = DrawableRoute.construct(routesFromStart.remove(doubleIndex), null, DESTS);
 						doubleRoute = new DrawableDoubleRoute(route, bottom);
 						routesToAdd.add(doubleRoute);
- 					} else { // draw the single
- 						routesToAdd.add(route);
- 					}
+					} else { // draw the single
+						routesToAdd.add(route);
+					}
 				}
-				
+
 			}
 			// add all the constructed routes
 			drawableRoutes.addAll(routesToAdd);
-			
+
 		}
 	}
 
@@ -120,22 +127,22 @@ public class MapPanel extends RepaintableComponent implements IRefreshable {
 	 *
 	 * @return the loaded background image
 	 */
-	// private synchronized BufferedImage getBackgroundImage() {
-	// if (this.bgImg == null) {
-	// try {
-	// this.bgImg = ImageIO.read(new File("img//" + this.mapName
-	// + ".png"));
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// return this.bgImg;
-	// }
+//	private synchronized BufferedImage getBackgroundImage() {
+//		if (this.bgImg == null) {
+//			try {
+//				this.bgImg = ImageIO.read(new File("img//" + "EuropeOutline"
+//						+ ".png"));
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		return this.bgImg;
+//	}
 
 	// Never used
-	// private synchronized void drawBackground(Graphics g) {
-	// g.drawImage(getBackgroundImage(), 0, 0, getWidth(), getHeight(),
-	// Color.BLACK, null); }
+//	private synchronized void drawBackground(Graphics g) {
+//		g.drawImage(getBackgroundImage(), 0, 0, getWidth(), getHeight(),
+//				null, null); }
 
 
 }
