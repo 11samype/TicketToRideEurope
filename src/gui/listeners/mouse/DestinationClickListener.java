@@ -48,7 +48,7 @@ public class DestinationClickListener extends MouseAdapter {
 							selectedPoints.remove(clickedDest);
 						}
 						if (selectedPoints.isFull()) {
-							GameState.getInstance().claimRouteBewteenPoints(
+							GameState.getInstance().claimRouteBetweenPoints(
 									current, selectedPoints, drawablesToAdd);
 						}
 						// }

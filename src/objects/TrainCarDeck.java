@@ -29,4 +29,17 @@ public class TrainCarDeck extends AbstractDeck<TrainCarCard> {
 
 	}
 
+	public List<TrainCarCard> drawTopThree() {
+		
+		// for tunnels, must remember to placee cards into discard after use!!
+		
+		List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
+		
+		for (int i = 0; i < 3; i++) {
+			cards.add(this.cards.remove(0));
+		}
+		
+		return cards;
+	}
+
 }
