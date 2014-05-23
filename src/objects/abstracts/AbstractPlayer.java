@@ -199,26 +199,52 @@ public class AbstractPlayer implements IPlayer {
 		}
 	}
 	
-	private void claimFerryRoute(IRoute route) {
+	private void claimFerryRoute(IRoute route) throws NotEnoughCardsForRouteException {
 		
-		TrainColor[] cardChoices = getFerryCardChoices(route.getLength() - ((FerryRoute)route).getLocomotiveCount());
-		String[] cardChoicesStrings = listColorsToString(cardChoices);
-
-		int response = JOptionPane.showOptionDialog(null,
-		     "What color cards would you like to use?",
-		     "Ferry",
-		     JOptionPane.YES_NO_OPTION,
-		     JOptionPane.INFORMATION_MESSAGE,
-		     null,
-		     cardChoicesStrings,
-		     cardChoicesStrings[0]);
+		if (hasEnoughCardsForFerry(route)) {
 		
-		discardCardsOfColor(route.getLength() - ((FerryRoute)route).getLocomotiveCount(), cardChoices[response]);
-		discardCardsOfColor(((FerryRoute)route).getLocomotiveCount(), TrainColor.RAINBOW);
-		addRoute(route);
-		this.numTrains -= route.getLength();
+			TrainColor[] cardChoices = getFerryCardChoices(route.getLength() - ((FerryRoute)route).getLocomotiveCount());
+			String[] cardChoicesStrings = listColorsToString(cardChoices);
+	
+			int response = JOptionPane.showOptionDialog(null,
+			     "What color cards would you like to use?",
+			     "Ferry",
+			     JOptionPane.YES_NO_OPTION,
+			     JOptionPane.INFORMATION_MESSAGE,
+			     null,
+			     cardChoicesStrings,
+			     cardChoicesStrings[0]);
+			
+			discardCardsOfColor(route.getLength() - ((FerryRoute)route).getLocomotiveCount(), cardChoices[response]);
+			discardCardsOfColor(((FerryRoute)route).getLocomotiveCount(), TrainColor.RAINBOW);
+			addRoute(route);
+			this.numTrains -= route.getLength();
+			
+		} else {
+			System.err.println(
+					"Not enough cards for route!"
+							+ " The route is worth " + route.getLength());
+			throw new NotEnoughCardsForRouteException();
+		}
 	}
 	
+	private boolean hasEnoughCardsForFerry(IRoute route) {
+		
+		int numRainbowNeeded = ((FerryRoute) route).getLocomotiveCount();
+		
+		int numOtherNeeded = route.getLength() - numRainbowNeeded;
+		
+		if (numRainbowNeeded <= this.hand.numInHand(TrainColor.RAINBOW)) {
+			for (TrainColor color : TrainColor.getAllColors()) {
+				if (this.hand.numInHand(color) >= numOtherNeeded) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
 	private String[] listColorsToString(TrainColor[] cardChoices) {
 		String[] colorStrings = new String[cardChoices.length];
 		
@@ -258,62 +284,79 @@ public class AbstractPlayer implements IPlayer {
 	private void claimTunnelRoute(IRoute route) throws NotEnoughCardsForRouteException {
 		
 		TrainColor routeColor = (route instanceof AbstractColorableRoute) ? ((AbstractColorableRoute) route)
-				.getColor() : TrainColor.RAINBOW;
+					.getColor() : TrainColor.RAINBOW;
 		
-		List<TrainCarCard> topThreeCards = GameState.getCardManager().getTrainCarDeck().drawTopThree();
-		
-		int numExtraCards = routeColorMatched(routeColor, topThreeCards);
-		
-		while (!topThreeCards.isEmpty()) {
-			GameState.getCardManager().discard(topThreeCards.remove(0));
-		}
-		
-		if (numExtraCards > 0) {
+		if (hasEnoughCardsForTunnelRoute(route, routeColor)) {
 			
-			if ((this.hand.numInHand(routeColor) - route.getLength()) >= numExtraCards) {
+			List<TrainCarCard> topThreeCards = GameState.getCardManager().getTrainCarDeck().drawTopThree();
+			
+			int numExtraCards = routeColorMatched(routeColor, topThreeCards);
+			
+			while (!topThreeCards.isEmpty()) {
+				GameState.getCardManager().discard(topThreeCards.remove(0));
+			}
+			
+			if (numExtraCards > 0) {
 				
-				String[] tunnelChoices = getTunnelChoices(routeColor, numExtraCards);
-	
-				String needExtra = String.format("Need %d more cards", numExtraCards);
-				
-				int response = JOptionPane.showOptionDialog(null,
-					     needExtra,
-					     "Tunnel",
-					     JOptionPane.YES_NO_OPTION,
-					     JOptionPane.INFORMATION_MESSAGE,
-					     null,
-					     tunnelChoices,
-					     tunnelChoices[0]);
-				
-				if (response == 0) {
-					// cancel
-	//				GameState.takeTurn();
-				} else if (response == 1) {
-					// use routeColor
-					discardCardsOfColor(route.getLength(), routeColor);
-					addRoute(route);
-					this.numTrains -= route.getLength();
+				if ((this.hand.numInHand(routeColor) - route.getLength()) >= numExtraCards) {
+					
+					String[] tunnelChoices = getTunnelChoices(routeColor, numExtraCards);
+		
+					String needExtra = String.format("Need %d more cards", numExtraCards);
+					
+					int response = JOptionPane.showOptionDialog(null,
+						     needExtra,
+						     "Tunnel",
+						     JOptionPane.YES_NO_OPTION,
+						     JOptionPane.INFORMATION_MESSAGE,
+						     null,
+						     tunnelChoices,
+						     tunnelChoices[0]);
+					
+					if (response == 0) {
+						// cancel
+		//				GameState.takeTurn();
+					} else if (response == 1) {
+						// use routeColor
+						discardCardsOfColor(route.getLength(), routeColor);
+						addRoute(route);
+						this.numTrains -= route.getLength();
+					} else {
+						//use rainbow
+						discardCardsOfColor(route.getLength(), routeColor);
+						addRoute(route);
+						this.numTrains -= route.getLength();
+					}
+					
+					
 				} else {
-					//use rainbow
-					discardCardsOfColor(route.getLength(), routeColor);
-					addRoute(route);
-					this.numTrains -= route.getLength();
+					throw new NotEnoughCardsForRouteException();
 				}
-				
-				
+			
 			} else {
-				throw new NotEnoughCardsForRouteException();
+				discardCardsOfColor(route.getLength(), routeColor);
+				addRoute(route);
+				this.numTrains -= route.getLength();
 			}
 		
 		} else {
-			discardCardsOfColor(route.getLength(), routeColor);
-			addRoute(route);
-			this.numTrains -= route.getLength();
+			System.err.println(
+					"Not enough cards for route!"
+							+ " The route is worth " + route.getLength());
+			throw new NotEnoughCardsForRouteException();
 		}
+		
 		
 		
 	}
 	
+	private boolean hasEnoughCardsForTunnelRoute(IRoute route, TrainColor routeColor) {
+		if (route.getLength() <= this.hand.numInHand(routeColor)) {
+			return true;
+		}
+		return false;
+	}
+
 	private String[] getTunnelChoices(TrainColor routeColor, int numExtraCards) {
 
 		List<String> tunnelChoices = new ArrayList<String>();
