@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import objects.CardPackage;
 import objects.Destination;
 import objects.DestinationCard;
 import objects.DestinationDeck;
@@ -77,7 +78,7 @@ public class AbstractPlayer implements IPlayer {
 		TrainCarCard card = deck.draw();
 		
 		this.hand.addCard(card);
-		this.cardTurnEndManager.addCardForCurrentTurn(card);
+		this.cardTurnEndManager.addCardForCurrentTurn(new CardPackage(card, CardPackage.DECK));
 
 		if (deck.isEmpty()) {
 			deck.reFillFromDicard();
@@ -115,7 +116,7 @@ public class AbstractPlayer implements IPlayer {
 	public void drawCardFromDeal(CardManager cardManager, int index) {
 		TrainCarCard pickedCard = cardManager.drawDealCard(index);
 		this.hand.addCard(pickedCard);
-		this.cardTurnEndManager.addCardForCurrentTurn(pickedCard);
+		this.cardTurnEndManager.addCardForCurrentTurn(new CardPackage(pickedCard, CardPackage.DEAL));
 
 		// end turn if collected 2 trains (or one rainbow)
 		if (!this.canDrawTrainCard()) {

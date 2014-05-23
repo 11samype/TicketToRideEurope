@@ -3,18 +3,19 @@ package utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import objects.CardPackage;
 import objects.TrainCarCard;
 import objects.TrainColor;
 
 public class CardTurnEndManager {
 
-	List<TrainCarCard> cards;
+	List<CardPackage> cards;
 	
 	public CardTurnEndManager() {
-		this.cards = new ArrayList<TrainCarCard>();
+		this.cards = new ArrayList<CardPackage>();
 	}
 	
-	public void addCardForCurrentTurn(TrainCarCard card) {
+	public void addCardForCurrentTurn(CardPackage card) {
 		this.cards.add(card);
 	}
 	
@@ -22,11 +23,11 @@ public class CardTurnEndManager {
 		
 		int weightedCount = 0;
 		
-		if ((this.cards.size() == 1) && (this.cards.get(0).getColor() == TrainColor.RAINBOW)) {
+		if ((this.cards.size() == 1) && (this.cards.get(0).card().getColor() == TrainColor.RAINBOW) && (this.cards.get(0).source() == CardPackage.DECK)) {
 			return true;
 		} else {
-			for (TrainCarCard card : this.cards) {
-				if (card.getColor() == TrainColor.RAINBOW) {
+			for (CardPackage card : this.cards) {
+				if (card.card().getColor() == TrainColor.RAINBOW) {
 					weightedCount += 2;
 				} else {
 					weightedCount++;
