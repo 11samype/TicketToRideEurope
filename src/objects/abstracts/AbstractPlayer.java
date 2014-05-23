@@ -23,6 +23,7 @@ import objects.TunnelRoute;
 import objects.interfaces.ICard;
 import objects.interfaces.IPlayer;
 import objects.interfaces.IRoute;
+import utils.CardTurnEndManager;
 import utils.GameState;
 import utils.GraphHelper;
 import utils.GameState.CardManager;
@@ -37,15 +38,14 @@ public class AbstractPlayer implements IPlayer {
 	public static final int MAX_NUM_STATIONS = 3;
 	public static final int MAX_NUM_TRAINS = 45;
 
-	protected int prevTurnCardSum;
-	protected int prevTurnNumCards;
-
 	protected final String name;
 	protected int numTrains;
 	protected int numStations;
 	protected TrainCarHand hand = new TrainCarHand();
 	protected DestinationHand destinationHand = new DestinationHand();
 	protected List<IRoute> routes = new ArrayList<IRoute>();
+	
+	private CardTurnEndManager cardTurnEndManager = new CardTurnEndManager();
 
 	public AbstractPlayer() {
 		this("New Player");
@@ -57,61 +57,26 @@ public class AbstractPlayer implements IPlayer {
 		this.numStations = MAX_NUM_STATIONS;
 	}
 
-	public void setPrevTurnCardNum() {
-		this.prevTurnNumCards = getHand().size();
-	}
-
 	public boolean canDrawTrainCard() {
 
-		int[] cardSum = getTotalNumberOfCardsInHand();
-				
-		int numberOfRegularTrainsInHand = cardSum[0];
-		int numberOfRainbowInHand = cardSum[1];
-		
-		int weightedSum = ((2 * numberOfRainbowInHand) + numberOfRegularTrainsInHand)
-				- this.prevTurnCardSum;
+		return cardTurnEndManager.canDrawTrainCard();
 
-		if (weightedSum < 2) {
-			return true;
-		} else {
-			this.prevTurnCardSum = this.prevTurnCardSum + weightedSum;
-
-			return false;
-		}
 	}
-	
-	public int[] getTotalNumberOfCardsInHand() {
-		int[] nums = new int[2];
-
-		List<TrainColor> trainColors = TrainColor.getAllColors();
-
-		for (TrainColor color : trainColors) {
-			if (color.equals(TrainColor.RAINBOW)) {
-				nums[1] = this.hand.numInHand(TrainColor.RAINBOW);
-			} else {
-				nums[0] += this.hand.numInHand(color);
-			}
-		}
-		return nums;
-		
-	}
-	
 	
 
 	public boolean canDrawDestination() {
 
-		int numberOfCards = getHand().size() - this.prevTurnNumCards;
-
-		this.prevTurnNumCards = numberOfCards + this.prevTurnNumCards;
-
-		return numberOfCards == 0;
-
+		return cardTurnEndManager.canDrawDestinationCard();
+		
 	}
 
 	@Override
 	public void drawCardFromDeck(TrainCarDeck deck) {
 		
-		this.hand.addCard(deck.draw());
+		TrainCarCard card = deck.draw();
+		
+		this.hand.addCard(card);
+		this.cardTurnEndManager.addCardForCurrentTurn(card);
 		
 		if (deck.isEmpty()) {
 			deck.reFillFromDicard();
@@ -119,6 +84,7 @@ public class AbstractPlayer implements IPlayer {
 		
 		// end turn if collected 2 trains (or one rainbow)
 		if (!this.canDrawTrainCard()) {
+			this.cardTurnEndManager.endTurn();
 			GameState.takeTurn();
 		}
 	}
@@ -130,6 +96,7 @@ public class AbstractPlayer implements IPlayer {
 			this.destinationHand.addCard(drawn);
 			
 			// end turn when drawing destination
+			this.cardTurnEndManager.endTurn();
 			GameState.takeTurn();
 			// this.score -= drawn.getScore();
 		} else {
@@ -142,9 +109,11 @@ public class AbstractPlayer implements IPlayer {
 	public void drawCardFromDeal(CardManager cardManager, int index) {
 		TrainCarCard pickedCard = cardManager.drawDealCard(index);
 		this.hand.addCard(pickedCard);
+		this.cardTurnEndManager.addCardForCurrentTurn(pickedCard);
 
 		// end turn if collected 2 trains (or one rainbow)
 		if (!this.canDrawTrainCard()) {
+			this.cardTurnEndManager.endTurn();
 			GameState.takeTurn();
 		}
 	}

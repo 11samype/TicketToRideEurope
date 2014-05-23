@@ -361,7 +361,7 @@ public class GameState {
 		}
 
 		public void rotatePlayers() {
-			((Player) getCurrentPlayer()).setPrevTurnCardNum();
+
 			this.currentPlayerIndex = (this.currentPlayerIndex + 1)
 					% getPlayers().size();
 		}
