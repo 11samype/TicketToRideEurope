@@ -9,40 +9,30 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import objects.abstracts.AbstractColorableRoute;
 import objects.interfaces.IDrawable;
+import objects.interfaces.IRoute;
 
 public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 
 	private final static double LINE_GAP = DrawableDestination.DOT_RADIUS;
 	
-
 	private DrawableRoute topRoute;
 	private DrawableRoute bottomRoute;
-
-	public DrawableDoubleRoute(DrawableDestination start,
-			DrawableDestination end) {
-		this(start, end, 1);
-	}
-
-	public DrawableDoubleRoute(DrawableDestination start,
-			DrawableDestination end, int score) {
-		super(start, end, score);
-		this.topRoute = new DrawableRoute(start, end, score);
-		this.bottomRoute = new DrawableRoute(start, end, score);
+	
+	public DrawableDoubleRoute(DrawableRoute top, DrawableRoute bottom) {
+		super(top.getStart(), top.getEnd(), top.getRoute());
+		this.topRoute = top;
+		this.bottomRoute = bottom;
 	}
 	
-	public static DrawableDoubleRoute construct(DrawableRoute top, DrawableRoute bottom) {
-		DrawableDoubleRoute route = new DrawableDoubleRoute(top.getStart(), top.getEnd(), top.getLength());
-		route.topRoute = top;
-		route.bottomRoute = bottom;
-		return route;
+	/**
+	 * Using this always returns the "top route"
+	 */
+	@Override
+	@Deprecated
+	public IRoute getRoute() {
+		return getTopRoute();
 	}
-
-//	@Override
-//	public int getScore() {
-//		return getTopRoute().getScore() + getBottomRoute().getScore();
-//	}
 
 	public DrawableRoute getTopRoute() {
 		return this.topRoute;

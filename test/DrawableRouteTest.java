@@ -6,6 +6,7 @@ import gui.drawables.DrawableRoute;
 import java.awt.Point;
 
 import objects.TrainColor;
+import objects.TunnelRoute;
 
 import org.junit.Test;
 
@@ -13,21 +14,24 @@ import org.junit.Test;
 public class DrawableRouteTest {
 
 	@Test
-	public void testBigConstructor() {
+	public void testConstructor() {
 		DrawableDestination start = new DrawableDestination("here", new Point(0, 0));
 		DrawableDestination end = new DrawableDestination("there", new Point(1, 1));
-		DrawableRoute route = new DrawableRoute(start, end, 1, TrainColor.BLACK);
-		assertNotNull(route);
+		TunnelRoute route = new TunnelRoute(start, end, TrainColor.BLACK, 1);
+		
+		DrawableRoute draw_route = new DrawableRoute(start, end, route);
+		assertNotNull(draw_route);
 	}
 	
 	@Test
 	public void testGetStart() {
 		DrawableDestination start = new DrawableDestination("here", new Point(0, 0));
 		DrawableDestination end = new DrawableDestination("there", new Point(1, 1));
-		DrawableRoute route = new DrawableRoute(start, end, 1, TrainColor.BLACK);
-		assertNotNull(route);
+		TunnelRoute route = new TunnelRoute(start, end, TrainColor.BLACK, 1);
+		DrawableRoute draw_route = new DrawableRoute(start, end, route);
+		assertNotNull(draw_route);
 		
-		assertEquals(route.getStart(), start);
+		assertEquals(draw_route.getStart(), start);
 	}
 
 }

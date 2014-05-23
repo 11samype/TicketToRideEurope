@@ -6,14 +6,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import objects.TrainColor;
+import objects.abstracts.AbstractColorableRoute;
+import objects.interfaces.IRoute;
 
 public class DrawableTunnelRoute extends DrawableRoute {
 	
 
-	public DrawableTunnelRoute(DrawableDestination start, DrawableDestination end,
-			int length, TrainColor color) {
-		super(start, end, length, color);
-
+	public DrawableTunnelRoute(DrawableDestination start, DrawableDestination end, AbstractColorableRoute route) {
+		super(start, end, route, route.getColor());
 	}
 	
 	protected BasicStroke getTieStoke() {

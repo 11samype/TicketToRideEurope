@@ -100,7 +100,7 @@ public class MapPanel extends RepaintableComponent implements IRefreshable {
 					if ((doubleIndex = routesFromStart.indexOf(iroute)) != -1) {
 						// draw the double
 						DrawableRoute bottom = DrawableRoute.construct(routesFromStart.remove(doubleIndex), null, DESTS);
-						doubleRoute = DrawableDoubleRoute.construct(route, bottom);
+						doubleRoute = new DrawableDoubleRoute(route, bottom);
 						routesToAdd.add(doubleRoute);
  					} else { // draw the single
  						routesToAdd.add(route);
