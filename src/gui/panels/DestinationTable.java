@@ -69,8 +69,7 @@ public class DestinationTable extends JTable implements PlayerUpdater, LocaleCha
 		List<DestinationCard> playerDestCards = player.getDestinationHand();
 		for (DestinationCard destinationCard : playerDestCards) {
 			DestinationRoute route = destinationCard.getRoute();
-			this.routes.add(route);
-			getModel().addRow(route.toLocalizedArray());
+			addDestination(route);
 			
 			for (int i = 0; i < getModel().getColumnCount(); i++) {
 				TableColumn column = getColumnModel().getColumn(i);

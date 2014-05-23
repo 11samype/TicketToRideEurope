@@ -4,13 +4,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 import objects.TrainCarCard;
 import objects.TrainCarDeck;
+import objects.TrainColor;
 
 import org.junit.Test;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+import utils.GameState;
 
 public class TrainCarDeckTest {
 
@@ -76,6 +78,23 @@ public class TrainCarDeckTest {
 		
 		assertEquals(originalDeckSize - 3, deck.size());
 		assertEquals(3, cards.size());
+		
+		while (deck.size() >= 3) {
+			deck.draw();
+		}
+		assertEquals(2, deck.size());
+		originalDeckSize = deck.size();
+		
+		List<TrainCarCard> discarded = new ArrayList<TrainCarCard>();
+		for (int i = 0; i < 5; i++) {
+			discarded.add(new TrainCarCard(TrainColor.RED));
+		}
+		GameState.getCardManager().getDiscardPile().populate(discarded);
+		cards = (ArrayList<TrainCarCard>) deck.drawTopThree();
+		assertEquals(0, GameState.getCardManager().getDiscardPile().size());
+		assertEquals(3, cards.size());
+		assertEquals(originalDeckSize + discarded.size() - 3, deck.size());
+		
 	}
 	
 	

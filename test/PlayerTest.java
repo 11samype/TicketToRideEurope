@@ -16,6 +16,7 @@ import objects.TrainCarDeck;
 import objects.TrainColor;
 import objects.TrainRoute;
 import objects.abstracts.AbstractPlayer;
+import objects.interfaces.IPlayer;
 import objects.interfaces.IRoute;
 
 import org.junit.Before;
@@ -196,25 +197,28 @@ public class PlayerTest {
 
 		int initialSize = destDeck.size();
 
-		Player player = new Player();
+		List<IPlayer> players = new ArrayList<IPlayer>();
+		players.add(new Player());
+		GameState.withPlayers(players);
+		Player player = GameState.getCurrentPlayer();
+		
 
 		try {
 			player.drawCardFromDeck(destDeck);
 			assertEquals(initialSize - 1, destDeck.size());
 
-			assertEquals(1, player.getDestinationHand().size());
+			assertEquals(5, player.getDestinationHand().size());
 
 			player.drawCardFromDeck(destDeck);
 			player.drawCardFromDeck(destDeck);
 			player.drawCardFromDeck(destDeck);
+			
+			assertEquals(8, player.getDestinationHand().size());
+			assertEquals(initialSize - 4, destDeck.size());
 
 		} catch (DestinationAfterTrainException e) {
 			// shouldn't be caught in this test
 		}
-
-		assertEquals(initialSize - 4, destDeck.size());
-
-		assertEquals(4, player.getDestinationHand().size());
 
 	}
 

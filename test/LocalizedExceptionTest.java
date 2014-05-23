@@ -11,6 +11,7 @@ import utils.exceptions.DestinationHasStationException;
 import utils.exceptions.DrawCardException;
 import utils.exceptions.NotEnoughCardsForRouteException;
 import utils.exceptions.OutOfStationsException;
+import utils.exceptions.RouteAfterTrainException;
 import utils.exceptions.RouteOwnedException;
 import utils.exceptions.RouteTakenException;
 
@@ -114,6 +115,17 @@ public class LocalizedExceptionTest {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getString("draw.error.unable.message"));
 		sb.append(getString("draw.error.destAfterTrain.message"));
+
+		assertEquals(sb.toString(), e.getMessage());
+
+	}
+	
+	@Test
+	public void testRouteAfterTrainMessage() {
+		RouteAfterTrainException e = new RouteAfterTrainException();
+		StringBuilder sb = new StringBuilder();
+		sb.append(getString("claim.error.unable.message"));
+		sb.append(getString("claim.error.routeAfterTrain.message"));
 
 		assertEquals(sb.toString(), e.getMessage());
 

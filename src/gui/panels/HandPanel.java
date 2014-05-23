@@ -15,7 +15,6 @@ import objects.interfaces.IPlayer;
 
 public class HandPanel extends JPanel implements PlayerUpdater {
 
-	private List<TrainColor> colors = TrainColor.getAllColors();
 	private List<HandCardPanel> handCardPanels = new ArrayList<HandCardPanel>();
 
 	public HandPanel() {
@@ -25,7 +24,7 @@ public class HandPanel extends JPanel implements PlayerUpdater {
 	}
 
 	private void addCardPanels() {
-		for (TrainColor color : colors) {
+		for (TrainColor color : TrainColor.getAllColors()) {
 			HandCardPanel panel = new HandCardPanel(color);
 			handCardPanels.add(panel);
 			add(panel);
@@ -37,7 +36,7 @@ public class HandPanel extends JPanel implements PlayerUpdater {
 	public void setPlayer(IPlayer p) {
 		TrainCarHand hand = (TrainCarHand) p.getHand();
 		for (int i = 0; i < this.handCardPanels.size(); i++) {
-			TrainColor color = colors.get(i);
+			TrainColor color = TrainColor.getAllColors().get(i);
 			int numCardsForColor = hand.numInHand(color);
 			this.handCardPanels.get(i).setNumCards(numCardsForColor);
 		}

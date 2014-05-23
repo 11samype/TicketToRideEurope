@@ -1,5 +1,6 @@
 package gui.panels;
 
+import gui.GameMenuBar;
 import gui.Main;
 import gui.drawables.DrawableTrainCarCard;
 import gui.factory.JPanelFactory;
@@ -204,7 +205,7 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 	public void notifyLocaleChange() {
 		topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 		topFrame.setTitle(MessageHelper.getStringFromBundle(MessageHelper.getMessages(), "game.title"));
-		topFrame.setJMenuBar(Main.getMenuBar());
+		topFrame.setJMenuBar(new GameMenuBar(this));
 		for (LocaleChangeListener listener : this.localeChangeListeners) {
 			listener.notifyLocaleChange();
 		}
