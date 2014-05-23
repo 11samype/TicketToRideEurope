@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import objects.Destination;
 import objects.DestinationCard;
 import objects.DestinationDeck;
@@ -171,9 +173,16 @@ public class GameState {
 			
 		}
 		
-		System.out.printf("%s WINS!", winner.getName());
+		String winnerString = String.format("%s WINS!", winner.getName());
 		
 		//wait?
+		
+		int response = JOptionPane.showConfirmDialog(null,
+				winnerString,
+				"Winner",
+				JOptionPane.OK_OPTION,
+				JOptionPane.INFORMATION_MESSAGE
+				);
 		
 		System.exit(0);
 		
