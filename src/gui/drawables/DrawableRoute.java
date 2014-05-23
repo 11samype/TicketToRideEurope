@@ -14,6 +14,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 
 import objects.TrainColor;
+import objects.TunnelRoute;
 import objects.abstracts.AbstractColorableRoute;
 import objects.interfaces.IDrawable;
 import objects.interfaces.IRoute;
@@ -29,9 +30,7 @@ Highlightable {
 	protected static final double GAP_SIZE = 10;
 	public static final float LINE_WIDTH = DrawableDestination.DOT_RADIUS / 2;
 
-	public static DrawableRoute construct(IRoute iroute,
-			TrainColor currentPlayerColor,
-			HashMap<String, DrawableDestination> destMap) {
+	public static DrawableRoute construct(IRoute iroute, TrainColor currentPlayerColor, HashMap<String, DrawableDestination> destMap) {
 		TrainColor color = TrainColor.RAINBOW;
 		DrawableDestination drawStart = destMap.get(iroute.getStart().getName());
 		DrawableDestination drawEnd = destMap.get(iroute.getEnd().getName());
@@ -42,6 +41,9 @@ Highlightable {
 		} else {
 			if (iroute instanceof AbstractColorableRoute) {
 				AbstractColorableRoute route = (AbstractColorableRoute) iroute;
+				if (route instanceof TunnelRoute) {
+					return new DrawableTunnelRoute(drawStart, drawEnd, route.getLength(), route.getColor());
+				}
 				return new DrawableRoute(drawStart, drawEnd, route.getLength(), route.getColor());
 			} else
 				return new DrawableRoute(drawStart, drawEnd, iroute.getLength(), color);
@@ -116,7 +118,7 @@ Highlightable {
 		return Math.atan(-1.0 / slope);
 	}
 
-	private Line2D.Double _line;
+	protected Line2D.Double _line;
 	protected final double singleTrainLength = getTrainLength();
 
 	@Override

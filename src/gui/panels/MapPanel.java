@@ -92,6 +92,7 @@ public class MapPanel extends RepaintableComponent implements IRefreshable {
 			while (!routesFromStart.isEmpty()) {
 				// construct a drawable route
 				IRoute iroute = routesFromStart.remove(0);
+							
 				route = DrawableRoute.construct(iroute, null, DESTS);
 				if (!drawableRoutes.contains(route)) { // if not currently drawn
 					// if there is a double route

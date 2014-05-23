@@ -1,7 +1,5 @@
 package gui;
 import gui.drawables.DrawableDestination;
-import gui.panels.LanguagePanel;
-import gui.panels.NumPlayerPanel;
 import gui.listeners.LocaleMenuActionListener;
 import gui.listeners.NumPlayerActionListener;
 import gui.panels.MainPanel;

@@ -17,6 +17,9 @@ import utils.GameState.CardManager;
 
 public class GameStateTest {
 	
+	private static final int DESTINATION_CARDS = 46;
+	private static final int TRAINCAR_CARDS = 105;
+	
 	private class RefreshableObj implements IRefreshable {
 
 		public boolean refreshed = false;
@@ -48,8 +51,10 @@ public class GameStateTest {
 	@Test
 	public void testInitCardManager() {
 		CardManager cardManager = GameState.getCardManager();
-		assertEquals(46, cardManager.getDestinationDeck().size());
-		assertEquals(105, cardManager.getTrainCarDeck().size());
+		int destinationsLeft = (DESTINATION_CARDS - 6) - 3*GameState.getPlayers().size();
+		int traincardsLeft = TRAINCAR_CARDS - 4*GameState.getPlayers().size();
+		assertEquals(destinationsLeft, cardManager.getDestinationDeck().size());
+		assertEquals(traincardsLeft, cardManager.getTrainCarDeck().size());
 
 		assertTrue(cardManager.getDealCards().isFull());
 		assertEquals(5, cardManager.getDealCards().getSize());
