@@ -31,7 +31,7 @@ public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 	@Override
 	@Deprecated
 	public IRoute getRoute() {
-		return getTopRoute();
+		return getTopRoute().getRoute();
 	}
 
 	public DrawableRoute getTopRoute() {
