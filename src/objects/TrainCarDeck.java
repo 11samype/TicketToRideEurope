@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import objects.abstracts.AbstractDeck;
+import utils.GameState;
 
 public class TrainCarDeck extends AbstractDeck<TrainCarCard> {
 
@@ -36,10 +37,25 @@ public class TrainCarDeck extends AbstractDeck<TrainCarCard> {
 		List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
 		
 		for (int i = 0; i < 3; i++) {
+			if (this.cards.isEmpty()) {
+				reFillFromDicard();
+			}
 			cards.add(this.cards.remove(0));
 		}
 		
 		return cards;
+	}
+	
+	public void reFillFromDicard() {
+		DiscardPile<TrainCarCard> discard = GameState.getCardManager().getDiscardPile();
+		
+		List<TrainCarCard> cardsList = new ArrayList<TrainCarCard>();
+		
+		while(!discard.isEmpty()) {
+			cardsList.add((TrainCarCard)discard.draw());
+		}
+		
+		populate(cards);
 	}
 
 }

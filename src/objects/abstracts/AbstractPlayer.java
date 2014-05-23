@@ -114,15 +114,7 @@ public class AbstractPlayer implements IPlayer {
 		this.hand.addCard(deck.draw());
 		
 		if (deck.isEmpty()) {
-			DiscardPile<TrainCarCard> discard = GameState.getCardManager().getDiscardPile();
-			
-			List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
-			
-			while(!discard.isEmpty()) {
-				cards.add((TrainCarCard)discard.draw());
-			}
-			
-			deck.populate(cards);
+			deck.reFillFromDicard();
 		}
 		
 		// end turn if collected 2 trains (or one rainbow)
