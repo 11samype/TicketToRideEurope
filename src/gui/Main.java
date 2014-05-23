@@ -36,7 +36,7 @@ import utils.TrainRouteReader;
 
 public class Main {
 
-	private static MainPanel mainPanel = new MainPanel();
+	private static final MainPanel mainPanel = new MainPanel();
 
 	public static void main(String[] args) {
 		GameState.initializeGameData(false);
@@ -55,7 +55,7 @@ public class Main {
 
 				window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-				window.setJMenuBar(getMenuBar());
+				window.setJMenuBar(new GameMenuBar(mainPanel));
 
 				window.getContentPane().add(mainPanel);
 				window.pack();
@@ -65,37 +65,7 @@ public class Main {
 
 	}
 
-	public static JMenuBar getMenuBar() {
-		JMenuBar menuBar = new JMenuBar();
-		JMenu menu = new JMenu(MessageHelper.getStringFromBundle(MessageHelper.getMessages(), "menu.locale.title"));
-		//		ButtonGroup group = new ButtonGroup();
-		String [] lblNames = new String[] {"English", "French", "German", "Multi-National"};
-		Locale[] locales = new Locale[] {Locale.US, Locale.FRANCE, Locale.GERMANY, MessageHelper.getGameLocale()};
-		for (int i = 0; i < lblNames.length ; i++ ) {
-			JMenuItem item = new JMenuItem(lblNames[i]);
-			item.addActionListener(new LocaleMenuActionListener(locales[i], mainPanel));
-			//			group.add(item);
-			menu.add(item);
-		}
-
-		JMenu numPlayerMenu = new JMenu("Players");
-		ButtonGroup numPlayerGroup = new ButtonGroup();
-		String[] lblNumbers = new String[] {"1", "2", "3", "4", "5"};
-
-		for (int i = 0; i < lblNumbers.length; i++) {
-			JRadioButtonMenuItem button = new JRadioButtonMenuItem(lblNumbers[i]);
-			button.addActionListener(new NumPlayerActionListener(Integer.parseInt(lblNumbers[i]), mainPanel));
-			numPlayerGroup.add(button);
-			numPlayerMenu.add(button);
-			if (lblNumbers[i] == "4") {
-				button.setSelected(true);;
-			}
-		}
-
-		menuBar.add(menu);
-		menuBar.add(numPlayerMenu);
-		return menuBar;
-	}
+	
 
 	
 }

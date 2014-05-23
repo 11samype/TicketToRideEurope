@@ -213,7 +213,7 @@ public class AbstractPlayer implements IPlayer {
 		return false;
 	}
 
-	public String[] listColorsToString(TrainColor[] cardChoices) {
+	public String[] listColorsToString(TrainColor... cardChoices) {
 		String[] colorStrings = new String[cardChoices.length];
 
 		for (int i = 0; i < colorStrings.length; i++) {
@@ -304,16 +304,18 @@ public class AbstractPlayer implements IPlayer {
 					int response = JOptionPane.showOptionDialog(null,
 							needExtra,
 							"Tunnel",
-							JOptionPane.YES_NO_OPTION,
+							JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.INFORMATION_MESSAGE,
 							null,
 							tunnelChoices,
 							tunnelChoices[0]);
 
-					if (response == 0) {
+					switch (response) {
+					case JOptionPane.CANCEL_OPTION:
 						//TODO: CANCEL!!
-						//				GameState.takeTurn();
-					} else if (response == 1) {
+						//	GameState.takeTurn();
+						break;
+					case JOptionPane.YES_OPTION:
 						// use routeColor
 						if (routeColor == TrainColor.RAINBOW) {
 							discardCardsOfColor(route.getLength(), tunnelChoicesArray[firstresponse]);
@@ -324,7 +326,8 @@ public class AbstractPlayer implements IPlayer {
 						}
 						addRoute(route);
 						this.numTrains -= route.getLength();
-					} else {
+						break;
+					default:
 						//use rainbow
 						
 						if (routeColor == TrainColor.RAINBOW) {
@@ -337,8 +340,8 @@ public class AbstractPlayer implements IPlayer {
 						discardCardsOfColor(numExtraCards, TrainColor.RAINBOW);
 						addRoute(route);
 						this.numTrains -= route.getLength();
+						break;
 					}
-
 
 				} else {
 					throw new NotEnoughCardsForRouteException();

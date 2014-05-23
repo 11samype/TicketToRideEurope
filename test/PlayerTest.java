@@ -16,6 +16,7 @@ import objects.TrainCarDeck;
 import objects.TrainColor;
 import objects.TrainRoute;
 import objects.abstracts.AbstractPlayer;
+import objects.interfaces.IPlayer;
 import objects.interfaces.IRoute;
 
 import org.junit.Before;
@@ -163,7 +164,10 @@ public class PlayerTest {
 
 	@Test
 	public void testDealToPlayer() {
-		Player p = new Player();
+		List<IPlayer> players = new ArrayList<IPlayer>();
+		players.add(new Player());
+		GameState.withPlayers(players);
+		Player p = GameState.getCurrentPlayer();
 
 		CardManager m = GameState.getCardManager();
 		TrainCarDeal d = m.getDealCards();
@@ -175,16 +179,15 @@ public class PlayerTest {
 //			System.out.printf("%d %s\n", i, d.getCardAtPosition(i).getColor());
 		}
 
-		for (int i = 0; i < 1; i++) {
-			p.drawCardFromDeal(m, i);
-		}
+		p.drawCardFromDeal(m, 0);
+		
 
 		for (int i = 0; i < p.getHand().size(); i++) {
 			p.getHand().getCard(i).getColor();
 		}
 
-		assertEquals(1, p.getHand().size());
-		assertEquals(cardList.get(0), p.getHand().getCard(0));
+		assertEquals(5, p.getHand().size());
+		assertEquals(cardList.get(0), p.getLastCardDrawn());
 		//assertEquals(cardList.get(1), p.getHand().getCard(1));
 		//assertEquals(cardList.get(2), p.getHand().getCard(2));
 	}
@@ -196,25 +199,28 @@ public class PlayerTest {
 
 		int initialSize = destDeck.size();
 
-		Player player = new Player();
+		List<IPlayer> players = new ArrayList<IPlayer>();
+		players.add(new Player());
+		GameState.withPlayers(players);
+		Player player = GameState.getCurrentPlayer();
+		
 
 		try {
 			player.drawCardFromDeck(destDeck);
 			assertEquals(initialSize - 1, destDeck.size());
 
-			assertEquals(1, player.getDestinationHand().size());
+			assertEquals(5, player.getDestinationHand().size());
 
 			player.drawCardFromDeck(destDeck);
 			player.drawCardFromDeck(destDeck);
 			player.drawCardFromDeck(destDeck);
+			
+			assertEquals(8, player.getDestinationHand().size());
+			assertEquals(initialSize - 4, destDeck.size());
 
 		} catch (DestinationAfterTrainException e) {
 			// shouldn't be caught in this test
 		}
-
-		assertEquals(initialSize - 4, destDeck.size());
-
-		assertEquals(4, player.getDestinationHand().size());
 
 	}
 
@@ -359,7 +365,7 @@ public class PlayerTest {
 		String[] trainColorStrings = p.listColorsToString(trainColors);
 		String[] expected = {"BLACK", "BLUE", "RAINBOW"};
 		
-		assertEquals(expected, trainColorStrings);
+		assertArrayEquals(expected, trainColorStrings);
 	}
 	
 	@Test
