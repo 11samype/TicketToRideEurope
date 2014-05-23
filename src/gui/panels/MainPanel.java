@@ -51,8 +51,8 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 	public MainPanel() {
 		setLayout(new MigLayout(
 				"",
-				"[900px:1250px:1600px,grow,fill][10%:n,right]",
-				"[90.00:114.00:100.00,grow,fill][773px:773px:773px,fill][70:85.00:100,grow,bottom]"));
+				"[900px:1200px:1600px,grow,fill][10%:n,right]",
+				"[80.00:90.00:100.00,fill][700px:750px:750px,fill][90:90:100,grow,bottom]"));
 
 		initGUI();
 	}
