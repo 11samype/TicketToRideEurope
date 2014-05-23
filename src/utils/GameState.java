@@ -279,7 +279,7 @@ public class GameState {
 	}
 
 
-	public void claimRouteBewteenPoints(Player current, SelectionHolder selectedPoints,
+	public void claimRouteBetweenPoints(Player current, SelectionHolder selectedPoints,
 			ArrayList<DrawableRoute> drawablesToAdd) throws RouteOwnedException, RouteTakenException, NotEnoughCardsForRouteException {
 		IRoute routeToClaim = GraphHelper.getAdjecentRouteBetween((Destination) selectedPoints.get(0),
 				(Destination) selectedPoints.get(1));
