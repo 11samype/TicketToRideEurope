@@ -127,7 +127,7 @@ public class AbstractPlayer implements IPlayer {
 		{
 			throw new RouteOwnedException();
 		}
-
+		//if can draw destination then can claim route, at beginning of turn
 		if (canDrawDestination()) {
 			if (route instanceof DrawableRoute) {
 				route = ((DrawableRoute) route).getRoute();
@@ -286,8 +286,10 @@ public class AbstractPlayer implements IPlayer {
 			}
 
 			if (numExtraCards > 0) {
+				
+				System.out.println("Need more for tunnel");
 
-				if ((this.hand.numInHand(routeColor) - route.getLength()) >= numExtraCards) {
+				if (((this.hand.numInHand(routeColor) - route.getLength()) >= numExtraCards) || ((routeColor != TrainColor.RAINBOW) && (this.hand.numInHand(TrainColor.RAINBOW) >= numExtraCards)) || ((routeColor == TrainColor.RAINBOW) && ((this.hand.numInHand(TrainColor.RAINBOW) - route.getLength()) >= numExtraCards))) {
 
 					String[] tunnelChoices = null;
 					
