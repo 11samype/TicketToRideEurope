@@ -1,14 +1,9 @@
 package gui.drawables;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import objects.interfaces.IDrawable;
 import objects.interfaces.IRoute;
 
@@ -42,69 +37,31 @@ public class DrawableDoubleRoute extends DrawableRoute implements IDrawable {
 		return this.bottomRoute;
 	}
 	
-	private Line2D.Double _topLine;
-	private Line2D.Double _bottomLine;
+	private final Line2D.Double _topLine = getTopLine();
+	private final Line2D.Double _bottomLine = getBottomLine();
 
 	@Override
 	public void drawOn(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g.create();
 		
-		g2.setStroke(getDashedStoke());
+		double theta = getReciprocalAngle();
 		
-		if (_topLine == null)
-			_topLine = getTopLine();
-		if (_bottomLine == null)
-			_bottomLine = getBottomLine();
+		double xAway = 1 * LINE_GAP * Math.cos(theta);
+		double yAway = 1 * LINE_GAP * Math.sin(theta);
 		
-		Color save = g2.getColor();
-
-		if (topRoute != null) {
-			if (topRoute.highlighted)
-				g2.setColor(Color.CYAN);
-			else
-				g2.setColor(topRoute.getAwtColor());
-		}
-		g2.draw(_topLine);
-		g2.setColor(save);
-		
-
-		if (bottomRoute != null) {
-			if (bottomRoute.highlighted)
-				g2.setColor(Color.CYAN);
-			else
-				g2.setColor(bottomRoute.getAwtColor());
-		}
-		g2.draw(_bottomLine);
-		g2.setColor(save);
+		g2.translate(xAway,  yAway);
+		topRoute.drawOn(g2);
+		g2.translate(-2*xAway, -2*yAway);
+		bottomRoute.drawOn(g2);
 		
 		g2.dispose();
 	}
 
 	private Line2D.Double getTopLine() {
-//		Point2D.Double startCenter = getStart().getCenter();
-//		Point2D.Double endCenter = getEnd().getCenter();
-//		double theta = getReciprocalAngle();
-//
-//		double xAway = LINE_GAP * Math.cos(theta);
-//		double yAway = LINE_GAP * Math.sin(theta);
-//
-//		startCenter.setLocation(startCenter.x + xAway, startCenter.y + yAway);
-//		endCenter.setLocation(endCenter.x + xAway, endCenter.y + yAway);
-//		return new Line2D.Double(startCenter, endCenter);
 		return getLineOnSide(LineSide.TOP);
 	}
 
 	private Line2D.Double getBottomLine() {
-//		Point2D.Double startCenter = getStart().getCenter();
-//		Point2D.Double endCenter = getEnd().getCenter();
-//		double theta = getReciprocalAngle();
-//
-//		double xAway = LINE_GAP * Math.cos(theta);
-//		double yAway = LINE_GAP * Math.sin(theta);
-//
-//		startCenter.setLocation(startCenter.x - xAway, startCenter.y - yAway);
-//		endCenter.setLocation(endCenter.x - xAway, endCenter.y - yAway);
-//		return new Line2D.Double(startCenter, endCenter);
 		return getLineOnSide(LineSide.BOTTOM);
 	}
 	

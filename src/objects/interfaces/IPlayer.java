@@ -8,6 +8,7 @@ import objects.TrainCarDeck;
 import utils.GameState.CardManager;
 import utils.exceptions.DestinationAfterTrainException;
 import utils.exceptions.NotEnoughCardsForRouteException;
+import utils.exceptions.RouteAfterTrainException;
 import utils.exceptions.RouteOwnedException;
 
 public interface IPlayer {
@@ -31,7 +32,7 @@ public interface IPlayer {
 
 	public List<IRoute> getRoutes();
 
-	public void claimRoute(IRoute route) throws NotEnoughCardsForRouteException, RouteOwnedException;
+	public void claimRoute(IRoute route) throws NotEnoughCardsForRouteException, RouteOwnedException, RouteAfterTrainException;
 
 	public ICard getLastCardDrawn();
 }

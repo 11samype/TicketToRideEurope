@@ -26,6 +26,7 @@ import utils.exceptions.DestinationAfterTrainException;
 import utils.exceptions.DestinationHasStationException;
 import utils.exceptions.NotEnoughCardsForRouteException;
 import utils.exceptions.OutOfStationsException;
+import utils.exceptions.RouteAfterTrainException;
 import utils.exceptions.RouteOwnedException;
 
 public class PlayerTest {
@@ -120,6 +121,8 @@ public class PlayerTest {
 			// nothing
 		} catch (RouteOwnedException e) {
 			// nothing
+		} catch (RouteAfterTrainException e) {
+			// nothing
 		}
 
 	}
@@ -151,6 +154,8 @@ public class PlayerTest {
 			throw e;
 		} catch (RouteOwnedException e) {
 			// nothing
+		} catch (RouteAfterTrainException e) {
+			// nothing
 		}
 
 	}
@@ -166,7 +171,7 @@ public class PlayerTest {
 
 		for (int i = 0; i < 5; i++) {
 			cardList.add(d.getCardAtPosition(i));
-			System.out.printf("%d %s\n", i, d.getCardAtPosition(i).getColor());
+//			System.out.printf("%d %s\n", i, d.getCardAtPosition(i).getColor());
 		}
 
 		for (int i = 0; i < 1; i++) {

@@ -2,15 +2,15 @@ package utils.exceptions;
 
 import utils.MessageHelper;
 
-public class DestinationAfterTrainException extends DrawCardException {
-
+public class RouteAfterTrainException extends ClaimRouteException {
+	
 	@Override
 	public String getMessage() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(MessageHelper.getStringFromBundle(getMessageBundle(),
-				"draw.error.unable.message"));
+				"claim.error.unable.message"));
 		sb.append(MessageHelper.getStringFromBundle(getMessageBundle(),
-				"draw.error.destAfterTrain.message"));
+				"claim.error.routeAfterTrain.message"));
 		return sb.toString();
 	}
 

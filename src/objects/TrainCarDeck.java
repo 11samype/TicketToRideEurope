@@ -36,11 +36,11 @@ public class TrainCarDeck extends AbstractDeck<TrainCarCard> {
 		
 		List<TrainCarCard> drawnCards = new ArrayList<TrainCarCard>();
 		
-		for (int i = 0; i < 3; i++) {
+		while (drawnCards.size() < 3) {
 			if (this.cards.isEmpty()) {
 				reFillFromDicard();
 			}
-			drawnCards.add(this.cards.remove(0));
+			drawnCards.add(this.draw());
 		}
 		
 		return drawnCards;
