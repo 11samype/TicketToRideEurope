@@ -11,14 +11,8 @@ import objects.interfaces.IDeck;
 
 public class JPanelFactory {
 	public static JPanel createDeckPanel(IDeck<?> deck, Color bg, MouseListener mouseListener) {
-		// JPanel panel = new JPanel();
-		// panel.setBackground(bg);
-		// panel.setLayout(new GridBagLayout());
-		// if (mouseListener != null)
-		// panel.addMouseListener(mouseListener);
 		JPanel panel = createPanel(new GridBagLayout(), bg, mouseListener);
 		panel.add(JLabelFactory.createDeckSizeLabel(deck));
-		// parent.add(panel, layoutConstraints);
 		return panel;
 	}
 

@@ -48,15 +48,6 @@ public class DestinationTable extends JTable implements PlayerUpdater, LocaleCha
 	}
 
 	public DestinationRoute getRouteInRow(int row) {
-//		Destination start, end;
-//		int score = 0;
-//		String startName = getModel().getValueAt(row, 0).toString();
-//		String endName = getModel().getValueAt(row, 1).toString();
-//		start = new Destination(MessageHelper.getDefaultCityNameFor(startName));
-//		end = new Destination(MessageHelper.getDefaultCityNameFor(endName));
-//		score = Integer.parseInt(getModel().getValueAt(row, 2).toString());
-//
-//		return new DestinationRoute(start, end, score);
 		return this.routes.get(row);
 	}
 

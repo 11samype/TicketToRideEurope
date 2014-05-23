@@ -31,6 +31,7 @@ import objects.interfaces.IDeck;
 import objects.interfaces.IPlayer;
 import objects.interfaces.IRoute;
 import utils.exceptions.NotEnoughCardsForRouteException;
+import utils.exceptions.RouteAfterTrainException;
 import utils.exceptions.RouteOwnedException;
 import utils.exceptions.RouteTakenException;
 
@@ -257,7 +258,7 @@ public class GameState {
 	}
 
 	public void claimRoute(Player claimer, IRoute routeToClaim, ArrayList<DrawableRoute> drawablesToAdd)
-			throws RouteOwnedException, RouteTakenException, NotEnoughCardsForRouteException {
+			throws RouteOwnedException, RouteTakenException, NotEnoughCardsForRouteException, RouteAfterTrainException {
 		if (routeToClaim != null) {
 			for (IPlayer player : getPlayers()) {
 				if (player == claimer) {
@@ -280,7 +281,7 @@ public class GameState {
 
 
 	public void claimRouteBetweenPoints(Player current, SelectionHolder selectedPoints,
-			ArrayList<DrawableRoute> drawablesToAdd) throws RouteOwnedException, RouteTakenException, NotEnoughCardsForRouteException {
+			ArrayList<DrawableRoute> drawablesToAdd) throws RouteOwnedException, RouteTakenException, NotEnoughCardsForRouteException, RouteAfterTrainException {
 		IRoute routeToClaim = GraphHelper.getAdjecentRouteBetween((Destination) selectedPoints.get(0),
 				(Destination) selectedPoints.get(1));
 		this.claimRoute(current, routeToClaim, drawablesToAdd);
@@ -303,26 +304,27 @@ public class GameState {
 
 		public void fillDealFromDeck() {
 			while (!this.deal.isFull()) {
-
 				if (trainCarDeck.isEmpty()) {
-					DiscardPile<TrainCarCard> discard = GameState.getCardManager().getDiscardPile();
-
-					List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
-
-					while(!discard.isEmpty()) {
-						cards.add((TrainCarCard)discard.draw());
-					}
-
-					trainCarDeck.populate(cards);
+					trainCarDeck.populate(GameState.getCardManager().getDiscardPile().pickup());
 				}
-
-				this.deal.addCard(trainCarDeck.draw());
+				try {
+					this.deal.addCard(trainCarDeck.draw());
+				} catch (IndexOutOfBoundsException e) {
+					e.printStackTrace();
+					break;
+				}
 			}
 		}
 
 		public TrainCarCard drawDealCard(int index) {
-			TrainCarCard cardToReturn = this.deal.removeCardAtPosition(index);
-			fillDealFromDeck();
+			TrainCarCard cardToReturn = null;
+			try {
+				cardToReturn = this.deal.removeCardAtPosition(index);
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} finally {
+				fillDealFromDeck();
+			}
 			return cardToReturn;
 		}
 
@@ -364,6 +366,7 @@ public class GameState {
 
 			this.currentPlayerIndex = (this.currentPlayerIndex + 1)
 					% getPlayers().size();
+			getCardManager().fillDealFromDeck();
 		}
 
 		private List<IPlayer> getPlayers() {

@@ -34,28 +34,21 @@ public class TrainCarDeck extends AbstractDeck<TrainCarCard> {
 		
 		// for tunnels, must remember to placee cards into discard after use!!
 		
-		List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
+		List<TrainCarCard> drawnCards = new ArrayList<TrainCarCard>();
 		
-		for (int i = 0; i < 3; i++) {
+		while (drawnCards.size() < 3) {
 			if (this.cards.isEmpty()) {
 				reFillFromDicard();
 			}
-			cards.add(this.cards.remove(0));
+			drawnCards.add(this.draw());
 		}
 		
-		return cards;
+		return drawnCards;
 	}
-	
+
 	public void reFillFromDicard() {
-		DiscardPile<TrainCarCard> discard = GameState.getCardManager().getDiscardPile();
+		populate(GameState.getCardManager().getDiscardPile().pickup());
 		
-		List<TrainCarCard> cardsList = new ArrayList<TrainCarCard>();
-		
-		while(!discard.isEmpty()) {
-			cardsList.add((TrainCarCard)discard.draw());
-		}
-		
-		populate(cards);
 	}
 
 }

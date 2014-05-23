@@ -4,7 +4,6 @@ import utils.MessageHelper;
 
 public class DestinationAfterTrainException extends DrawCardException {
 
-
 	@Override
 	public String getMessage() {
 		StringBuilder sb = new StringBuilder();
