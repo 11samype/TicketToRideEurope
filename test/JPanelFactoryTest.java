@@ -27,7 +27,7 @@ public class JPanelFactoryTest {
 		TrainCarDeck deck = new TrainCarDeck();
 		int cards = deck.size();
 		
-		MouseAdapter adpt
+		MouseAdapter adpt;
 		
 		JPanelFactory.createDeckPanel(deck, bg, new MouseAdapter() {
 			@Override

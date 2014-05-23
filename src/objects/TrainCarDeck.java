@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import objects.abstracts.AbstractDeck;
+import utils.GameState;
 
 public class TrainCarDeck extends AbstractDeck<TrainCarCard> {
 
@@ -33,13 +34,21 @@ public class TrainCarDeck extends AbstractDeck<TrainCarCard> {
 		
 		// for tunnels, must remember to placee cards into discard after use!!
 		
-		List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
+		List<TrainCarCard> drawnCards = new ArrayList<TrainCarCard>();
 		
 		for (int i = 0; i < 3; i++) {
-			cards.add(this.cards.remove(0));
+			if (this.cards.isEmpty()) {
+				reFillFromDicard();
+			}
+			drawnCards.add(this.cards.remove(0));
 		}
 		
-		return cards;
+		return drawnCards;
+	}
+
+	public void reFillFromDicard() {
+		populate(GameState.getCardManager().getDiscardPile().pickup());
+		
 	}
 
 }
