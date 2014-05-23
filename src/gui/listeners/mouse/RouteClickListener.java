@@ -54,12 +54,7 @@ public class RouteClickListener extends MouseAdapter {
 						break;
 					}
 				}
-				
-				
-				
-				
-				
-				if (drawnRoute instanceof DrawableRoute) {
+				else if (drawnRoute instanceof DrawableRoute) {
 					clickedRoute = (DrawableRoute) drawnRoute;
 					try {
 						if (SwingUtilities.isLeftMouseButton(e) && drawnRoute.contains(e.getPoint())) {

@@ -20,6 +20,11 @@ public class MessageHelperTest {
 
 		MessageHelper.setLocale(Locale.US);
 		assertEquals("Roma", MessageHelper.getDefaultCityNameFor("Rome"));
+		
+		assertNull(MessageHelper.getDefaultCityNameFor("Machu Pichu"));
+		
+		MessageHelper.useGameLocale();
+		assertEquals("Cadiz", MessageHelper.getDefaultCityNameFor("Cadiz"));
 
 		assertEquals(47, bundle.keySet().size());
 	}
