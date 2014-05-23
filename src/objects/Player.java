@@ -1,5 +1,7 @@
 package objects;
 
+import java.util.List;
+
 import objects.abstracts.AbstractPlayer;
 import utils.GameState;
 
@@ -18,6 +20,16 @@ public class Player extends AbstractPlayer {
 
 	public TrainColor getColor() {
 		return this.color;
+	}
+
+	public void populateHand(List<TrainCarCard> cards) {
+		
+		// for testing purposes
+		
+		TrainCarHand newHand = new TrainCarHand();
+		newHand.populate(cards);
+		this.hand = newHand;
+		
 	}
 
 	

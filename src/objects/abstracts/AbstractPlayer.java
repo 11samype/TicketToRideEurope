@@ -70,22 +70,17 @@ public class AbstractPlayer implements IPlayer {
 		
 	}
 
-	private int drawnCards = 0;
-
 	@Override
 	public void drawCardFromDeck(TrainCarDeck deck) {
 		
-		TrainCarCard card = deck.draw();
+		if (deck.isEmpty()) {
+			deck.reFillFromDiscard();
+		}
 		
+		TrainCarCard card = deck.draw();
+
 		this.hand.addCard(card);
 		this.cardTurnEndManager.addCardForCurrentTurn(new CardPackage(card, CardPackage.DECK));
-
-		if (deck.isEmpty()) {
-			deck.reFillFromDicard();
-		}
-
-		this.hand.addCard(deck.draw());
-		this.drawnCards++;
 
 		// end turn if collected 2 trains (or one rainbow)
 
@@ -98,7 +93,7 @@ public class AbstractPlayer implements IPlayer {
 
 	@Override
 	public void drawCardFromDeck(DestinationDeck deck) throws DestinationAfterTrainException {
-		if (drawnCards != 0) {
+		if (canDrawDestination()) {
 			this.destinationHand.addCard(deck.draw());
 
 			// end turn when drawing destination
@@ -133,7 +128,7 @@ public class AbstractPlayer implements IPlayer {
 			throw new RouteOwnedException();
 		}
 
-		if (drawnCards == 0) {
+		if (canDrawDestination()) {
 			if (route instanceof DrawableRoute) {
 				route = ((DrawableRoute) route).getRoute();
 			}
@@ -201,7 +196,7 @@ public class AbstractPlayer implements IPlayer {
 		}
 	}
 
-	private boolean hasEnoughCardsForFerry(FerryRoute route) {
+	public boolean hasEnoughCardsForFerry(FerryRoute route) {
 
 		int numRainbowNeeded = route.getLocomotiveCount();
 
@@ -218,7 +213,7 @@ public class AbstractPlayer implements IPlayer {
 		return false;
 	}
 
-	private String[] listColorsToString(TrainColor[] cardChoices) {
+	public String[] listColorsToString(TrainColor[] cardChoices) {
 		String[] colorStrings = new String[cardChoices.length];
 
 		for (int i = 0; i < colorStrings.length; i++) {
@@ -243,7 +238,7 @@ public class AbstractPlayer implements IPlayer {
 		List<TrainColor> cards = new ArrayList<TrainColor>();
 
 		for (TrainColor color : TrainColor.getAllColors()) {
-			if (numCardsNeeded <= hand.numInHand(color)) {
+			if (numCardsNeeded <= this.hand.numInHand(color)) {
 				cards.add(color);
 			}
 		}
@@ -286,7 +281,7 @@ public class AbstractPlayer implements IPlayer {
 							tunnelChoices[0]);
 
 					if (response == 0) {
-						// cancel
+						//TODO: CANCEL!!
 						//				GameState.takeTurn();
 					} else if (response == 1) {
 						// use routeColor
@@ -337,7 +332,11 @@ public class AbstractPlayer implements IPlayer {
 
 		int numRainbow = this.hand.numInHand(TrainColor.RAINBOW);
 
-		tunnelChoices.add(routeColor.toString());
+		if (routeColor != TrainColor.RAINBOW) {
+			tunnelChoices.add(routeColor.toString());
+		} else {
+			tunnelChoices.add("RAINBOW");
+		}
 
 		if (numRainbow >= numExtraCards) {
 			tunnelChoices.add("RAINBOW");

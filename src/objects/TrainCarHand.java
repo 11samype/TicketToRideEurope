@@ -1,6 +1,8 @@
 package objects;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import objects.abstracts.AbstractHand;
 import utils.GameState;
@@ -37,6 +39,13 @@ public class TrainCarHand extends AbstractHand<TrainCarCard> {
 				break;
 			}
 		}
+	}
+
+	public void populate(List<TrainCarCard> cards) {
+		// for testing purposes
+		
+		this.hand = (ArrayList<TrainCarCard>) cards;
+		
 	}
 
 }

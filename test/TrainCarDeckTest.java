@@ -3,11 +3,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import objects.TrainCarCard;
 import objects.TrainCarDeck;
 
 import org.junit.Test;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 public class TrainCarDeckTest {
 
@@ -64,4 +67,16 @@ public class TrainCarDeckTest {
 		assertEquals(deck1.size(), deck2.size());
 	}
 
+	@Test
+	public void drawTopThreeTest() {
+		TrainCarDeck deck = new TrainCarDeck();
+		int originalDeckSize = deck.size();
+		ArrayList<TrainCarCard> cards = new ArrayList<TrainCarCard>();
+		cards = (ArrayList<TrainCarCard>) deck.drawTopThree();
+		
+		assertEquals(originalDeckSize - 3, deck.size());
+		assertEquals(3, cards.size());
+	}
+	
+	
 }

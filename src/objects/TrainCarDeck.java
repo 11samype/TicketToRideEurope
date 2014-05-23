@@ -38,7 +38,7 @@ public class TrainCarDeck extends AbstractDeck<TrainCarCard> {
 		
 		while (drawnCards.size() < 3) {
 			if (this.cards.isEmpty()) {
-				reFillFromDicard();
+				reFillFromDiscard();
 			}
 			drawnCards.add(this.draw());
 		}
@@ -46,7 +46,7 @@ public class TrainCarDeck extends AbstractDeck<TrainCarCard> {
 		return drawnCards;
 	}
 
-	public void reFillFromDicard() {
+	public void reFillFromDiscard() {
 		populate(GameState.getCardManager().getDiscardPile().pickup());
 		
 	}
