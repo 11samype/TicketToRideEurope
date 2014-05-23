@@ -305,15 +305,7 @@ public class GameState {
 			while (!this.deal.isFull()) {
 
 				if (trainCarDeck.isEmpty()) {
-					DiscardPile<TrainCarCard> discard = GameState.getCardManager().getDiscardPile();
-
-					List<TrainCarCard> cards = new ArrayList<TrainCarCard>();
-
-					while(!discard.isEmpty()) {
-						cards.add((TrainCarCard)discard.draw());
-					}
-
-					trainCarDeck.populate(cards);
+					trainCarDeck.populate(GameState.getCardManager().getDiscardPile().pickup());
 				}
 
 				this.deal.addCard(trainCarDeck.draw());

@@ -16,7 +16,7 @@ public class JLabelFactory {
 		return lbl;
 	}
 
-	public static JLabel createDeckSizeLabel(IDeck<?> deck) {
+	public static DeckSizeLabel createDeckSizeLabel(IDeck<?> deck) {
 		DeckSizeLabel lbl = new DeckSizeLabel(deck);
 		setFont(lbl, "Tahoma", Font.PLAIN, 24);
 		return lbl;

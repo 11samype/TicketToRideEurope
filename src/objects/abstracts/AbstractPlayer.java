@@ -164,21 +164,22 @@ public class AbstractPlayer implements IPlayer {
 			throw new RouteOwnedException();
 		}
 		
+		if (route instanceof DrawableRoute) {
+			route = ((DrawableRoute) route).getRoute();
+		}
 		
-		DrawableRoute drawableRoute = (DrawableRoute) route;
-		
-		if (drawableRoute.getRoute() instanceof FerryRoute) {
-			claimFerryRoute(drawableRoute.getRoute());
-		} else if (drawableRoute.getRoute() instanceof TunnelRoute) {
-			claimTunnelRoute(drawableRoute.getRoute());
+		if (route instanceof FerryRoute) {
+			claimFerryRoute((FerryRoute) route);
+		} else if (route instanceof TunnelRoute) {
+			claimTunnelRoute((TunnelRoute) route);
 		} else {
-			claimDestinationRoute(route);
+			claimTrainRoute(route);
 		}
 		
 		
 	}
 	
-	private void claimDestinationRoute(IRoute route) throws NotEnoughCardsForRouteException {
+	private void claimTrainRoute(IRoute route) throws NotEnoughCardsForRouteException {
 		TrainColor routeColor = (route instanceof AbstractColorableRoute) ? ((AbstractColorableRoute) route)
 				.getColor() : TrainColor.RAINBOW;
 
@@ -189,7 +190,6 @@ public class AbstractPlayer implements IPlayer {
 			discardCardsOfColor(routeLength, routeColor);
 			addRoute(route);
 			this.numTrains -= routeLength;
-			// addScoreForRoute(route);
 		} else {
 			System.err.println(
 					"Not enough cards for route!\nYou have "
@@ -199,9 +199,9 @@ public class AbstractPlayer implements IPlayer {
 		}
 	}
 	
-	private void claimFerryRoute(IRoute route) {
+	private void claimFerryRoute(FerryRoute route) {
 		
-		TrainColor[] cardChoices = getFerryCardChoices(route.getLength() - ((FerryRoute)route).getLocomotiveCount());
+		TrainColor[] cardChoices = getFerryCardChoices(route.getLength() - route.getLocomotiveCount());
 		String[] cardChoicesStrings = listColorsToString(cardChoices);
 
 		int response = JOptionPane.showOptionDialog(null,
@@ -213,8 +213,8 @@ public class AbstractPlayer implements IPlayer {
 		     cardChoicesStrings,
 		     cardChoicesStrings[0]);
 		
-		discardCardsOfColor(route.getLength() - ((FerryRoute)route).getLocomotiveCount(), cardChoices[response]);
-		discardCardsOfColor(((FerryRoute)route).getLocomotiveCount(), TrainColor.RAINBOW);
+		discardCardsOfColor(route.getLength() - route.getLocomotiveCount(), cardChoices[response]);
+		discardCardsOfColor(route.getLocomotiveCount(), TrainColor.RAINBOW);
 		addRoute(route);
 		this.numTrains -= route.getLength();
 	}
@@ -255,10 +255,9 @@ public class AbstractPlayer implements IPlayer {
 		return cardsArray;
 	}
 
-	private void claimTunnelRoute(IRoute route) throws NotEnoughCardsForRouteException {
+	private void claimTunnelRoute(TunnelRoute route) throws NotEnoughCardsForRouteException {
 		
-		TrainColor routeColor = (route instanceof AbstractColorableRoute) ? ((AbstractColorableRoute) route)
-				.getColor() : TrainColor.RAINBOW;
+		TrainColor routeColor = route.getColor();
 		
 		List<TrainCarCard> topThreeCards = GameState.getCardManager().getTrainCarDeck().drawTopThree();
 		
