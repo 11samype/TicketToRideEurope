@@ -313,11 +313,12 @@ public class AbstractPlayer implements IPlayer {
 							tunnelChoices[0]);
 
 					switch (response) {
-					case JOptionPane.CANCEL_OPTION:
+					case 0:
 						//TODO: CANCEL!!
-						//	GameState.takeTurn();
-						break;
-					case JOptionPane.YES_OPTION:
+						GameState.takeTurn();
+						throw new NotEnoughCardsForRouteException(); // need a better way
+//						break;
+					case 1:
 						// use routeColor
 						if (routeColor == TrainColor.RAINBOW) {
 							discardCardsOfColor(route.getLength(), tunnelChoicesArray[firstresponse]);
@@ -392,7 +393,7 @@ public class AbstractPlayer implements IPlayer {
 	public boolean hasEnoughCardsForTunnelRoute(IRoute route, TrainColor routeColor) {
 		if (routeColor == TrainColor.RAINBOW) {
 			for (TrainColor color : TrainColor.getAllColors()) {
-				if (route.getLength() >= this.hand.numInHand(color)) {
+				if (route.getLength() <= this.hand.numInHand(color)) {
 					return true;
 				}
 			}
