@@ -127,8 +127,9 @@ public class DrawableRoute extends AbstractColorableRoute implements IDrawable,H
 		return Math.atan(-1.0 / slope);
 	}
 
-	protected Line2D.Double _line;
 	protected final double singleTrainLength = getTrainLength();
+	private final BasicStroke _stroke = getDashedStoke();
+	protected final Line2D.Double _line = getLine();
 
 	@Override
 	public void drawOn(Graphics g) {
@@ -139,7 +140,8 @@ public class DrawableRoute extends AbstractColorableRoute implements IDrawable,H
 //			g2.setColor(Color.BLACK);
 //			g2.draw(g2.getStroke().createStrokedShape(getLine()));
 //		} else {
-			g2.setStroke(getDashedStoke());
+
+			g2.setStroke(_stroke);
 //		}
 		
 		if (this.highlighted) {
@@ -148,9 +150,6 @@ public class DrawableRoute extends AbstractColorableRoute implements IDrawable,H
 			g2.setColor(this.getAwtColor());
 		}
 
-
-		if (_line == null)
-			_line = getLine();
 		g2.draw(_line);
 		
 		if (isTaken) {
@@ -202,11 +201,6 @@ public class DrawableRoute extends AbstractColorableRoute implements IDrawable,H
 
 	@Override
 	public boolean contains(Point2D p) {
-	
-
-		if (_line == null)
-			_line = getLine();
-		
 		if (_line.intersects(getHitBox(p))) {
 			this.highlight();
 			return true;

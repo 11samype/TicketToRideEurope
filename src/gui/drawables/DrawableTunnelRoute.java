@@ -16,6 +16,8 @@ public class DrawableTunnelRoute extends DrawableRoute {
 			DrawableDestination end, TunnelRoute route) {
 		super(start, end, route, route.getColor());
 	}
+	
+	private final BasicStroke _stroke = getTieStoke();
 
 	protected BasicStroke getTieStoke() {
 		double tieSize = singleTrainLength / 6;
@@ -33,10 +35,7 @@ public class DrawableTunnelRoute extends DrawableRoute {
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		g2.setColor(highlighted ? Color.CYAN : getAwtColor());
-		g2.setStroke(getTieStoke());
-		if (super._line == null) {
-			_line = getLine();
-		}
+		g2.setStroke(_stroke);
 		g2.draw(_line);
 		g2.dispose();
 		super.drawOn(g);
