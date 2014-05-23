@@ -4,8 +4,11 @@ import gui.panels.MainPanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Locale;
 
+import objects.Player;
+import objects.interfaces.IPlayer;
 import utils.GameState;
 
 public class NumPlayerActionListener implements ActionListener {
@@ -21,11 +24,13 @@ public class NumPlayerActionListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		GameState.numPlayers = this.numPlayers;
+		ArrayList<IPlayer> players = new ArrayList<IPlayer>();
+		for (int i = 0; i < numPlayers; i++) {
+			players.add(new Player("Player " + (i + 1)));
+		}
+		GameState.withPlayers(players);
 		
-		GameState.withPlayers(GameState.getPlayersBasedOnNum());
-		
-		mainPanel.resetPlayersPanel();
-
+		mainPanel.resetGame();
 	}
 
 }

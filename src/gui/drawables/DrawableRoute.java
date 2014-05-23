@@ -14,12 +14,12 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 
 import objects.TrainColor;
+import objects.TunnelRoute;
 import objects.abstracts.AbstractColorableRoute;
 import objects.interfaces.IDrawable;
 import objects.interfaces.IRoute;
 
-public class DrawableRoute extends AbstractColorableRoute implements IDrawable,
-Highlightable {
+public class DrawableRoute extends AbstractColorableRoute implements IDrawable,Highlightable {
 
 	// Width and height of rectangular region around mouse
 	// pointer to use for hit detection on lines
@@ -27,39 +27,41 @@ Highlightable {
 	protected boolean highlighted;
 	private boolean isTaken;
 	protected static final double GAP_SIZE = 10;
-	public static final float LINE_WIDTH = DrawableDestination.DOT_RADIUS / 2;
+	public static final float LINE_WIDTH = 7*DrawableDestination.DOT_RADIUS / 8;
+	
+	protected IRoute route;
 
-	public static DrawableRoute construct(IRoute iroute,
-			TrainColor currentPlayerColor,
-			HashMap<String, DrawableDestination> destMap) {
-		TrainColor color = TrainColor.RAINBOW;
+	public static DrawableRoute construct(IRoute iroute, TrainColor currentPlayerColor, HashMap<String, DrawableDestination> destMap) {
 		DrawableDestination drawStart = destMap.get(iroute.getStart().getName());
 		DrawableDestination drawEnd = destMap.get(iroute.getEnd().getName());
 		if (currentPlayerColor != null) {
-			DrawableRoute route = new DrawableRoute(drawStart, drawEnd, iroute.getLength(), currentPlayerColor);
+			DrawableRoute route = new DrawableRoute(drawStart, drawEnd, iroute, currentPlayerColor);
 			route.isTaken = true;
 			return route;
 		} else {
 			if (iroute instanceof AbstractColorableRoute) {
 				AbstractColorableRoute route = (AbstractColorableRoute) iroute;
-				return new DrawableRoute(drawStart, drawEnd, route.getLength(), route.getColor());
+				if (route instanceof TunnelRoute) {
+					return new DrawableTunnelRoute(drawStart, drawEnd, route);
+				}
+				return new DrawableRoute(drawStart, drawEnd, route);
 			} else
-				return new DrawableRoute(drawStart, drawEnd, iroute.getLength(), color);
+				return new DrawableRoute(drawStart, drawEnd, iroute);
 		}
 	}
 
-	public DrawableRoute(DrawableDestination start, DrawableDestination end, int length) {
-		super(start, end, length);
+	public DrawableRoute(DrawableDestination start, DrawableDestination end, IRoute route, TrainColor color) {
+		super(start, end, color, route.getLength());
+		this.route = route;
 	}
 
-	public DrawableRoute(DrawableDestination start, DrawableDestination end) {
-		this(start, end, 1);
+	public DrawableRoute(DrawableDestination start, DrawableDestination end, IRoute iRoute) {
+		this(start, end, iRoute, TrainColor.RAINBOW);
 	}
+	
 
-	public DrawableRoute(DrawableDestination start, DrawableDestination end,
-			int length, TrainColor color) {
-		super(start, end, color, length);
-
+	public DrawableRoute(DrawableDestination start, DrawableDestination end, AbstractColorableRoute route) {
+		this(start, end, route, route.getColor());
 	}
 
 	@Override
@@ -70,6 +72,10 @@ Highlightable {
 	@Override
 	public DrawableDestination getEnd() {
 		return (DrawableDestination) this.end;
+	}
+	
+	public IRoute getRoute() {
+		return route;
 	}
 
 	protected Double getSlope() {
@@ -116,7 +122,7 @@ Highlightable {
 		return Math.atan(-1.0 / slope);
 	}
 
-	private Line2D.Double _line;
+	protected Line2D.Double _line;
 	protected final double singleTrainLength = getTrainLength();
 
 	@Override

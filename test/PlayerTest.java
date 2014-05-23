@@ -52,7 +52,7 @@ public class PlayerTest {
 		Player p = new Player("Conductor");
 		assertEquals(nextAvail, p.getColor());
 
-		assertEquals(0, p.getScore());
+		assertEquals(AbstractPlayer.MAX_NUM_STATIONS, p.getScore());
 		assertNotNull(p.getHand());
 		assertEquals(0, p.getHand().size());
 		assertNotNull(p.getDestinationHand());

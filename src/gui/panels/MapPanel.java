@@ -92,6 +92,7 @@ public class MapPanel extends RepaintableComponent implements IRefreshable {
 			while (!routesFromStart.isEmpty()) {
 				// construct a drawable route
 				IRoute iroute = routesFromStart.remove(0);
+							
 				route = DrawableRoute.construct(iroute, null, DESTS);
 				if (!drawableRoutes.contains(route)) { // if not currently drawn
 					// if there is a double route
@@ -99,7 +100,7 @@ public class MapPanel extends RepaintableComponent implements IRefreshable {
 					if ((doubleIndex = routesFromStart.indexOf(iroute)) != -1) {
 						// draw the double
 						DrawableRoute bottom = DrawableRoute.construct(routesFromStart.remove(doubleIndex), null, DESTS);
-						doubleRoute = DrawableDoubleRoute.construct(route, bottom);
+						doubleRoute = new DrawableDoubleRoute(route, bottom);
 						routesToAdd.add(doubleRoute);
  					} else { // draw the single
  						routesToAdd.add(route);

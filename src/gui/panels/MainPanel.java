@@ -45,9 +45,6 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 	private List<LocaleChangeListener> localeChangeListeners = new ArrayList<LocaleChangeListener>();
 	private JFrame topFrame;
 
-	private JPanel playersPanel = new JPanel();
-	private List<PlayerPanel> playerPanels = new ArrayList<PlayerPanel>();
-	private List<JPanel> paddings = new ArrayList<JPanel>();
 	private JPanel trainCarDeckPanel;
 
 	public MainPanel() {
@@ -56,68 +53,69 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 				"[900px:1250px:1600px,grow,fill][10%:n,right]",
 				"[90.00:114.00:100.00,grow,fill][773px:773px:773px,fill][70:85.00:100,grow,bottom]"));
 
-//		this.players = getPlayers();
+		initGUI();
+	}
+
+
+	public void initGUI() {
+		playerInfoListeners.clear();
+		localeChangeListeners.clear();
+		initGameState();
+		addTopRow();
+		addMiddleRow();
+		addBottomRow();
+		this.refresh();
+	}
+	
+	public void resetGame() {
+		this.removeAll();
+		this.initGUI();
+	}
+
+	protected void initGameState() {
 		GameState.withPlayers(getPlayers());
 		GameState.withGUI(this);
-		
+	}
 
-		// top row
+
+	protected void addTopRow() {
 		addPlayersPanel();
 		addDestinationDeckPanel();
+	}
 
-		// mid row
+
+	protected void addMiddleRow() {
 		addMapPanel();
 		addDealPanel();
+	}
 
-		// bottom row
+
+	protected void addBottomRow() {
 		addPlayerInfoPanel();
 		PlayerPanel currentPlayerPanel = new PlayerPanel(GameState.getCurrentPlayer());
 		add(currentPlayerPanel, "cell 1 2,grow");
 		this.playerInfoListeners.add(currentPlayerPanel);
-
-		this.refresh();
 	}
 
 
-
 	private void addPlayersPanel() {
-//		JPanel playersPanel = new JPanel();
-		this.playersPanel.setLayout(new GridLayout(1, 0, 10, 0));
+		JPanel playersPanel = new JPanel();
+		playersPanel.setLayout(new GridLayout(1, 0, 10, 0));
 
 		for (IPlayer player : GameState.getPlayers()) {
 			PlayerPanel panel = new PlayerPanel((Player) player);
-			this.playersPanel.add(panel);
-			this.playerPanels.add(panel);
+			playersPanel.add(panel);
 			this.localeChangeListeners.add(panel);
 		}
 		for (int i = GameState.getPlayers().size(); i < GameState.MAX_PLAYERS + 1; i++) {
 			JPanel padding = new JPanel();
 			
-			this.paddings.add(padding);
-			
-			this.playersPanel.add(padding); // right padding
+			playersPanel.add(padding); // right padding
 		}
 
-		add(this.playersPanel, "cell 0 0,alignx left,growy");
+		add(playersPanel, "cell 0 0,alignx left,growy");
 	}
-	
-	private void removePlayersPanel() {
-		
-		for (PlayerPanel panel : this.playerPanels) {
-			this.localeChangeListeners.remove(panel);
-			
-		}
-		
-		this.playersPanel.removeAll();
-		
-	}
-	
-	public void resetPlayersPanel() {
-		
-		removePlayersPanel();
-		addPlayersPanel();
-		
-	}
+
 
 	private void addMapPanel() {
 		MapPanel map = new MapPanel();

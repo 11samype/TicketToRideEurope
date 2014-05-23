@@ -60,13 +60,14 @@ public class GameState {
 	}
 
 	private GameState(List<IPlayer> players) {
-		this.cardManager = new CardManager();
-		this.turnManager = new TurnManager(players);
-		
 		availableColors = new LinkedList<TrainColor>(
 				Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
 						TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW));
 
+		
+		this.cardManager = new CardManager();
+		this.turnManager = new TurnManager(players);
+	
 		dealTrainsToPlayers(players);
 		dealDestinationsToPlayers(players);
 	}

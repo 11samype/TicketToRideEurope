@@ -49,10 +49,12 @@ public class DrawableDestination extends Destination implements IDrawable, Selec
 			drawStation(g2, x, y);
 		}
 
-		drawCircle(g2, x, y, DOT_RADIUS, isSelected, DOT_COLOR);
 		if (isSelected) {
-			drawCircle(g2, x, y, DOT_RADIUS, !isSelected, DOT_COLOR);
+			drawCircle(g2, x, y, DOT_RADIUS, isSelected, DOT_COLOR);
 			drawCircle(g2, x, y, DOT_RADIUS, !isSelected, OUTLINE_COLOR);
+		} else {
+			drawCircle(g2, x, y, DOT_RADIUS, true, new Color(240, 240, 240));
+			drawCircle(g2, x, y, DOT_RADIUS, false, Color.BLACK);
 		}
 		
 		g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
