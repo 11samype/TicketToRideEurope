@@ -19,9 +19,9 @@ public class GameMenuBar extends JMenuBar {
 	private MainPanel panel;
 
 	public GameMenuBar(MainPanel panel) {
-	this.panel = panel;
-	add(getLocaleMenu());
-	add(getNumPlayersMenu());
+		this.panel = panel;
+		add(getLocaleMenu());
+		add(getNumPlayersMenu());
 	}
 
 	protected JMenu getLocaleMenu() {
@@ -39,7 +39,7 @@ public class GameMenuBar extends JMenuBar {
 	}
 
 	protected JMenu getNumPlayersMenu() {
-		JMenu numPlayerMenu = new JMenu("Players");
+		JMenu numPlayerMenu = new JMenu(MessageHelper.getStringFromBundle(MessageHelper.getMessages(), "menu.player.title"));
 		ButtonGroup numPlayerGroup = new ButtonGroup();
 		String[] lblNumbers = new String[] {"1", "2", "3", "4", "5"};
 
