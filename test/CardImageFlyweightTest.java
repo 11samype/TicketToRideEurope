@@ -25,20 +25,14 @@ public class CardImageFlyweightTest {
 			Field images = fly.getClass().getDeclaredField("imageMap");
 			images.setAccessible(true);
 			HashMap<TrainColor, BufferedImage> map = (HashMap<TrainColor, BufferedImage>) images.get(fly);
+			map.clear();
 			assertTrue(map.isEmpty());
 			assertFalse(map.containsKey(TrainColor.BLACK));
 			fly.getImageForColor(TrainColor.BLACK);
 			assertTrue(map.containsKey(TrainColor.BLACK));
 			assertFalse(map.containsKey(TrainColor.GREEN));
 			
-		} catch (NoSuchFieldException | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
