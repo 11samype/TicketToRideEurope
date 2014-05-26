@@ -44,7 +44,7 @@ public class GameStateTest {
 	public void testInitGame() {
 		
 		GameState.getInstance();
-		GameState game = GameState.withPlayers(new ArrayList<IPlayer>());
+		GameState game = GameState.withPlayers(new ArrayList<Player>());
 		assertNotNull(game);
 		assertTrue(GameState.getPlayers().isEmpty());
 
@@ -78,7 +78,7 @@ public class GameStateTest {
 
 	@Test
 	public void testNextPlayer() {
-		List<IPlayer> players = new ArrayList<IPlayer>();
+		List<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < 5; i++) {
 			players.add(new Player());
 		}
@@ -105,7 +105,7 @@ public class GameStateTest {
 
 	@Test
 	public void testgetPlayers() {
-		List<IPlayer> players = new ArrayList<IPlayer>();
+		List<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < 5; i++) {
 			players.add(new Player());
 		}

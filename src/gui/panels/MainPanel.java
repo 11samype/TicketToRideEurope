@@ -58,7 +58,7 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 	}
 
 
-	public void initGUI() {
+	private void initGUI() {
 		playerInfoListeners.clear();
 		localeChangeListeners.clear();
 		initGameState();
@@ -74,8 +74,7 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 	}
 
 	protected void initGameState() {
-		GameState.withPlayers(getPlayers());
-		GameState.withGUI(this);
+		GameState.getInstance().withPlayers(GameState.getPlayersBasedOnNum()).withGUI(this);
 	}
 
 
@@ -186,12 +185,6 @@ public class MainPanel extends JPanel implements IRefreshable, LocaleChangeListe
 		HandPanel playerHandPanel = new HandPanel();
 		this.playerInfoListeners.add(playerHandPanel);
 		playerInfoPanel.add(playerHandPanel, "cell 1 0,grow");
-	}
-
-	private ArrayList<IPlayer> getPlayers() {
-
-		return GameState.getPlayersBasedOnNum();
-		
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class PlayerPanelTest {
 
 	@Test
 	public void testPlayerPanel() {
-		List<IPlayer> players = new ArrayList<IPlayer>();
+		List<Player> players = new ArrayList<Player>();
 		players.add(new Player("Bob"));
 		GameState.withPlayers(players);
 		Player player = GameState.getCurrentPlayer();

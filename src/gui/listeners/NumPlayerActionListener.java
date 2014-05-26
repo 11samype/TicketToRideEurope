@@ -5,6 +5,7 @@ import gui.panels.MainPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import objects.Player;
@@ -24,7 +25,7 @@ public class NumPlayerActionListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		GameState.numPlayers = this.numPlayers;
-		ArrayList<IPlayer> players = new ArrayList<IPlayer>();
+		List<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < numPlayers; i++) {
 			players.add(new Player("Player " + (i + 1)));
 		}

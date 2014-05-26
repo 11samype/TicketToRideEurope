@@ -181,7 +181,7 @@ public class PlayerTest {
 
 	@Test
 	public void testDealToPlayer() {
-		List<IPlayer> players = new ArrayList<IPlayer>();
+		List<Player> players = new ArrayList<Player>();
 		players.add(new Player());
 		GameState.withPlayers(players);
 		Player p = GameState.getCurrentPlayer();
@@ -216,7 +216,7 @@ public class PlayerTest {
 
 		int initialSize = destDeck.size();
 
-		List<IPlayer> players = new ArrayList<IPlayer>();
+		List<Player> players = new ArrayList<Player>();
 		players.add(new Player());
 		GameState.withPlayers(players);
 		Player player = GameState.getCurrentPlayer();

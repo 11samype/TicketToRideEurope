@@ -58,10 +58,10 @@ public class GameState {
 	}
 
 	private GameState() {
-		this(new ArrayList<IPlayer>());
+		this(new ArrayList<Player>());
 	}
 
-	private GameState(List<IPlayer> players) {
+	private GameState(List<Player> players) {
 		availableColors = new LinkedList<TrainColor>(
 				Arrays.asList(TrainColor.WHITE, TrainColor.ORANGE,
 						TrainColor.GREEN, TrainColor.RED, TrainColor.YELLOW));
@@ -74,7 +74,7 @@ public class GameState {
 		dealDestinationsToPlayers(players);
 	}
 
-	private void dealDestinationsToPlayers(List<IPlayer> players) {
+	private void dealDestinationsToPlayers(List<Player> players) {
 		// take 6 longest destination cards
 		Collections.sort(cardManager.getDestinationDeck().getCards(), new Comparator<DestinationCard>() {
 
@@ -110,7 +110,7 @@ public class GameState {
 		}
 	}
 
-	private void dealTrainsToPlayers(List<IPlayer> players) {
+	private void dealTrainsToPlayers(List<Player> players) {
 		for (IPlayer iPlayer : players) {
 			Player player = (Player) iPlayer;
 			for (int i = 0; i < 4; i++) {
@@ -119,7 +119,7 @@ public class GameState {
 		}
 	}
 
-	public static GameState withPlayers(List<IPlayer> players) {
+	public static GameState withPlayers(List<Player> players) {
 		sInstance = new GameState(players);
 		numPlayers = players.size();
 		return getInstance();
@@ -158,7 +158,7 @@ public class GameState {
 	
 	private static void endGame() {
 		
-		List<IPlayer> players = getPlayers();
+		List<Player> players = getPlayers();
 		
 		IPlayer winner = new Player();
 		
@@ -196,7 +196,7 @@ public class GameState {
 			getInstance().gameGUI.refresh();
 	}
 
-	public static List<IPlayer> getPlayers() {
+	public static List<Player> getPlayers() {
 		return GameState.getTurnManager().getPlayers();
 	}
 
@@ -361,10 +361,10 @@ public class GameState {
 
 	public class TurnManager {
 
-		private final List<IPlayer> players;
+		private final List<Player> players;
 		private int currentPlayerIndex = 0;
 
-		public TurnManager(List<IPlayer> players) {
+		public TurnManager(List<Player> players) {
 			this.players = players;
 		}
 
@@ -375,7 +375,7 @@ public class GameState {
 			getCardManager().fillDealFromDeck();
 		}
 
-		private List<IPlayer> getPlayers() {
+		private List<Player> getPlayers() {
 			return this.players;
 		}
 
@@ -385,12 +385,12 @@ public class GameState {
 
 	}
 
-	public static ArrayList<IPlayer> getPlayersBasedOnNum() {
-		ArrayList<IPlayer> players = new ArrayList<IPlayer>();
+	public static List<Player> getPlayersBasedOnNum() {
+		List<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < numPlayers; i++) {
 			players.add(new Player("Player " + (i + 1)));
 		}
 		return players;
 	}
-
+ 
 }
